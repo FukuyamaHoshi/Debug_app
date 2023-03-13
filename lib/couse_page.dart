@@ -9,7 +9,14 @@ class CoursePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('codegen'),
+        title: Text(
+          'codegen',
+          style: GoogleFonts.zenMaruGothic(
+              textStyle: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: fromCssColor('#ffffff'))),
+        ),
         backgroundColor: fromCssColor('#96D6AE'),
         elevation: 0,
       ),
