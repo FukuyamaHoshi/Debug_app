@@ -8,9 +8,15 @@ class QuestionPage extends StatelessWidget {
   // 問題文
   String question =
       '1, 以下のJavaScriptコードを実行すると、コンソールに「false」と表示されます。バグを修正して、コンソールに「true」と表示されるようにしてください。';
-
   // コード
   String code = 'var x = 10;\nx = x + 10;\nconsole.log(x);';
+  // 選択肢A
+  String optionA = 'typeof演算子で、nullの型はオブジェクトであるため、バグが発生しています。';
+  // 選択肢B
+  String optionB = 'typeof演算子で、nullの型はオブジェクトであるため、バグが発生しています。';
+  // 選択肢C
+  String optionC = 'typeof演算子で、nullの型はオブジェクトであるため、バグが発生しています。';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +84,7 @@ class QuestionPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
 
-                    // もんだいを表示
+                    // もんだい分を表示
                     child: Text(
                       question,
                       style: GoogleFonts.zenMaruGothic(
@@ -103,7 +109,7 @@ class QuestionPage extends StatelessWidget {
                   child: Text(
                     'javascript',
                     style:
-                        TextStyle(color: fromCssColor('#ffffff'), fontSize: 13),
+                        TextStyle(color: fromCssColor('#ffffff'), fontSize: 14),
                   ),
                 ),
               ),
@@ -146,8 +152,188 @@ class QuestionPage extends StatelessWidget {
               ),
             ),
           ),
+          const Padding(padding: EdgeInsets.only(top: 10.0)),
+          // 選択肢A
+          Stack(alignment: Alignment.center, children: [
+            // 外
+            Container(
+              width: 400,
+              height: 85,
+              decoration: BoxDecoration(
+                  color: fromCssColor('#BCDF8A'),
+                  borderRadius: BorderRadius.circular(5)),
+            ),
 
-          // 答えAのボックス(ボタンにする？？)
+            // 内
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // アルファベットボックス
+                Container(
+                  width: 45,
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: fromCssColor('#80C03A'),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Text(
+                    'A',
+                    style: GoogleFonts.zenMaruGothic(
+                        textStyle: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: fromCssColor('#BCDF8A'))),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(right: 8.0)),
+
+                // 選択肢文ボックス
+                Container(
+                  width: 330,
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: fromCssColor('#F4F2E4'),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+
+                    // 選択肢Aを表示
+                    child: Text(
+                      optionA,
+                      style: GoogleFonts.zenMaruGothic(
+                          textStyle: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: fromCssColor('#4E3703'))),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ]),
+          const Padding(padding: EdgeInsets.only(top: 8.0)),
+
+          // 選択肢B
+          Stack(alignment: Alignment.center, children: [
+            // 外
+            Container(
+              width: 400,
+              height: 85,
+              decoration: BoxDecoration(
+                  color: fromCssColor('#A2D0D3'),
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+
+            // 内
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // アルファベットボックス
+                Container(
+                  width: 45,
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: fromCssColor('#54A7AF'),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Text(
+                    'B',
+                    style: GoogleFonts.zenMaruGothic(
+                        textStyle: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: fromCssColor('#A2D0D3'))),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(right: 8.0)),
+
+                // 選択肢文ボックス
+                Container(
+                  width: 330,
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: fromCssColor('#F4F2E4'),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+
+                    // 選択肢Bを表示
+                    child: Text(
+                      optionB,
+                      style: GoogleFonts.zenMaruGothic(
+                          textStyle: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: fromCssColor('#4E3703'))),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ]),
+          const Padding(padding: EdgeInsets.only(top: 8.0)),
+
+          // 選択肢C
+          Stack(alignment: Alignment.center, children: [
+            // 外
+            Container(
+              width: 400,
+              height: 85,
+              decoration: BoxDecoration(
+                  color: fromCssColor('#DFA7A2'),
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+
+            // 内
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // アルファベットボックス
+                Container(
+                  width: 45,
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: fromCssColor('#C3615E'),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Text(
+                    'C',
+                    style: GoogleFonts.zenMaruGothic(
+                        textStyle: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: fromCssColor('#DFA7A2'))),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(right: 8.0)),
+
+                // 選択肢文ボックス
+                Container(
+                  width: 330,
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: fromCssColor('#F4F2E4'),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+
+                    // 選択肢Cを表示
+                    child: Text(
+                      optionC,
+                      style: GoogleFonts.zenMaruGothic(
+                          textStyle: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: fromCssColor('#4E3703'))),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ])
         ],
       ),
     );
