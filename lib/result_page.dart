@@ -5,6 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 class ResultPage extends StatelessWidget {
   ResultPage({super.key});
 
+  int correntRate = 90; // 正解率
+  int time = 120; // 時間
+  String rank = 'すごい！'; // ランク
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,14 +61,18 @@ class ResultPage extends StatelessWidget {
         ),
 
         // やまの名前と詳細、画像
-        Container(
-          height: 320,
-          width: double.infinity,
-          color: fromCssColor('#F7F0B8'),
+        Expanded(
           child: Stack(children: [
+            // 山の背景
+            Container(
+              width: double.infinity,
+              height: 340,
+              color: fromCssColor('#F7F0B8'),
+            ),
+
             // 山の名前、詳細
             Align(
-              alignment: const Alignment(0, -0.9),
+              alignment: const Alignment(0, -0.96),
               child: Container(
                 width: double.infinity,
                 height: 70,
@@ -122,20 +130,77 @@ class ResultPage extends StatelessWidget {
             ),
 
             // 山画像
-            SizedBox(
+            Align(
+              alignment: const Alignment(0, -1.1),
+              child: SizedBox(
+                  width: double.infinity,
+                  child: SizedBox(
+                    width: 400,
+                    height: 400,
+                    child: Image.asset(
+                      'images/javascript_mountain.png',
+                      fit: BoxFit.contain,
+                    ),
+                  )),
+            ),
+
+            // せいせきサブテキスト
+            Align(
+              alignment: const Alignment(0, 0.05),
+              child: SizedBox(
                 width: double.infinity,
-                child: SizedBox(
-                  width: 320,
-                  height: 320,
-                  child: Image.asset(
-                    'images/javascript_mountain.png',
-                    fit: BoxFit.contain,
+                child: Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.only(left: 20.0)),
+                    Text(
+                      'せいせき',
+                      style: GoogleFonts.zenMaruGothic(
+                          textStyle: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                              color: fromCssColor('#4E3703'))),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // 結果表示ボックス
+            Align(
+              alignment: const Alignment(0, 1),
+              child: Container(
+                width: 385,
+                height: 330,
+                //color: Colors.red,
+                child: Column(children: [
+                  Row(
+                    children: [
+                      // せいかい率テキスト
+                      Text(
+                        'せいかい率',
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#77694A'))),
+                      ),
+
+                      // せいかい率表示
+                      Text(
+                        '$correntRate%',
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#77694A'))),
+                      ),
+                    ],
                   ),
-                )),
+                ]),
+              ),
+            )
           ]),
         ),
-
-        // せいせきサブテキスト
       ]),
     );
   }
