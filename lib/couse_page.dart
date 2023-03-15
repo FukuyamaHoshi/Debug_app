@@ -1,3 +1,4 @@
+import 'package:debug_app/question_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +20,7 @@ class CousePage extends StatelessWidget {
         ),
         backgroundColor: fromCssColor('#96D6AE'),
         elevation: 0,
+        automaticallyImplyLeading: false, // もどるボタンを許可しない
       ),
       backgroundColor: fromCssColor('#F4F2E4'),
       body: Column(children: [
@@ -178,7 +180,13 @@ class CousePage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: fromCssColor('#ffffff'))),
             ),
-            onPressed: () {},
+            onPressed: () {
+              // もんだい画面へ
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QuestionPage()),
+              );
+            },
           ),
         ),
       ),

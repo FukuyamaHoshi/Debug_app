@@ -35,6 +35,7 @@ class QuestionPage extends StatelessWidget {
         ),
         backgroundColor: fromCssColor('#96D6AE'),
         elevation: 0,
+        automaticallyImplyLeading: false, // もどるボタンを許可しない
         // おわるボタン設置
         actions: [
           Padding(

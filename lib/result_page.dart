@@ -1,3 +1,4 @@
+import 'package:debug_app/couse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +32,7 @@ class ResultPage extends StatelessWidget {
         ),
         backgroundColor: fromCssColor('#96D6AE'),
         elevation: 0,
+        automaticallyImplyLeading: false, // もどるボタンを許可しない
         // おわるボタン設置
         actions: [
           Padding(
@@ -317,7 +319,16 @@ class ResultPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: fromCssColor('#4E3703'))),
             ),
-            onPressed: () {},
+            onPressed: () {
+              // コース画面へ
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CousePage(),
+                  fullscreenDialog: true, // 下からのアニメーション
+                ),
+              );
+            },
           ),
         ),
       ),

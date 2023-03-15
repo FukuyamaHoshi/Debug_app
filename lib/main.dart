@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       // レスポンシブ対応
       builder: (context, child) =>
           ResponsiveWrapper.builder(child, defaultScale: true),
-      home: CousePage(),
+      home: ResultPage(),
     );
   }
 }
