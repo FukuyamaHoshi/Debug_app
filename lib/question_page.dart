@@ -19,6 +19,9 @@ class QuestionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // スクリーンの高さ
+    double screeHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       // AppBar
       appBar: AppBar(
@@ -138,20 +141,21 @@ class QuestionPage extends StatelessWidget {
           ),
 
           // 答えのサブタイトル
-          SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 18.0, top: 20.0),
-              child: Text(
-                'どれが答え？',
-                style: GoogleFonts.zenMaruGothic(
-                    textStyle: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: fromCssColor('#4E3703'))),
+          if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 18.0, top: 20.0),
+                child: Text(
+                  'どれが答え？',
+                  style: GoogleFonts.zenMaruGothic(
+                      textStyle: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: fromCssColor('#4E3703'))),
+                ),
               ),
             ),
-          ),
           const Padding(padding: EdgeInsets.only(top: 10.0)),
           // 選択肢A
           Stack(alignment: Alignment.center, children: [

@@ -9,8 +9,15 @@ class ResultPage extends StatelessWidget {
   int time = 120; // 時間
   String rank = 'すごい！'; // ランク
 
+  double resultY = 0.8; // せいせきボックスの位置(レスポンシブ対応)
+
   @override
   Widget build(BuildContext context) {
+    // スクリーンの高さ
+    double screeHeight = MediaQuery.of(context).size.height;
+    // せいせきボックスの位置(レスポンシブ対応)
+    if (screeHeight < 850) resultY = 1.6;
+
     return Scaffold(
       // AppBar
       appBar: AppBar(
@@ -144,140 +151,146 @@ class ResultPage extends StatelessWidget {
                   )),
             ),
 
-            // せいせきサブテキスト
+            // せいせきボックス
             Align(
-              alignment: const Alignment(0, 0.05),
+              alignment: Alignment(0, resultY),
               child: SizedBox(
-                width: double.infinity,
-                child: Row(
+                height: 380,
+                child: Column(
                   children: [
-                    const Padding(padding: EdgeInsets.only(left: 20.0)),
-                    Text(
-                      'せいせき',
-                      style: GoogleFonts.zenMaruGothic(
-                          textStyle: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                              color: fromCssColor('#4E3703'))),
+                    SizedBox(
+                      width: 400,
+                      child: Row(
+                        children: [
+                          // せいせきサブテキスト
+                          if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
+                            Text(
+                              'せいせき',
+                              style: GoogleFonts.zenMaruGothic(
+                                  textStyle: TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.bold,
+                                      color: fromCssColor('#4E3703'))),
+                            ),
+                        ],
+                      ),
                     ),
+
+                    const Padding(padding: EdgeInsets.only(top: 10.0)),
+                    // 結果表示ボックス
+                    SizedBox(
+                      width: 390,
+                      height: 330,
+                      child: Column(children: [
+                        // せいかい率
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // せいかい率テキスト
+                            Text(
+                              'せいかい率',
+                              style: GoogleFonts.zenMaruGothic(
+                                  textStyle: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: fromCssColor('#77694A'))),
+                            ),
+
+                            // せいかい率表示
+                            Text(
+                              '$correntRate%',
+                              style: GoogleFonts.zenMaruGothic(
+                                  textStyle: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: fromCssColor('#77694A'))),
+                            ),
+                          ],
+                        ),
+
+                        const Padding(padding: EdgeInsets.only(top: 10)),
+                        // アンダーライン(せいかい率)
+                        Container(
+                          width: double.infinity,
+                          height: 4,
+                          color: fromCssColor("#FFFABC"),
+                        ),
+
+                        const Padding(padding: EdgeInsets.only(top: 10)),
+                        // じかん
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // じかんテキスト
+                            Text(
+                              'じかん',
+                              style: GoogleFonts.zenMaruGothic(
+                                  textStyle: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: fromCssColor('#77694A'))),
+                            ),
+
+                            // じかん表示
+                            Text(
+                              '$time秒',
+                              style: GoogleFonts.zenMaruGothic(
+                                  textStyle: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: fromCssColor('#77694A'))),
+                            ),
+                          ],
+                        ),
+
+                        const Padding(padding: EdgeInsets.only(top: 10)),
+                        // アンダーライン(じかん)
+                        Container(
+                          width: double.infinity,
+                          height: 4,
+                          color: fromCssColor("#FFFABC"),
+                        ),
+
+                        const Padding(padding: EdgeInsets.only(top: 10)),
+                        // ランク
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // ランクテキスト
+                            Text(
+                              'ランク',
+                              style: GoogleFonts.zenMaruGothic(
+                                  textStyle: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: fromCssColor('#77694A'))),
+                            ),
+
+                            // ランク表示
+                            Text(
+                              rank,
+                              style: GoogleFonts.zenMaruGothic(
+                                  textStyle: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: fromCssColor('#77694A'))),
+                            ),
+                          ],
+                        ),
+
+                        const Padding(padding: EdgeInsets.only(top: 10)),
+                        // アンダーライン(ランク)
+                        Container(
+                          width: double.infinity,
+                          height: 4,
+                          color: fromCssColor("#FFFABC"),
+                        ),
+                      ]),
+                    )
                   ],
                 ),
               ),
             ),
-
-            // 結果表示ボックス
-            Align(
-              alignment: const Alignment(0, 1),
-              child: SizedBox(
-                width: 380,
-                height: 330,
-                child: Column(children: [
-                  // せいかい率
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // せいかい率テキスト
-                      Text(
-                        'せいかい率',
-                        style: GoogleFonts.zenMaruGothic(
-                            textStyle: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#77694A'))),
-                      ),
-
-                      // せいかい率表示
-                      Text(
-                        '$correntRate%',
-                        style: GoogleFonts.zenMaruGothic(
-                            textStyle: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#77694A'))),
-                      ),
-                    ],
-                  ),
-
-                  const Padding(padding: EdgeInsets.only(top: 10)),
-                  // アンダーライン(せいかい率)
-                  Container(
-                    width: double.infinity,
-                    height: 4,
-                    color: fromCssColor("#FFFABC"),
-                  ),
-
-                  const Padding(padding: EdgeInsets.only(top: 10)),
-                  // じかん
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // じかんテキスト
-                      Text(
-                        'じかん',
-                        style: GoogleFonts.zenMaruGothic(
-                            textStyle: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#77694A'))),
-                      ),
-
-                      // じかん表示
-                      Text(
-                        '$time秒',
-                        style: GoogleFonts.zenMaruGothic(
-                            textStyle: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#77694A'))),
-                      ),
-                    ],
-                  ),
-
-                  const Padding(padding: EdgeInsets.only(top: 10)),
-                  // アンダーライン(じかん)
-                  Container(
-                    width: double.infinity,
-                    height: 4,
-                    color: fromCssColor("#FFFABC"),
-                  ),
-
-                  const Padding(padding: EdgeInsets.only(top: 10)),
-                  // ランク
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // ランクテキスト
-                      Text(
-                        'ランク',
-                        style: GoogleFonts.zenMaruGothic(
-                            textStyle: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#77694A'))),
-                      ),
-
-                      // ランク表示
-                      Text(
-                        rank,
-                        style: GoogleFonts.zenMaruGothic(
-                            textStyle: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#77694A'))),
-                      ),
-                    ],
-                  ),
-
-                  const Padding(padding: EdgeInsets.only(top: 10)),
-                  // アンダーライン(ランク)
-                  Container(
-                    width: double.infinity,
-                    height: 4,
-                    color: fromCssColor("#FFFABC"),
-                  ),
-                ]),
-              ),
-            )
           ]),
         ),
       ]),

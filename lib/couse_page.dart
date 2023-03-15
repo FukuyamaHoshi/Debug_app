@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CoursePage extends StatelessWidget {
-  const CoursePage({super.key});
+class CousePage extends StatelessWidget {
+  const CousePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -97,21 +97,27 @@ class CoursePage extends StatelessWidget {
         Expanded(
           child: Stack(children: [
             // 強調画像
-            SizedBox(
-                width: 430,
-                height: 430,
-                child: Image.asset(
-                  'images/javascript_hallo.png',
-                  fit: BoxFit.contain,
-                )),
+            Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                  width: 430,
+                  height: 430,
+                  child: Image.asset(
+                    'images/javascript_hallo.png',
+                    fit: BoxFit.contain,
+                  )),
+            ),
             // 山画像
-            SizedBox(
-                width: 465,
-                height: 465,
-                child: Image.asset(
-                  'images/javascript_mountain.png',
-                  fit: BoxFit.contain,
-                )),
+            Align(
+              alignment: const Alignment(0, -0.9),
+              child: SizedBox(
+                  width: 465,
+                  height: 465,
+                  child: Image.asset(
+                    'images/javascript_mountain.png',
+                    fit: BoxFit.contain,
+                  )),
+            ),
             // 木画像
             Align(
               alignment: const Alignment(-0.81, 0.25),
@@ -138,8 +144,8 @@ class CoursePage extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: SizedBox(
-                  width: 430,
-                  height: 430,
+                  width: 465,
+                  height: 465,
                   child: Image.asset(
                     'images/zimen.png',
                     fit: BoxFit.contain,
