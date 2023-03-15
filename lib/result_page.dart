@@ -168,12 +168,13 @@ class ResultPage extends StatelessWidget {
             // 結果表示ボックス
             Align(
               alignment: const Alignment(0, 1),
-              child: Container(
-                width: 385,
+              child: SizedBox(
+                width: 380,
                 height: 330,
-                //color: Colors.red,
                 child: Column(children: [
+                  // せいかい率
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // せいかい率テキスト
                       Text(
@@ -196,12 +197,117 @@ class ResultPage extends StatelessWidget {
                       ),
                     ],
                   ),
+
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  // アンダーライン(せいかい率)
+                  Container(
+                    width: double.infinity,
+                    height: 4,
+                    color: fromCssColor("#FFFABC"),
+                  ),
+
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  // じかん
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // じかんテキスト
+                      Text(
+                        'じかん',
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#77694A'))),
+                      ),
+
+                      // じかん表示
+                      Text(
+                        '$time秒',
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#77694A'))),
+                      ),
+                    ],
+                  ),
+
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  // アンダーライン(じかん)
+                  Container(
+                    width: double.infinity,
+                    height: 4,
+                    color: fromCssColor("#FFFABC"),
+                  ),
+
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  // ランク
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // ランクテキスト
+                      Text(
+                        'ランク',
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#77694A'))),
+                      ),
+
+                      // ランク表示
+                      Text(
+                        rank,
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#77694A'))),
+                      ),
+                    ],
+                  ),
+
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  // アンダーライン(ランク)
+                  Container(
+                    width: double.infinity,
+                    height: 4,
+                    color: fromCssColor("#FFFABC"),
+                  ),
                 ]),
               ),
             )
           ]),
         ),
       ]),
+
+      // ボタン
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 35),
+        child: SizedBox(
+          height: 73,
+          width: 329,
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              backgroundColor: fromCssColor('#ffffff'),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+            ),
+            child: Text(
+              'もどる',
+              style: GoogleFonts.zenMaruGothic(
+                  textStyle: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: fromCssColor('#4E3703'))),
+            ),
+            onPressed: () {},
+          ),
+        ),
+      ),
     );
   }
 }
