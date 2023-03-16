@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'couse_page.dart';
+
 class QuestionPage extends StatelessWidget {
   QuestionPage({super.key});
 
@@ -41,7 +43,132 @@ class QuestionPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                // ポップアップ
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: fromCssColor('#F4F2E4'),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    icon: Container(
+                      width: double.infinity,
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          size: 35,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    iconColor: fromCssColor('#77694A'),
+                    iconPadding: const EdgeInsets.all(10.0),
+                    title: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        'もんだいを終わりますか？',
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#4E3703'))),
+                      ),
+                    ),
+                    content: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      child: Text(
+                        'もんだいの途中で終わると\n結果がでません。',
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#77694A'))),
+                      ),
+                    ),
+                    actions: [
+                      // ボタン
+                      Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            // はいボタン
+                            SizedBox(
+                              height: 65,
+                              width: 250,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(
+                                      color: Colors.white, width: 4),
+                                  backgroundColor: fromCssColor('#90CCC9'),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                ),
+                                child: Text(
+                                  'はい',
+                                  style: GoogleFonts.zenMaruGothic(
+                                      textStyle: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.bold,
+                                          color: fromCssColor('#ffffff'))),
+                                ),
+                                onPressed: () {
+                                  // コース画面へ
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const CousePage(),
+                                      fullscreenDialog: true, // 下からのアニメーション
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 5.0)),
+
+                            // いいえボタン
+                            SizedBox(
+                              height: 65,
+                              width: 250,
+                              child: TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      fromCssColor('#D9CCAB')),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(50), //丸み具合
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'いいえ',
+                                  style: GoogleFonts.zenMaruGothic(
+                                      textStyle: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.bold,
+                                          color: fromCssColor('#4E3703'))),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                            const Padding(
+                                padding: EdgeInsets.only(bottom: 5.0)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
               child: Text(
                 'おわる',
                 style: GoogleFonts.zenMaruGothic(

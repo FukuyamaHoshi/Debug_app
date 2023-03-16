@@ -38,7 +38,16 @@ class ResultPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                // コース画面へ
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CousePage(),
+                    fullscreenDialog: true, // 下からのアニメーション
+                  ),
+                );
+              },
               child: Text(
                 'おわる',
                 style: GoogleFonts.zenMaruGothic(
