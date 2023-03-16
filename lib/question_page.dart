@@ -1,6 +1,9 @@
+import 'package:debug_app/question_model.dart';
+import 'package:debug_app/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'couse_page.dart';
 
@@ -21,8 +24,26 @@ class QuestionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Provider model
+    final QuestionModel model =
+        Provider.of<QuestionModel>(context, listen: true);
     // スクリーンの高さ
-    double screeHeight = MediaQuery.of(context).size.height;
+    final double screeHeight = MediaQuery.of(context).size.height;
+
+    // もんだい数に応じて画面推移
+    void navigationNext() {
+      model.increment(); // カウントアップ
+      // カウントに応じて処理
+      if (model.count < 5) {
+        // もんだい画面
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => QuestionPage()));
+      } else {
+        // 結果画面
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ResultPage()));
+      }
+    }
 
     return Scaffold(
       // AppBar
@@ -285,187 +306,203 @@ class QuestionPage extends StatelessWidget {
               ),
             ),
           const Padding(padding: EdgeInsets.only(top: 10.0)),
+
           // 選択肢A
-          Stack(alignment: Alignment.center, children: [
-            // 外
-            Container(
-              width: 400,
-              height: 85,
-              decoration: BoxDecoration(
-                  color: fromCssColor('#BCDF8A'),
-                  borderRadius: BorderRadius.circular(5)),
-            ),
+          GestureDetector(
+            onTap: () {
+              navigationNext();
+            },
+            child: Stack(alignment: Alignment.center, children: [
+              // 外
+              Container(
+                width: 400,
+                height: 85,
+                decoration: BoxDecoration(
+                    color: fromCssColor('#BCDF8A'),
+                    borderRadius: BorderRadius.circular(5)),
+              ),
 
-            // 内
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // アルファベットボックス
-                Container(
-                  width: 45,
-                  height: 70,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: fromCssColor('#80C03A'),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Text(
-                    'A',
-                    style: GoogleFonts.zenMaruGothic(
-                        textStyle: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: fromCssColor('#BCDF8A'))),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 8.0)),
-
-                // 選択肢文ボックス
-                Container(
-                  width: 330,
-                  height: 70,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: fromCssColor('#F4F2E4'),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-
-                    // 選択肢Aを表示
+              // 内
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // アルファベットボックス
+                  Container(
+                    width: 45,
+                    height: 70,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: fromCssColor('#80C03A'),
+                        borderRadius: BorderRadius.circular(5)),
                     child: Text(
-                      optionA,
+                      'A',
                       style: GoogleFonts.zenMaruGothic(
                           textStyle: TextStyle(
-                              fontSize: 17,
+                              fontSize: 30,
                               fontWeight: FontWeight.bold,
-                              color: fromCssColor('#4E3703'))),
+                              color: fromCssColor('#BCDF8A'))),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ]),
+                  const Padding(padding: EdgeInsets.only(right: 8.0)),
+
+                  // 選択肢文ボックス
+                  Container(
+                    width: 330,
+                    height: 70,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: fromCssColor('#F4F2E4'),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+
+                      // 選択肢Aを表示
+                      child: Text(
+                        optionA,
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#4E3703'))),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          ),
           const Padding(padding: EdgeInsets.only(top: 8.0)),
 
           // 選択肢B
-          Stack(alignment: Alignment.center, children: [
-            // 外
-            Container(
-              width: 400,
-              height: 85,
-              decoration: BoxDecoration(
-                  color: fromCssColor('#A2D0D3'),
-                  borderRadius: BorderRadius.circular(5)),
-            ),
+          GestureDetector(
+            onTap: () {
+              navigationNext();
+            },
+            child: Stack(alignment: Alignment.center, children: [
+              // 外
+              Container(
+                width: 400,
+                height: 85,
+                decoration: BoxDecoration(
+                    color: fromCssColor('#A2D0D3'),
+                    borderRadius: BorderRadius.circular(5)),
+              ),
 
-            // 内
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // アルファベットボックス
-                Container(
-                  width: 45,
-                  height: 70,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: fromCssColor('#54A7AF'),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Text(
-                    'B',
-                    style: GoogleFonts.zenMaruGothic(
-                        textStyle: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: fromCssColor('#A2D0D3'))),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 8.0)),
-
-                // 選択肢文ボックス
-                Container(
-                  width: 330,
-                  height: 70,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: fromCssColor('#F4F2E4'),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-
-                    // 選択肢Bを表示
+              // 内
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // アルファベットボックス
+                  Container(
+                    width: 45,
+                    height: 70,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: fromCssColor('#54A7AF'),
+                        borderRadius: BorderRadius.circular(5)),
                     child: Text(
-                      optionB,
+                      'B',
                       style: GoogleFonts.zenMaruGothic(
                           textStyle: TextStyle(
-                              fontSize: 17,
+                              fontSize: 30,
                               fontWeight: FontWeight.bold,
-                              color: fromCssColor('#4E3703'))),
+                              color: fromCssColor('#A2D0D3'))),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ]),
+                  const Padding(padding: EdgeInsets.only(right: 8.0)),
+
+                  // 選択肢文ボックス
+                  Container(
+                    width: 330,
+                    height: 70,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: fromCssColor('#F4F2E4'),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+
+                      // 選択肢Bを表示
+                      child: Text(
+                        optionB,
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#4E3703'))),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          ),
           const Padding(padding: EdgeInsets.only(top: 8.0)),
 
           // 選択肢C
-          Stack(alignment: Alignment.center, children: [
-            // 外
-            Container(
-              width: 400,
-              height: 85,
-              decoration: BoxDecoration(
-                  color: fromCssColor('#DFA7A2'),
-                  borderRadius: BorderRadius.circular(5)),
-            ),
+          GestureDetector(
+            onTap: () {
+              navigationNext();
+            },
+            child: Stack(alignment: Alignment.center, children: [
+              // 外
+              Container(
+                width: 400,
+                height: 85,
+                decoration: BoxDecoration(
+                    color: fromCssColor('#DFA7A2'),
+                    borderRadius: BorderRadius.circular(5)),
+              ),
 
-            // 内
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // アルファベットボックス
-                Container(
-                  width: 45,
-                  height: 70,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: fromCssColor('#C3615E'),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Text(
-                    'C',
-                    style: GoogleFonts.zenMaruGothic(
-                        textStyle: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: fromCssColor('#DFA7A2'))),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 8.0)),
-
-                // 選択肢文ボックス
-                Container(
-                  width: 330,
-                  height: 70,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: fromCssColor('#F4F2E4'),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-
-                    // 選択肢Cを表示
+              // 内
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // アルファベットボックス
+                  Container(
+                    width: 45,
+                    height: 70,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: fromCssColor('#C3615E'),
+                        borderRadius: BorderRadius.circular(5)),
                     child: Text(
-                      optionC,
+                      'C',
                       style: GoogleFonts.zenMaruGothic(
                           textStyle: TextStyle(
-                              fontSize: 17,
+                              fontSize: 30,
                               fontWeight: FontWeight.bold,
-                              color: fromCssColor('#4E3703'))),
+                              color: fromCssColor('#DFA7A2'))),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ])
+                  const Padding(padding: EdgeInsets.only(right: 8.0)),
+
+                  // 選択肢文ボックス
+                  Container(
+                    width: 330,
+                    height: 70,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: fromCssColor('#F4F2E4'),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+
+                      // 選択肢Cを表示
+                      child: Text(
+                        optionC,
+                        style: GoogleFonts.zenMaruGothic(
+                            textStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#4E3703'))),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          )
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:debug_app/question_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:debug_app/couse_page.dart';
@@ -5,6 +6,7 @@ import 'package:debug_app/question_page.dart';
 import 'package:debug_app/result_page.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
@@ -22,18 +24,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // プレビュー機能
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      //builder: DevicePreview.appBuilder,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+    // Provider 追加
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<QuestionModel>(
+            create: (context) => QuestionModel())
+      ],
+      child: MaterialApp(
+        // プレビュー機能
+        useInheritedMediaQuery: true,
+        locale: DevicePreview.locale(context),
+        //builder: DevicePreview.appBuilder,
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
 
-      // レスポンシブ対応
-      builder: (context, child) =>
-          ResponsiveWrapper.builder(child, defaultScale: true),
-      home: QuestionPage(),
+        // レスポンシブ対応
+        builder: (context, child) =>
+            ResponsiveWrapper.builder(child, defaultScale: true),
+        home: CousePage(),
+      ),
     );
   }
 }
