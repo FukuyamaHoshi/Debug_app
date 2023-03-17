@@ -1,4 +1,4 @@
-import 'package:debug_app/question_model.dart';
+import 'package:debug_app/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:debug_app/couse_page.dart';
@@ -34,10 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Provider 追加
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<QuestionModel>(
-            create: (context) => QuestionModel())
-      ],
+      providers: [ChangeNotifierProvider<Model>(create: (context) => Model())],
       child: MaterialApp(
         // プレビュー機能
         useInheritedMediaQuery: true,
@@ -49,7 +46,7 @@ class MyApp extends StatelessWidget {
         // レスポンシブ対応
         builder: (context, child) =>
             ResponsiveWrapper.builder(child, defaultScale: true),
-        home: CousePage(),
+        home: const CousePage(),
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:debug_app/question_model.dart';
+import 'package:debug_app/model.dart';
 import 'package:debug_app/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
@@ -25,14 +25,13 @@ class QuestionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Provider model
-    final QuestionModel model =
-        Provider.of<QuestionModel>(context, listen: true);
+    final Model model = Provider.of<Model>(context, listen: true);
     // スクリーンの高さ
     final double screeHeight = MediaQuery.of(context).size.height;
 
     // もんだい数に応じて画面推移
     void navigationNext() {
-      model.increment(); // カウントアップ
+      model.getQuestion(); // もんだい取得
       // カウントに応じて処理
       if (model.count < 5) {
         // もんだい画面

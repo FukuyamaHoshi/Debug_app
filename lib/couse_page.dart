@@ -2,12 +2,18 @@ import 'package:debug_app/question_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import 'model.dart';
 
 class CousePage extends StatelessWidget {
   const CousePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Provider model
+    final Model model = Provider.of<Model>(context, listen: true);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -181,6 +187,9 @@ class CousePage extends StatelessWidget {
                       color: fromCssColor('#ffffff'))),
             ),
             onPressed: () {
+              // 取得する問題を決める
+              model.getQuestionsNum();
+
               // もんだい画面へ
               Navigator.push(
                 context,
