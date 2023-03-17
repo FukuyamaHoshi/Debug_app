@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "225630912375",
+    "project_id": "debug-app-dada8",
+    "storage_bucket": "debug-app-dada8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225630912375:android:05dbd8a5b5ffb4769d6b72",
+        "android_client_info": {
+          "package_name": "com.example.debug_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225630912375-0suj7cimq03r2e01c8ib0o79csft6ucs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfkpIp2i1hLyMGYhsXlxRIIBqQDs4FC2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225630912375-0suj7cimq03r2e01c8ib0o79csft6ucs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "225630912375-97pvkhmseh3hpdjbafsptskd3tscgfvb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.debugApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
