@@ -69,10 +69,10 @@ class Model with ChangeNotifier {
   }
 
   // もんだいを取得し、Questionクラスを配列に格納
-  void getQuestionsData() {
+  Future<void> getQuestionsData() async {
     final docRef = db.collection(qc);
-    // 取得した番号配列を指定
-    docRef.where("number", whereIn: nums).get().then(
+    // 取得した番号配列を指定( ここのawaitを書かないと処理を待ってくれない )
+    await docRef.where("number", whereIn: nums).get().then(
       // データ操作
       (res) {
         for (var doc in res.docs) {
@@ -91,7 +91,9 @@ class Model with ChangeNotifier {
           debugPrint(q.answer);
         }
       },
-      onError: (e) => debugPrint("Error completing: $e"),
+      onError: (e) {
+        debugPrint("Error completing: $e");
+      },
     );
   }
 
