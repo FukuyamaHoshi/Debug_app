@@ -186,11 +186,13 @@ class CousePage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: fromCssColor('#ffffff'))),
             ),
-            onPressed: () async {
+            onPressed: () {
               // 取得する問題を決める
               model.getQuestionsNum();
               // Firebaseからデータ取得
               model.getQuestionsData();
+              // もんだいを設定
+              model.setQuestion();
 
               // もんだい画面へ
               Navigator.push(

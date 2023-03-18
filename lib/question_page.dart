@@ -4,23 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import 'couse_page.dart';
 
 class QuestionPage extends StatelessWidget {
   QuestionPage({super.key});
-
-  // 問題文
-  String question =
-      '1, 以下のJavaScriptコードを実行すると、コンソールに「false」と表示されます。バグを修正して、コンソールに「true」と表示されるようにしてください。';
-  // コード
-  String code = 'var x = 10;\nx = x + 10;\nconsole.log(x);';
-  // 選択肢A
-  String optionA = 'typeof演算子で、nullの型はオブジェクトであるため、バグが発生しています。';
-  // 選択肢B
-  String optionB = 'typeof演算子で、nullの型はオブジェクトであるため、バグが発生しています。';
-  // 選択肢C
-  String optionC = 'typeof演算子で、nullの型はオブジェクトであるため、バグが発生しています。';
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +18,19 @@ class QuestionPage extends StatelessWidget {
 
     // もんだい数に応じて画面推移
     void navigationNext() {
-      // カウントに応じて処理
-      if (model.count < 5) {
-        // もんだい画面
+      // 次のもんだいへ
+      model.nextQuestion();
+
+      // 現在の問題数に応じて処理
+      if (model.count < model.maxCount) {
+        // もんだいを設定
+        model.setQuestion();
+
+        // もんだい画面へ
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => QuestionPage()));
       } else {
-        // 結果画面
+        // 結果画面へ
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ResultPage()));
       }
@@ -236,7 +229,8 @@ class QuestionPage extends StatelessWidget {
 
                     // もんだい分を表示
                     child: Text(
-                      question,
+                      // 取得したもんだい文を表示
+                      model.question,
                       style: GoogleFonts.zenMaruGothic(
                           textStyle: TextStyle(
                               fontSize: 18,
@@ -275,7 +269,7 @@ class QuestionPage extends StatelessWidget {
 
                   // コードを表示
                   child: Text(
-                    code,
+                    model.code,
                     style: GoogleFonts.robotoMono(
                         textStyle: TextStyle(
                             fontSize: 18,
@@ -356,7 +350,7 @@ class QuestionPage extends StatelessWidget {
 
                       // 選択肢Aを表示
                       child: Text(
-                        optionA,
+                        model.optionA,
                         style: GoogleFonts.zenMaruGothic(
                             textStyle: TextStyle(
                                 fontSize: 17,
@@ -422,7 +416,7 @@ class QuestionPage extends StatelessWidget {
 
                       // 選択肢Bを表示
                       child: Text(
-                        optionB,
+                        model.optionB,
                         style: GoogleFonts.zenMaruGothic(
                             textStyle: TextStyle(
                                 fontSize: 17,
@@ -488,7 +482,7 @@ class QuestionPage extends StatelessWidget {
 
                       // 選択肢Cを表示
                       child: Text(
-                        optionC,
+                        model.optionC,
                         style: GoogleFonts.zenMaruGothic(
                             textStyle: TextStyle(
                                 fontSize: 17,
