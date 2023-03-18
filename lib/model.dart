@@ -1,6 +1,6 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:debug_app/question.dart';
 import 'package:flutter/material.dart';
 
 class Model with ChangeNotifier {
@@ -9,7 +9,8 @@ class Model with ChangeNotifier {
   final int questionNum = 5; // 出題数
 
   int count = 0; // テスト変数
-  List<int> nums = <int>[]; // データを取得するリスト
+  List<int> nums = <int>[]; // もんだい番号のリスト( ※10個まで Firebaseの仕様)
+  List<Question> ques = <Question>[]; // もんだいのデータのリスト
 
   // テスト関数
   void increment() {
@@ -18,16 +19,7 @@ class Model with ChangeNotifier {
     notifyListeners();
   }
 
-// もんだいを取得する(テスト)
-  void getQuestion() {
-    final docRef = db.collection(qc);
-    docRef.where("number", whereIn: [1, 2]).get().then(
-          (res) => print(res.docs.toString()),
-          onError: (e) => print("Error completing: $e"),
-        );
-  }
-
-  // 取得する問題を５つ決定し、リストにする
+  // 取得する問題を５つ(出題数)決定し、リストに追加
   void getQuestionsNum() {
     while (true) {
       // 配列が出題数以上になれば終了
@@ -42,6 +34,48 @@ class Model with ChangeNotifier {
       if (!b) {
         nums.add(r);
       }
+
+      notifyListeners();
     }
+
+    // デバッグ
+    debugPrint(nums.toString());
+  }
+
+  // もんだいを取得し、Questionクラスを配列に格納
+  void getQuestionsData() {
+    final docRef = db.collection(qc);
+    // 取得した番号配列を指定
+    docRef.where("number", whereIn: nums).get().then(
+      // データ操作
+      (res) {
+        for (var doc in res.docs) {
+          addQuestions(
+              doc.data()['answer'],
+              doc.data()['code'],
+              doc.data()['number'],
+              doc.data()['optionA'],
+              doc.data()['optionB'],
+              doc.data()['optionC'],
+              doc.data()['question']);
+        }
+
+        // デバッグ
+        for (var q in ques) {
+          debugPrint(q.answer);
+        }
+
+        notifyListeners();
+      },
+      onError: (e) => debugPrint("Error completing: $e"),
+    );
+  }
+
+  // もんだいの配列にデータ追加
+  void addQuestions(String a, String code, int num, String oA, String oB,
+      String oC, String que) {
+    Question q = Question(a, code, num, oA, oB, oC, que);
+
+    ques.add(q);
   }
 }

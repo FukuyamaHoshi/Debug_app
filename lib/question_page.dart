@@ -31,7 +31,6 @@ class QuestionPage extends StatelessWidget {
 
     // もんだい数に応じて画面推移
     void navigationNext() {
-      model.getQuestion(); // もんだい取得
       // カウントに応じて処理
       if (model.count < 5) {
         // もんだい画面
