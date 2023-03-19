@@ -2,22 +2,28 @@ import 'package:debug_app/couse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import 'model.dart';
 
 class ResultPage extends StatelessWidget {
   ResultPage({super.key});
 
-  int correntRate = 90; // 正解率
   int time = 120; // 時間
   String rank = 'すごい！'; // ランク
-
   double resultY = 0.8; // せいせきボックスの位置(レスポンシブ対応)
 
   @override
   Widget build(BuildContext context) {
+    // Provider model
+    final Model model = Provider.of<Model>(context, listen: true);
     // スクリーンの高さ
     double screeHeight = MediaQuery.of(context).size.height;
     // せいせきボックスの位置(レスポンシブ対応)
     if (screeHeight < 850) resultY = 1.6;
+
+    model.resetQuestion(); // もんだい数をリセット
+    final int correntRate = model.getCollectRate(); // 正解率
 
     return Scaffold(
       // AppBar

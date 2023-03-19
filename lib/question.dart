@@ -2,7 +2,7 @@ class Question {
   Question(this.answer, this.code, this.number, this.optionA, this.optionB,
       this.optionC, this.question);
 
-  String answer;
+  int answer;
   String code;
   int number;
   String optionA;

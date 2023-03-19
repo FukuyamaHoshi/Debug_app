@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'couse_page.dart';
 
 class QuestionPage extends StatelessWidget {
-  QuestionPage({super.key});
+  const QuestionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class QuestionPage extends StatelessWidget {
     final double screeHeight = MediaQuery.of(context).size.height;
 
     // もんだい数に応じて画面推移
-    void navigationNext() {
+    void nextNavigation() {
       // 次のもんだいへ
       model.nextQuestion();
 
@@ -27,8 +27,8 @@ class QuestionPage extends StatelessWidget {
         model.setQuestion();
 
         // もんだい画面へ
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => QuestionPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const QuestionPage()));
       } else {
         // 結果画面へ
         Navigator.push(
@@ -302,7 +302,8 @@ class QuestionPage extends StatelessWidget {
           // 選択肢A
           GestureDetector(
             onTap: () {
-              navigationNext();
+              model.checkCollect(0); // 正解しているかどうか
+              nextNavigation();
             },
             child: Stack(alignment: Alignment.center, children: [
               // 外
@@ -368,7 +369,8 @@ class QuestionPage extends StatelessWidget {
           // 選択肢B
           GestureDetector(
             onTap: () {
-              navigationNext();
+              model.checkCollect(1); // 正解しているかどうか
+              nextNavigation();
             },
             child: Stack(alignment: Alignment.center, children: [
               // 外
@@ -434,7 +436,8 @@ class QuestionPage extends StatelessWidget {
           // 選択肢C
           GestureDetector(
             onTap: () {
-              navigationNext();
+              model.checkCollect(0); // 正解しているかどうか
+              nextNavigation();
             },
             child: Stack(alignment: Alignment.center, children: [
               // 外

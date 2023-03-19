@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import 'model.dart';
 
 class CousePage extends StatelessWidget {
@@ -13,6 +12,7 @@ class CousePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Provider model
     final Model model = Provider.of<Model>(context, listen: true);
+    model.resetQuestion(); // もんだい数をリセット
 
     return Scaffold(
       appBar: AppBar(

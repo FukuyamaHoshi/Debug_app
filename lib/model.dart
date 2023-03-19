@@ -11,6 +11,7 @@ class Model with ChangeNotifier {
   int count = 0; // 現在何問目か(0 ~ 4の配列)
   List<int> nums = <int>[]; // もんだい番号のリスト( ※10個まで Firebaseの仕様)
   List<Question> ques = <Question>[]; // もんだいのデータのリスト
+  int collect = 0; // 正解したもんだい数
 
   // 問題文
   String question =
@@ -27,6 +28,13 @@ class Model with ChangeNotifier {
   // 次のもんだいへ
   void nextQuestion() {
     count++;
+  }
+
+  // 現在のもんだい数をリセット
+  void resetQuestion() {
+    nums = []; // 取得するもんだい番号
+    count = 0; // もんだいカウント
+    ques = []; // Questionクラスの配列
   }
 
   // もんだいを設定する
@@ -87,9 +95,10 @@ class Model with ChangeNotifier {
         }
 
         // デバッグ
-        for (var q in ques) {
-          debugPrint(q.answer);
-        }
+        // for (var q in ques) {
+        //   debugPrint(q.answer.toString());
+        // }
+        debugPrint('Firebase呼ばれた');
       },
       onError: (e) {
         debugPrint("Error completing: $e");
@@ -98,10 +107,27 @@ class Model with ChangeNotifier {
   }
 
   // もんだいの配列にデータ追加
-  void addQuestions(String a, String code, int num, String oA, String oB,
+  void addQuestions(int a, String code, int num, String oA, String oB,
       String oC, String que) {
     Question q = Question(a, code, num, oA, oB, oC, que);
 
     ques.add(q);
+  }
+
+  // 正解しているか確認する
+  void checkCollect(int select) {
+    if (ques.isEmpty) return; // 何もしない
+    if (select > 2) return; // 何もしない(選択肢は0~2の間)
+
+    // 正解していたらカウント
+    if (select == ques[count].answer) {
+      collect++;
+    }
+  }
+
+  // 正答率を計算し、取得する
+  int getCollectRate() {
+    int rate = (collect / maxCount * 100).toInt();
+    return rate;
   }
 }
