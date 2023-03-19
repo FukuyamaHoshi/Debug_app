@@ -8,8 +8,6 @@ import 'model.dart';
 class ResultPage extends StatelessWidget {
   const ResultPage({super.key});
 
-  final String rank = 'すごい！'; // ランク
-
   @override
   Widget build(BuildContext context) {
     // Provider model
@@ -19,10 +17,14 @@ class ResultPage extends StatelessWidget {
     // せいせきボックスの位置(レスポンシブ対応)
     if (screeHeight < 850) resultY = 1.6;
 
+    model.calculateAccuracy(); // 正答率を計算する
     // 正解率
-    final int correntRate = model.getCollectRate();
+    final int correntRate = model.collectRate;
     // 時間
     int time = model.time;
+    // ランク
+    int score = model.getScore(); // スコアを取得
+    String rank = model.getRank(score);
 
     return Scaffold(
       // AppBar
