@@ -8,7 +8,6 @@ import 'model.dart';
 class ResultPage extends StatelessWidget {
   ResultPage({super.key});
 
-  int time = 120; // 時間
   String rank = 'すごい！'; // ランク
   double resultY = 0.8; // せいせきボックスの位置(レスポンシブ対応)
 
@@ -23,6 +22,8 @@ class ResultPage extends StatelessWidget {
 
     // 正解率
     final int correntRate = model.getCollectRate();
+    // 時間
+    int time = model.time;
 
     return Scaffold(
       // AppBar

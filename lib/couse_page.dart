@@ -193,12 +193,14 @@ class CousePage extends StatelessWidget {
               await model.getQuestionsData();
               // もんだいを設定
               model.setQuestion();
+              // タイマーを開始
+              model.startTimer();
 
               if (context.mounted) {
                 // もんだい画面へ
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => QuestionPage()),
+                  MaterialPageRoute(builder: (context) => const QuestionPage()),
                 );
               }
             },

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:debug_app/question.dart';
@@ -12,6 +13,8 @@ class Model with ChangeNotifier {
   List<int> nums = <int>[]; // もんだい番号のリスト( ※10個まで Firebaseの仕様)
   List<Question> ques = <Question>[]; // もんだいのデータのリスト
   int collect = 0; // 正解したもんだい数
+  int time = 0; // タイマー
+  bool isStopTime = false; // タイマーのストップフラグ
 
   // 問題文
   String question =
@@ -36,6 +39,8 @@ class Model with ChangeNotifier {
     count = 0; // もんだいカウント
     ques = []; // Questionクラスの配列
     collect = 0; // 正解したもんだい数
+    time = 0; // タイマー
+    isStopTime = false; // タイマーストップフラグ
   }
 
   // もんだいを設定する
@@ -130,5 +135,27 @@ class Model with ChangeNotifier {
   int getCollectRate() {
     int rate = (collect / maxCount * 100).toInt();
     return rate;
+  }
+
+  // タイマー開始
+  void startTimer() {
+    Timer.periodic(
+      // 第一引数：繰り返す間隔の時間を設定
+      const Duration(seconds: 1),
+      (Timer timer) {
+        // タイマー終了処理
+        if (isStopTime) {
+          timer.cancel();
+          return;
+        }
+
+        time++; // 加算
+      },
+    );
+  }
+
+  // タイマー終了
+  void stopTimer() {
+    isStopTime = true;
   }
 }

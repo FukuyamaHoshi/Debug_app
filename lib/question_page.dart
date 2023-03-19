@@ -30,6 +30,7 @@ class QuestionPage extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionPage()));
       } else {
+        model.stopTimer(); // タイマーを止める
         // 結果画面へ
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ResultPage()));
