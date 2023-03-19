@@ -35,6 +35,7 @@ class Model with ChangeNotifier {
     nums = []; // 取得するもんだい番号
     count = 0; // もんだいカウント
     ques = []; // Questionクラスの配列
+    collect = 0; // 正解したもんだい数
   }
 
   // もんだいを設定する
