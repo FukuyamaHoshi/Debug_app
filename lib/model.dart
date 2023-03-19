@@ -8,6 +8,7 @@ class Model with ChangeNotifier {
   FirebaseFirestore db = FirebaseFirestore.instance; // Firebaseデータベース
   final String qc = 'questions'; // もんだいコレクション名前
   final int maxCount = 5; // 出題数
+  int allQue = 5; // すべての問題数(Firebase内の)
 
   int count = 0; // 現在何問目か(0 ~ 4の配列)
   List<int> nums = <int>[]; // もんだい番号のリスト( ※10個まで Firebaseの仕様)
@@ -39,8 +40,8 @@ class Model with ChangeNotifier {
     count = 0; // もんだいカウント
     ques = []; // Questionクラスの配列
     collect = 0; // 正解したもんだい数
+
     time = 0; // タイマー
-    isStopTime = false; // タイマーストップフラグ
   }
 
   // もんだいを設定する
@@ -69,7 +70,7 @@ class Model with ChangeNotifier {
         break;
       }
 
-      var r = Random().nextInt(5); // ランダムな数字生成
+      var r = Random().nextInt(allQue); // ランダムな数字生成(データベースの問題数に応じて)
       final b = nums.any((int n) => n == r); // ランダムな文字が配列を一致しているか判定
 
       // 一致していなければ配列に追加
@@ -83,7 +84,7 @@ class Model with ChangeNotifier {
   }
 
   // もんだいを取得し、Questionクラスを配列に格納
-  Future<void> getQuestionsData() async {
+  Future<void> fetchQuestionsData() async {
     final docRef = db.collection(qc);
     // 取得した番号配列を指定( ここのawaitを書かないと処理を待ってくれない )
     await docRef.where("number", whereIn: nums).get().then(
@@ -120,6 +121,19 @@ class Model with ChangeNotifier {
     ques.add(q);
   }
 
+  // Firestore内の問題数を取得
+  Future<void> fetchQuestionsSize() async {
+    final docRef = db.collection(qc);
+    await docRef.get().then(
+      (res) {
+        // ドキュメント数を取得
+        allQue = res.size;
+        print(allQue);
+      },
+      onError: (e) => debugPrint("Error completing: $e"),
+    );
+  }
+
   // 正解しているか確認する
   void checkCollect(int select) {
     if (ques.isEmpty) return; // 何もしない
@@ -139,17 +153,20 @@ class Model with ChangeNotifier {
 
   // タイマー開始
   void startTimer() {
+    isStopTime = false; // タイマー終了フラグを切り替える
+
     Timer.periodic(
       // 第一引数：繰り返す間隔の時間を設定
       const Duration(seconds: 1),
       (Timer timer) {
-        // タイマー終了処理
+        //タイマー終了処理
         if (isStopTime) {
           timer.cancel();
           return;
         }
 
         time++; // 加算
+        print(time);
       },
     );
   }

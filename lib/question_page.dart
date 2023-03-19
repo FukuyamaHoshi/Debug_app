@@ -32,8 +32,8 @@ class QuestionPage extends StatelessWidget {
       } else {
         model.stopTimer(); // タイマーを止める
         // 結果画面へ
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ResultPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ResultPage()));
       }
     }
 
@@ -139,6 +139,7 @@ class QuestionPage extends StatelessWidget {
                                       fullscreenDialog: true, // 下からのアニメーション
                                     ),
                                   );
+                                  model.stopTimer(); // タイマーを止める
                                 },
                               ),
                             ),

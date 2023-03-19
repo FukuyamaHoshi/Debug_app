@@ -6,17 +6,16 @@ import 'package:provider/provider.dart';
 import 'model.dart';
 
 class ResultPage extends StatelessWidget {
-  ResultPage({super.key});
+  const ResultPage({super.key});
 
-  String rank = 'すごい！'; // ランク
-  double resultY = 0.8; // せいせきボックスの位置(レスポンシブ対応)
+  final String rank = 'すごい！'; // ランク
 
   @override
   Widget build(BuildContext context) {
     // Provider model
     final Model model = Provider.of<Model>(context, listen: true);
-    // スクリーンの高さ
-    double screeHeight = MediaQuery.of(context).size.height;
+    double screeHeight = MediaQuery.of(context).size.height; // スクリーンの高さ
+    double resultY = 0.8; // せいせきボックスの位置(レスポンシブ対応)
     // せいせきボックスの位置(レスポンシブ対応)
     if (screeHeight < 850) resultY = 1.6;
 
@@ -215,10 +214,10 @@ class ResultPage extends StatelessWidget {
 
                             // せいかい率表示
                             Text(
-                              '$correntRate%',
+                              '$correntRate %',
                               style: GoogleFonts.zenMaruGothic(
                                   textStyle: TextStyle(
-                                      fontSize: 22,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                       color: fromCssColor('#77694A'))),
                             ),
@@ -250,10 +249,10 @@ class ResultPage extends StatelessWidget {
 
                             // じかん表示
                             Text(
-                              '$time秒',
+                              '$time 秒',
                               style: GoogleFonts.zenMaruGothic(
                                   textStyle: TextStyle(
-                                      fontSize: 22,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                       color: fromCssColor('#77694A'))),
                             ),
