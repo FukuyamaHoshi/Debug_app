@@ -10,12 +10,14 @@ class Model with ChangeNotifier {
   final int questionCount = 5; // 出題数
   final List<String> ranks = [
     // 全てのランク
-    'エントリー',
-    'インターミディエイト',
-    'アドバンスト',
-    'エキスパート',
-    'マスター',
-    'グランドマスター'
+    'ペリドット・ニュービー ',
+    'アメジスト・アマチュア',
+    'ガーネット・コレクター ',
+    'トルマリン・エキスパート',
+    'サファイア・エリート',
+    'ルビー・マスター',
+    'エメラルド・プリンス',
+    'ダイヤモンド・キング'
   ];
 
   int total = 5; // すべての問題数(Firebase内の)
@@ -193,8 +195,8 @@ class Model with ChangeNotifier {
   // ****************************************************
   // スコアを計算し、取得
   int getScore() {
-    int rateScore = 0; // 正答率のスコア
-    int timeScore = 0; // タイムのスコア
+    int rateScore = 0; // 正答率のスコア(70点)
+    int timeScore = 0; // タイムのスコア(30点)
 
     // 正答率のスコアを設定
     if (collectRate > 0 && collectRate <= 20) {
@@ -208,28 +210,27 @@ class Model with ChangeNotifier {
       rateScore = 30;
     } else if (collectRate <= 80) {
       // 80%以下
-      rateScore = 40;
+      rateScore = 50;
     } else if (collectRate == 100) {
       // 100%
-      rateScore = 50;
+      rateScore = 70;
     }
 
-    // タイムのスコアを設定
-    if (time <= 10) {
-      // 10秒以内
-      timeScore = 50;
-    } else if (time <= 20) {
-      // 20秒以内
-      timeScore = 40;
-    } else if (time <= 40) {
-      // 40秒以内
-      timeScore = 30;
-    } else if (time <= 50) {
-      // 50秒以内
-      timeScore = 20;
-    } else if (time <= 60) {
-      // 60秒(1分)以内
-      timeScore = 10;
+    // タイムのスコアを設定(正答率が80%以上で)
+    if (collectRate >= 80) {
+      if (time <= 10) {
+        // 10秒以内
+        timeScore = 30;
+      } else if (time <= 20) {
+        // 20秒以内
+        timeScore = 20;
+      } else if (time <= 40) {
+        // 40秒以内
+        timeScore = 15;
+      } else if (time <= 60) {
+        // 60秒(1分)以内
+        timeScore = 10;
+      }
     }
 
     int score = rateScore + timeScore; // スコアを計算
@@ -240,18 +241,22 @@ class Model with ChangeNotifier {
   // ランクを設定し、取得
   String getRank(int score) {
     // スコアごとのランク
-    if (score <= 20) {
+    if (score <= 19) {
       return ranks[0];
-    } else if (score <= 40) {
+    } else if (score <= 29) {
       return ranks[1];
-    } else if (score <= 70) {
+    } else if (score <= 49) {
       return ranks[2];
-    } else if (score <= 90) {
+    } else if (score <= 69) {
       return ranks[3];
-    } else if (score <= 99) {
+    } else if (score <= 79) {
       return ranks[4];
-    } else {
+    } else if (score <= 89) {
       return ranks[5];
+    } else if (score <= 99) {
+      return ranks[6];
+    } else {
+      return ranks[7];
     }
   }
   // ****************************************************
