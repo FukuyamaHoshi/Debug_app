@@ -185,7 +185,7 @@ class QuestionPage extends StatelessWidget {
               },
               child: Text(
                 'おわる',
-                style: GoogleFonts.zenMaruGothic(
+                style: GoogleFonts.mPlusRounded1c(
                     textStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -224,7 +224,7 @@ class QuestionPage extends StatelessWidget {
                 color: Colors.red,
                 child: Container(
                   width: 380,
-                  height: 150,
+                  height: 80,
                   color: fromCssColor('#F4F2E4'),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -233,7 +233,7 @@ class QuestionPage extends StatelessWidget {
                     child: Text(
                       // 取得したもんだい文を表示
                       model.question,
-                      style: GoogleFonts.zenMaruGothic(
+                      style: GoogleFonts.lato(
                           textStyle: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -246,7 +246,7 @@ class QuestionPage extends StatelessWidget {
 
               // エディターの上タブ
               Container(
-                width: 400,
+                width: 420,
                 height: 30,
                 color: fromCssColor('#343541'),
                 alignment: Alignment.centerLeft,
@@ -262,21 +262,25 @@ class QuestionPage extends StatelessWidget {
 
               // エディター
               Container(
-                width: 400,
-                height: 180,
+                width: 420,
+                height: 250,
                 color: fromCssColor('#0F161F'),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 10.0, left: 20, right: 20, bottom: 10.0),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
 
-                  // コードを表示
-                  child: Text(
-                    model.code,
-                    style: GoogleFonts.robotoMono(
-                        textStyle: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: fromCssColor('#33E51C'))),
+                      // コードを表示
+                      child: Text(
+                        model.code,
+                        style: GoogleFonts.robotoMono(
+                            textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#ffffff'))),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -354,7 +358,7 @@ class QuestionPage extends StatelessWidget {
                       // 選択肢Aを表示
                       child: Text(
                         model.optionA,
-                        style: GoogleFonts.zenMaruGothic(
+                        style: GoogleFonts.lato(
                             textStyle: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
@@ -421,7 +425,7 @@ class QuestionPage extends StatelessWidget {
                       // 選択肢Bを表示
                       child: Text(
                         model.optionB,
-                        style: GoogleFonts.zenMaruGothic(
+                        style: GoogleFonts.lato(
                             textStyle: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
@@ -488,7 +492,7 @@ class QuestionPage extends StatelessWidget {
                       // 選択肢Cを表示
                       child: Text(
                         model.optionC,
-                        style: GoogleFonts.zenMaruGothic(
+                        style: GoogleFonts.lato(
                             textStyle: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,

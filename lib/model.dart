@@ -12,7 +12,7 @@ class Model with ChangeNotifier {
     // 全てのランク
     'ペリドット・ニュービー ',
     'アメジスト・アマチュア',
-    'ガーネット・コレクター ',
+    'ガーネット・プロ',
     'トルマリン・エキスパート',
     'サファイア・エリート',
     'ルビー・マスター',
@@ -60,7 +60,7 @@ class Model with ChangeNotifier {
 
   // もんだいを設定する
   void setQuestion() {
-    // 配列が空　か　問題数がさいだい問題数を超えている(一応)
+    // 配列が空　か　問題数が出題数を超えている(一応)
     if (questions.isEmpty || currentQuestion > questionCount) {
       debugPrint("もんだいが取得できていない");
     } else {
@@ -102,7 +102,7 @@ class Model with ChangeNotifier {
       // データ操作
       (res) {
         for (var doc in res.docs) {
-          addQuestions(
+          Question q = Question(
               doc.data()['answer'],
               doc.data()['code'],
               doc.data()['number'],
@@ -110,6 +110,7 @@ class Model with ChangeNotifier {
               doc.data()['optionB'],
               doc.data()['optionC'],
               doc.data()['question']);
+          questions.add(q);
         }
 
         debugPrint('get Firebase data');
@@ -118,14 +119,6 @@ class Model with ChangeNotifier {
         debugPrint("Error completing: $e");
       },
     );
-  }
-
-  // もんだいの配列にデータ追加
-  void addQuestions(int a, String code, int num, String oA, String oB,
-      String oC, String que) {
-    Question q = Question(a, code, num, oA, oB, oC, que);
-
-    questions.add(q);
   }
 
   // Firestore内の問題数を取得
