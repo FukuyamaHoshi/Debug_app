@@ -1,10 +1,12 @@
 import 'package:debug_app/model.dart';
 import 'package:debug_app/result_page.dart';
+import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'couse_page.dart';
+import 'package:highlight_text/highlight_text.dart';
 
 class QuestionPage extends StatelessWidget {
   const QuestionPage({super.key});
@@ -272,9 +274,10 @@ class QuestionPage extends StatelessWidget {
                       padding: const EdgeInsets.all(10.0),
 
                       // コードを表示
-                      child: Text(
-                        model.code,
-                        style: GoogleFonts.robotoMono(
+                      child: TextHighlight(
+                        text: model.code,
+                        words: words,
+                        textStyle: GoogleFonts.robotoMono(
                             textStyle: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

@@ -1,0 +1,61 @@
+import 'package:google_fonts/google_fonts.dart';
+import 'package:highlight_text/highlight_text.dart';
+import 'package:flutter/material.dart';
+import 'package:from_css_color/from_css_color.dart';
+
+final words = {
+  'console.log': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#11B8DA')))),
+  'for': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#50E191')))),
+  'return': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#DA70D6')))),
+  'const': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#11B8DA')))),
+  'var': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#11B8DA')))),
+  'function': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#11B8DA')))),
+  '()': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#DA70D6')))),
+  'if': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#DA70D6')))),
+  'else': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#DA70D6')))),
+};
