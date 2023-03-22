@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'couse_page.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:vs_scrollbar/vs_scrollbar.dart';
 
 class QuestionPage extends StatelessWidget {
   const QuestionPage({super.key});
@@ -232,9 +234,10 @@ class QuestionPage extends StatelessWidget {
                     padding: const EdgeInsets.all(10.0),
 
                     // もんだい分を表示
-                    child: Text(
+                    child: AutoSizeText(
                       // 取得したもんだい文を表示
                       model.question,
+                      maxLines: 2,
                       style: GoogleFonts.lato(
                           textStyle: TextStyle(
                               fontSize: 18,
@@ -267,8 +270,13 @@ class QuestionPage extends StatelessWidget {
                 width: 420,
                 height: 250,
                 color: fromCssColor('#0F161F'),
-                child: Scrollbar(
-                  thumbVisibility: true,
+                child: VsScrollbar(
+                  isAlwaysShown: true,
+                  style: VsScrollbarStyle(
+                    radius: const Radius.circular(10),
+                    thickness: 10.0,
+                    color: fromCssColor('#ffffff'),
+                  ),
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -359,8 +367,9 @@ class QuestionPage extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
 
                       // 選択肢Aを表示
-                      child: Text(
+                      child: AutoSizeText(
                         model.optionA,
+                        maxLines: 2,
                         style: GoogleFonts.lato(
                             textStyle: TextStyle(
                                 fontSize: 17,
@@ -426,8 +435,9 @@ class QuestionPage extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
 
                       // 選択肢Bを表示
-                      child: Text(
+                      child: AutoSizeText(
                         model.optionB,
+                        maxLines: 2,
                         style: GoogleFonts.lato(
                             textStyle: TextStyle(
                                 fontSize: 17,
@@ -493,8 +503,9 @@ class QuestionPage extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
 
                       // 選択肢Cを表示
-                      child: Text(
+                      child: AutoSizeText(
                         model.optionC,
+                        maxLines: 2,
                         style: GoogleFonts.lato(
                             textStyle: TextStyle(
                                 fontSize: 17,
