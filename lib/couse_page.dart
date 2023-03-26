@@ -34,7 +34,7 @@ class CousePage extends StatelessWidget {
               colors: [fromCssColor('#567582'), fromCssColor('#D6D3BD')],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: const [0.2, 0.8]),
+              stops: const [0.2, 1]),
         ),
         child: Column(children: [
           // コースのボックス
