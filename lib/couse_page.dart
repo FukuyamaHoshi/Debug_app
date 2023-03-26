@@ -34,14 +34,14 @@ class CousePage extends StatelessWidget {
               colors: [fromCssColor('#567582'), fromCssColor('#D6D3BD')],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: const [0.2, 1]),
+              stops: const [0.4, 1]),
         ),
         child: Column(children: [
           // コースのボックス
           Container(
             width: double.infinity,
             height: 64,
-            color: fromCssColor('#567582'),
+            color: fromCssColor('#1E2427'),
             alignment: Alignment.center,
             child: Text(
               'コース',
@@ -57,6 +57,7 @@ class CousePage extends StatelessWidget {
           Container(
             width: double.infinity,
             alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(left: 15.0, top: 15.0),
             child: Column(
               children: [
                 // やまの名前
@@ -64,7 +65,6 @@ class CousePage extends StatelessWidget {
                   width: double.infinity,
                   child: Row(
                     children: [
-                      const Padding(padding: EdgeInsets.only(left: 10.0)),
                       Text(
                         'Javascriptやま',
                         style: GoogleFonts.lato(
@@ -81,7 +81,6 @@ class CousePage extends StatelessWidget {
                   width: double.infinity,
                   child: Row(
                     children: [
-                      const Padding(padding: EdgeInsets.only(left: 10.0)),
                       Text(
                         '初級',
                         style: GoogleFonts.lato(
@@ -116,7 +115,7 @@ class CousePage extends StatelessWidget {
             child: Stack(children: [
               // 山画像
               Align(
-                alignment: const Alignment(0, -0.9),
+                alignment: const Alignment(0, -1.1),
                 child: SizedBox(
                     width: 465,
                     height: 465,

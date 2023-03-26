@@ -31,13 +31,13 @@ class ResultPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'codegen',
-          style: GoogleFonts.zenMaruGothic(
+          style: GoogleFonts.lato(
               textStyle: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: fromCssColor('#ffffff'))),
         ),
-        backgroundColor: fromCssColor('#96D6AE'),
+        backgroundColor: fromCssColor('#121517'),
         elevation: 0,
         automaticallyImplyLeading: false, // もどるボタンを許可しない
         // おわるボタン設置
@@ -57,17 +57,17 @@ class ResultPage extends StatelessWidget {
               },
               child: Text(
                 'おわる',
-                style: GoogleFonts.zenMaruGothic(
+                style: GoogleFonts.lato(
                     textStyle: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.normal,
                         color: fromCssColor('#ffffff'))),
               ),
             ),
           )
         ],
       ),
-      backgroundColor: fromCssColor('#F8ED96'),
+      backgroundColor: fromCssColor('#1E2427'),
 
       body: Column(children: [
         // コースのボックス
@@ -77,11 +77,11 @@ class ResultPage extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             'せいせき',
-            style: GoogleFonts.zenMaruGothic(
+            style: GoogleFonts.lato(
                 textStyle: TextStyle(
                     fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: fromCssColor('#4E3703'))),
+                    fontWeight: FontWeight.normal,
+                    color: fromCssColor('#ffffff'))),
           ),
         ),
 
@@ -92,7 +92,13 @@ class ResultPage extends StatelessWidget {
             Container(
               width: double.infinity,
               height: 340,
-              color: fromCssColor('#F7F0B8'),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [fromCssColor('#5D8291'), fromCssColor('#1E2427')],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0, 1]),
+              ),
             ),
 
             // 山の名前、詳細
@@ -112,11 +118,11 @@ class ResultPage extends StatelessWidget {
                           const Padding(padding: EdgeInsets.only(left: 20.0)),
                           Text(
                             'Javascriptやま',
-                            style: GoogleFonts.zenMaruGothic(
+                            style: GoogleFonts.lato(
                                 textStyle: TextStyle(
                                     fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: fromCssColor('#536C67'))),
+                                    fontWeight: FontWeight.w400,
+                                    color: fromCssColor('#ffffff'))),
                           ),
                         ],
                       ),
@@ -129,22 +135,25 @@ class ResultPage extends StatelessWidget {
                           const Padding(padding: EdgeInsets.only(left: 20.0)),
                           Text(
                             '初級',
-                            style: GoogleFonts.zenMaruGothic(
+                            style: GoogleFonts.lato(
                                 textStyle: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal,
-                                    color: fromCssColor('#536C67'))),
+                                    color: fromCssColor('#ffffff'))),
                           ),
                           const Padding(padding: EdgeInsets.only(left: 2.0)),
-                          const Text('ー'),
+                          Text(
+                            'ー',
+                            style: TextStyle(color: fromCssColor('#ffffff')),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 2.0)),
                           Text(
                             '５問',
-                            style: GoogleFonts.zenMaruGothic(
+                            style: GoogleFonts.lato(
                                 textStyle: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal,
-                                    color: fromCssColor('#536C67'))),
+                                    color: fromCssColor('#ffffff'))),
                           ),
                         ],
                       ),
@@ -184,11 +193,11 @@ class ResultPage extends StatelessWidget {
                           if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
                             Text(
                               'せいせき',
-                              style: GoogleFonts.zenMaruGothic(
+                              style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       fontSize: 26,
-                                      fontWeight: FontWeight.bold,
-                                      color: fromCssColor('#4E3703'))),
+                                      fontWeight: FontWeight.w400,
+                                      color: fromCssColor('#ffffff'))),
                             ),
                         ],
                       ),
@@ -207,21 +216,21 @@ class ResultPage extends StatelessWidget {
                             // せいかい率テキスト
                             Text(
                               'せいかい率',
-                              style: GoogleFonts.zenMaruGothic(
+                              style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: fromCssColor('#77694A'))),
+                                      fontWeight: FontWeight.normal,
+                                      color: fromCssColor('#ffffff'))),
                             ),
 
                             // せいかい率表示
                             Text(
                               '$correntRate %',
-                              style: GoogleFonts.zenMaruGothic(
+                              style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: fromCssColor('#77694A'))),
+                                      fontWeight: FontWeight.w500,
+                                      color: fromCssColor('#ffffff'))),
                             ),
                           ],
                         ),
@@ -230,8 +239,8 @@ class ResultPage extends StatelessWidget {
                         // アンダーライン(せいかい率)
                         Container(
                           width: double.infinity,
-                          height: 4,
-                          color: fromCssColor("#FFFABC"),
+                          height: 2,
+                          color: fromCssColor("#ffffff"),
                         ),
 
                         const Padding(padding: EdgeInsets.only(top: 10)),
@@ -242,21 +251,21 @@ class ResultPage extends StatelessWidget {
                             // じかんテキスト
                             Text(
                               'じかん',
-                              style: GoogleFonts.zenMaruGothic(
+                              style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: fromCssColor('#77694A'))),
+                                      fontWeight: FontWeight.normal,
+                                      color: fromCssColor('#ffffff'))),
                             ),
 
                             // じかん表示
                             Text(
                               '$time 秒',
-                              style: GoogleFonts.zenMaruGothic(
+                              style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: fromCssColor('#77694A'))),
+                                      fontWeight: FontWeight.w500,
+                                      color: fromCssColor('#ffffff'))),
                             ),
                           ],
                         ),
@@ -265,8 +274,8 @@ class ResultPage extends StatelessWidget {
                         // アンダーライン(じかん)
                         Container(
                           width: double.infinity,
-                          height: 4,
-                          color: fromCssColor("#FFFABC"),
+                          height: 2,
+                          color: fromCssColor("#ffffff"),
                         ),
 
                         const Padding(padding: EdgeInsets.only(top: 10)),
@@ -277,21 +286,21 @@ class ResultPage extends StatelessWidget {
                             // ランクテキスト
                             Text(
                               'ランク',
-                              style: GoogleFonts.zenMaruGothic(
+                              style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: fromCssColor('#77694A'))),
+                                      fontWeight: FontWeight.normal,
+                                      color: fromCssColor('#ffffff'))),
                             ),
 
                             // ランク表示
                             Text(
                               rank,
-                              style: GoogleFonts.zenMaruGothic(
+                              style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: fromCssColor('#77694A'))),
+                                      fontWeight: FontWeight.w500,
+                                      color: fromCssColor('#ffffff'))),
                             ),
                           ],
                         ),
@@ -300,8 +309,8 @@ class ResultPage extends StatelessWidget {
                         // アンダーライン(ランク)
                         Container(
                           width: double.infinity,
-                          height: 4,
-                          color: fromCssColor("#FFFABC"),
+                          height: 2,
+                          color: fromCssColor("#ffffff"),
                         ),
                       ]),
                     )
@@ -322,18 +331,18 @@ class ResultPage extends StatelessWidget {
           width: 329,
           child: OutlinedButton(
             style: OutlinedButton.styleFrom(
-              backgroundColor: fromCssColor('#ffffff'),
+              side: const BorderSide(color: Colors.white, width: 4),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(5),
               ),
             ),
             child: Text(
               'もどる',
-              style: GoogleFonts.zenMaruGothic(
+              style: GoogleFonts.lato(
                   textStyle: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: fromCssColor('#4E3703'))),
+                      color: fromCssColor('#ffffff'))),
             ),
             onPressed: () {
               // コース画面へ
