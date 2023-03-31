@@ -45,14 +45,14 @@ class QuestionPage extends StatelessWidget {
       // AppBar
       appBar: AppBar(
         title: Text(
-          'codegen',
+          'スタートアップ',
           style: GoogleFonts.lato(
               textStyle: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
                   color: fromCssColor('#ffffff'))),
         ),
-        backgroundColor: fromCssColor('#121517'),
+        backgroundColor: fromCssColor('#D5BD9F'),
         elevation: 0,
         automaticallyImplyLeading: false, // もどるボタンを許可しない
         // おわるボタン設置
@@ -195,38 +195,67 @@ class QuestionPage extends StatelessWidget {
       ),
 
       // 出題ボックス
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 430,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [fromCssColor('#567582'), fromCssColor('#D6D3BD')],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.5, 1]),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [fromCssColor('#D5BD9F'), fromCssColor('#C7DD7C')],
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: const [0.7, 1]),
+        ),
+        child: Stack(alignment: Alignment.center, children: [
+          SizedBox(
+            width: 300,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 35,
+                  height: double.infinity,
+                  color: fromCssColor('#707070'),
+                  child:
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Container(
+                      width: 5,
+                      color: fromCssColor('#31353E'),
+                    )
+                  ]),
+                ),
+                Container(
+                  width: 35,
+                  height: double.infinity,
+                  color: fromCssColor('#707070'),
+                  child:
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Container(
+                      width: 5,
+                      color: fromCssColor('#31353E'),
+                    )
+                  ]),
+                ),
+              ],
             ),
-            alignment: Alignment.topCenter,
-            child: Column(children: [
-              const Padding(padding: EdgeInsets.only(top: 10)),
-
-              // もんだいテキスト
-              Text(
-                'もんだい',
-                style: GoogleFonts.lato(
-                    textStyle: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.normal,
-                        color: fromCssColor('#ffffff'))),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 10)),
+          ),
+          Column(
+            children: [
+              if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
+                const Padding(padding: EdgeInsets.only(top: 20)),
 
               // もんだい文ボックス
               Container(
                 width: 380,
                 height: 80,
-                color: fromCssColor('#05323A'),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [
+                        fromCssColor('#936C38'),
+                        fromCssColor('#A88C66')
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      stops: const [0, 0.8]),
+                  borderRadius: BorderRadius.circular(5),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
 
@@ -252,11 +281,11 @@ class QuestionPage extends StatelessWidget {
                 color: fromCssColor('#343541'),
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
                     'javascript',
                     style:
-                        TextStyle(color: fromCssColor('#ffffff'), fontSize: 14),
+                        TextStyle(color: fromCssColor('#ffffff'), fontSize: 15),
                   ),
                 ),
               ),
@@ -264,12 +293,12 @@ class QuestionPage extends StatelessWidget {
               // エディター
               Container(
                 width: 420,
-                height: 250,
+                height: 300,
                 color: fromCssColor('#0F161F'),
                 child: VsScrollbar(
                   isAlwaysShown: true,
                   style: VsScrollbarStyle(
-                    radius: const Radius.circular(10),
+                    radius: const Radius.circular(5),
                     thickness: 10.0,
                     color: fromCssColor('#ffffff'),
                   ),
@@ -283,7 +312,7 @@ class QuestionPage extends StatelessWidget {
                         words: words,
                         textStyle: GoogleFonts.robotoMono(
                             textStyle: TextStyle(
-                                fontSize: 16,
+                                fontSize: 17,
                                 fontWeight: FontWeight.bold,
                                 color: fromCssColor('#ffffff'))),
                       ),
@@ -291,33 +320,21 @@ class QuestionPage extends StatelessWidget {
                   ),
                 ),
               ),
-            ]),
-          ),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [fromCssColor('#D6D3BD'), fromCssColor('#373737')],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [0, 0.6]),
-              ),
-              child: Column(
+              Column(
                 children: [
                   // 答えのサブタイトル
                   if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
-                    SizedBox(
+                    Container(
                       width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 18.0, top: 20.0),
-                        child: Text(
-                          'どれが答え？',
-                          style: GoogleFonts.lato(
-                              textStyle: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.normal,
-                                  color: fromCssColor('#252D1D'))),
-                        ),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Text(
+                        'どれが答え？',
+                        style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.normal,
+                                color: fromCssColor('#ffffff'))),
                       ),
                     ),
                   const Padding(padding: EdgeInsets.only(top: 10.0)),
@@ -334,7 +351,7 @@ class QuestionPage extends StatelessWidget {
                         width: 400,
                         height: 85,
                         decoration: BoxDecoration(
-                            color: fromCssColor('#343541'),
+                            color: fromCssColor('#936C38'),
                             borderRadius: BorderRadius.circular(5)),
                       ),
 
@@ -348,7 +365,7 @@ class QuestionPage extends StatelessWidget {
                             height: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: fromCssColor('#0F161F'),
+                                color: fromCssColor('#A88C66'),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Text(
                               'A',
@@ -356,7 +373,7 @@ class QuestionPage extends StatelessWidget {
                                   textStyle: TextStyle(
                                       fontSize: 30,
                                       fontWeight: FontWeight.w500,
-                                      color: fromCssColor('#DA70D6'))),
+                                      color: fromCssColor('#ffffff'))),
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 8.0)),
@@ -367,7 +384,7 @@ class QuestionPage extends StatelessWidget {
                             height: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: fromCssColor('#0F161F'),
+                                color: fromCssColor('#A88C66'),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -402,7 +419,7 @@ class QuestionPage extends StatelessWidget {
                         width: 400,
                         height: 85,
                         decoration: BoxDecoration(
-                            color: fromCssColor('#343541'),
+                            color: fromCssColor('#936C38'),
                             borderRadius: BorderRadius.circular(5)),
                       ),
 
@@ -416,7 +433,7 @@ class QuestionPage extends StatelessWidget {
                             height: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: fromCssColor('#0F161F'),
+                                color: fromCssColor('#A88C66'),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Text(
                               'B',
@@ -424,7 +441,7 @@ class QuestionPage extends StatelessWidget {
                                   textStyle: TextStyle(
                                       fontSize: 30,
                                       fontWeight: FontWeight.w500,
-                                      color: fromCssColor('#11B8DA'))),
+                                      color: fromCssColor('#ffffff'))),
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 8.0)),
@@ -435,7 +452,7 @@ class QuestionPage extends StatelessWidget {
                             height: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: fromCssColor('#0F161F'),
+                                color: fromCssColor('#A88C66'),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -470,7 +487,7 @@ class QuestionPage extends StatelessWidget {
                         width: 400,
                         height: 85,
                         decoration: BoxDecoration(
-                            color: fromCssColor('#343541'),
+                            color: fromCssColor('#936C38'),
                             borderRadius: BorderRadius.circular(5)),
                       ),
 
@@ -484,7 +501,7 @@ class QuestionPage extends StatelessWidget {
                             height: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: fromCssColor('#0F161F'),
+                                color: fromCssColor('#A88C66'),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Text(
                               'C',
@@ -492,7 +509,7 @@ class QuestionPage extends StatelessWidget {
                                   textStyle: TextStyle(
                                       fontSize: 30,
                                       fontWeight: FontWeight.w500,
-                                      color: fromCssColor('#50E191'))),
+                                      color: fromCssColor('#ffffff'))),
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 8.0)),
@@ -503,7 +520,7 @@ class QuestionPage extends StatelessWidget {
                             height: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: fromCssColor('#0F161F'),
+                                color: fromCssColor('#A88C66'),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -526,9 +543,9 @@ class QuestionPage extends StatelessWidget {
                   )
                 ],
               ),
-            ),
+            ],
           ),
-        ],
+        ]),
       ),
     );
   }

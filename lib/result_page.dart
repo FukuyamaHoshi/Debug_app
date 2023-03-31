@@ -13,9 +13,6 @@ class ResultPage extends StatelessWidget {
     // Provider model
     final Model model = Provider.of<Model>(context, listen: true);
     double screeHeight = MediaQuery.of(context).size.height; // スクリーンの高さ
-    double resultY = 0.8; // せいせきボックスの位置(レスポンシブ対応)
-    // せいせきボックスの位置(レスポンシブ対応)
-    if (screeHeight < 850) resultY = 1.6;
 
     model.calculateAccuracy(); // 正答率を計算する
     // 正解率
@@ -30,14 +27,14 @@ class ResultPage extends StatelessWidget {
       // AppBar
       appBar: AppBar(
         title: Text(
-          'codegen',
+          'スタートアップ',
           style: GoogleFonts.lato(
               textStyle: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
                   color: fromCssColor('#ffffff'))),
         ),
-        backgroundColor: fromCssColor('#121517'),
+        backgroundColor: fromCssColor('#265F65'),
         elevation: 0,
         automaticallyImplyLeading: false, // もどるボタンを許可しない
         // おわるボタン設置
@@ -67,258 +64,260 @@ class ResultPage extends StatelessWidget {
           )
         ],
       ),
-      backgroundColor: fromCssColor('#1E2427'),
 
       body: Column(children: [
-        // コースのボックス
+        // やまの名前と詳細、画像
         Container(
           width: double.infinity,
-          height: 64,
-          alignment: Alignment.center,
-          child: Text(
-            'せいせき',
-            style: GoogleFonts.lato(
-                textStyle: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.normal,
-                    color: fromCssColor('#ffffff'))),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [fromCssColor('#265F65'), fromCssColor('#F5CA8F')],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.1, 1]),
           ),
-        ),
-
-        // やまの名前と詳細、画像
-        Expanded(
-          child: Stack(children: [
-            // 山の背景
-            Container(
-              width: double.infinity,
-              height: 340,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [fromCssColor('#5D8291'), fromCssColor('#1E2427')],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [0, 1]),
-              ),
-            ),
+          child: Column(children: [
+            if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
+              const Padding(padding: EdgeInsets.only(top: 70.0)),
 
             // 山の名前、詳細
-            Align(
-              alignment: const Alignment(0, -0.96),
-              child: Container(
-                width: double.infinity,
-                height: 70,
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  children: [
-                    // やまの名前
-                    SizedBox(
-                      width: double.infinity,
-                      child: Row(
-                        children: [
-                          const Padding(padding: EdgeInsets.only(left: 20.0)),
-                          Text(
-                            'Javascriptやま',
-                            style: GoogleFonts.lato(
-                                textStyle: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w400,
-                                    color: fromCssColor('#ffffff'))),
-                          ),
-                        ],
+            SizedBox(
+              width: 160,
+              child: Column(
+                children: [
+                  Text(
+                    'Javascript',
+                    style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                            color: fromCssColor('#D9E7E8'))),
+                  ),
+                  Container(
+                    height: 3,
+                    color: fromCssColor('#D9E7E8'),
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 5.0)),
+
+                  // やまの詳細
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 20.0)),
+                      Text(
+                        '初級',
+                        style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                color: fromCssColor('#ffffff'))),
                       ),
-                    ),
-                    // やまの詳細
-                    SizedBox(
-                      width: double.infinity,
-                      child: Row(
-                        children: [
-                          const Padding(padding: EdgeInsets.only(left: 20.0)),
-                          Text(
-                            '初級',
-                            style: GoogleFonts.lato(
-                                textStyle: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal,
-                                    color: fromCssColor('#ffffff'))),
-                          ),
-                          const Padding(padding: EdgeInsets.only(left: 2.0)),
-                          Text(
-                            'ー',
-                            style: TextStyle(color: fromCssColor('#ffffff')),
-                          ),
-                          const Padding(padding: EdgeInsets.only(left: 2.0)),
-                          Text(
-                            '５問',
-                            style: GoogleFonts.lato(
-                                textStyle: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal,
-                                    color: fromCssColor('#ffffff'))),
-                          ),
-                        ],
+                      const Padding(padding: EdgeInsets.only(left: 2.0)),
+                      Text(
+                        'ー',
+                        style: TextStyle(color: fromCssColor('#ffffff')),
                       ),
-                    ),
-                  ],
-                ),
+                      const Padding(padding: EdgeInsets.only(left: 2.0)),
+                      Text(
+                        '５問',
+                        style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                color: fromCssColor('#ffffff'))),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
+            if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
+              const Padding(padding: EdgeInsets.only(top: 20.0)),
 
-            // 山画像
-            Align(
-              alignment: const Alignment(0, -1.1),
-              child: SizedBox(
-                  width: double.infinity,
-                  child: SizedBox(
-                    width: 400,
-                    height: 400,
-                    child: Image.asset(
-                      'images/javascript_mountain.png',
-                      fit: BoxFit.contain,
-                    ),
-                  )),
-            ),
-
-            // せいせきボックス
-            Align(
-              alignment: Alignment(0, resultY),
-              child: SizedBox(
-                height: 380,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 400,
-                      child: Row(
-                        children: [
-                          // せいせきサブテキスト
-                          if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
-                            Text(
-                              'せいせき',
-                              style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w400,
-                                      color: fromCssColor('#ffffff'))),
-                            ),
-                        ],
-                      ),
-                    ),
-
-                    const Padding(padding: EdgeInsets.only(top: 10.0)),
-                    // 結果表示ボックス
-                    SizedBox(
-                      width: 390,
-                      height: 330,
-                      child: Column(children: [
-                        // せいかい率
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // せいかい率テキスト
-                            Text(
-                              'せいかい率',
-                              style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.normal,
-                                      color: fromCssColor('#ffffff'))),
-                            ),
-
-                            // せいかい率表示
-                            Text(
-                              '$correntRate %',
-                              style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500,
-                                      color: fromCssColor('#ffffff'))),
-                            ),
-                          ],
-                        ),
-
-                        const Padding(padding: EdgeInsets.only(top: 10)),
-                        // アンダーライン(せいかい率)
-                        Container(
-                          width: double.infinity,
-                          height: 2,
-                          color: fromCssColor("#ffffff"),
-                        ),
-
-                        const Padding(padding: EdgeInsets.only(top: 10)),
-                        // じかん
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // じかんテキスト
-                            Text(
-                              'じかん',
-                              style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.normal,
-                                      color: fromCssColor('#ffffff'))),
-                            ),
-
-                            // じかん表示
-                            Text(
-                              '$time 秒',
-                              style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w500,
-                                      color: fromCssColor('#ffffff'))),
-                            ),
-                          ],
-                        ),
-
-                        const Padding(padding: EdgeInsets.only(top: 10)),
-                        // アンダーライン(じかん)
-                        Container(
-                          width: double.infinity,
-                          height: 2,
-                          color: fromCssColor("#ffffff"),
-                        ),
-
-                        const Padding(padding: EdgeInsets.only(top: 10)),
-                        // ランク
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // ランクテキスト
-                            Text(
-                              'ランク',
-                              style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.normal,
-                                      color: fromCssColor('#ffffff'))),
-                            ),
-
-                            // ランク表示
-                            Text(
-                              rank,
-                              style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500,
-                                      color: fromCssColor('#ffffff'))),
-                            ),
-                          ],
-                        ),
-
-                        const Padding(padding: EdgeInsets.only(top: 10)),
-                        // アンダーライン(ランク)
-                        Container(
-                          width: double.infinity,
-                          height: 2,
-                          color: fromCssColor("#ffffff"),
-                        ),
-                      ]),
-                    )
-                  ],
-                ),
+            // 画像
+            SizedBox(
+                child: SizedBox(
+              width: 450,
+              height: 240,
+              child: Image.asset(
+                'images/result.png',
+                fit: BoxFit.contain,
               ),
-            ),
+            )),
           ]),
+        ),
+
+        // せいせきボックス
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [fromCssColor('#F5CA8F'), fromCssColor('#265F65')],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0, 1]),
+            ),
+            child: Stack(alignment: Alignment.topCenter, children: [
+              Column(
+                children: [
+                  const Padding(padding: EdgeInsets.only(top: 20.0)),
+                  Opacity(
+                    opacity: 0.3,
+                    child: Container(
+                      width: 380,
+                      height: 260,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: fromCssColor('#000000'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(top: 35),
+                child: Column(
+                  children: [
+                    Text(
+                      'せいせき',
+                      style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.normal,
+                              color: fromCssColor('#ffffff'))),
+                    ),
+
+                    const Padding(padding: EdgeInsets.only(top: 20.0)),
+                    // 結果表示ボックス
+                    Column(children: [
+                      SizedBox(
+                        width: 350,
+                        // せいかい率
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // せいかい率テキスト
+                                Text(
+                                  'せいかい率',
+                                  style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.normal,
+                                          color: fromCssColor('#ffffff'))),
+                                ),
+
+                                // せいかい率表示
+                                Text(
+                                  '$correntRate %',
+                                  style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w500,
+                                          color: fromCssColor('#ffffff'))),
+                                ),
+                              ],
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 5)),
+
+                            // アンダーライン(せいかい率)
+                            Container(
+                              height: 1,
+                              color: fromCssColor("#ffffff"),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const Padding(padding: EdgeInsets.only(top: 10)),
+                      // じかん
+                      SizedBox(
+                        width: 350,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // じかんテキスト
+                                Text(
+                                  'じかん',
+                                  style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.normal,
+                                          color: fromCssColor('#ffffff'))),
+                                ),
+
+                                // じかん表示
+                                Text(
+                                  '$time 秒',
+                                  style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w500,
+                                          color: fromCssColor('#ffffff'))),
+                                ),
+                              ],
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 5)),
+
+                            // アンダーライン(じかん)
+                            Container(
+                              height: 1,
+                              color: fromCssColor("#ffffff"),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const Padding(padding: EdgeInsets.only(top: 10)),
+                      // ランク
+                      SizedBox(
+                        width: 350,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // ランクテキスト
+                                Text(
+                                  'ランク',
+                                  style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.normal,
+                                          color: fromCssColor('#ffffff'))),
+                                ),
+
+                                // ランク表示
+                                Text(
+                                  rank,
+                                  style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w500,
+                                          color: fromCssColor('#ffffff'))),
+                                ),
+                              ],
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 5)),
+                            // アンダーライン(ランク)
+                            Container(
+                              height: 1,
+                              color: fromCssColor("#ffffff"),
+                            )
+                          ],
+                        ),
+                      ),
+                    ])
+                  ],
+                ),
+              ),
+            ]),
+          ),
         ),
       ]),
 
@@ -327,11 +326,11 @@ class ResultPage extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 35),
         child: SizedBox(
-          height: 73,
-          width: 329,
-          child: OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Colors.white, width: 4),
+          height: 80,
+          width: 380,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: fromCssColor('#ffffff'),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
@@ -342,7 +341,7 @@ class ResultPage extends StatelessWidget {
                   textStyle: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: fromCssColor('#ffffff'))),
+                      color: fromCssColor('#373737'))),
             ),
             onPressed: () {
               // コース画面へ

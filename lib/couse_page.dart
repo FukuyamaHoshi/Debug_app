@@ -17,147 +17,100 @@ class CousePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'codegen',
+          'スタートアップ',
           style: GoogleFonts.lato(
               textStyle: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
                   color: fromCssColor('#ffffff'))),
         ),
-        backgroundColor: fromCssColor('#121517'),
+        backgroundColor: fromCssColor('#004F8B'),
         elevation: 0,
         automaticallyImplyLeading: false, // もどるボタンを許可しない
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [fromCssColor('#567582'), fromCssColor('#D6D3BD')],
+              colors: [fromCssColor('#004F8B'), fromCssColor('#6BB3D9')],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: const [0.4, 1]),
+              stops: const [0.1, 1]),
         ),
-        child: Column(children: [
-          // コースのボックス
-          Container(
-            width: double.infinity,
-            height: 64,
-            color: fromCssColor('#1E2427'),
-            alignment: Alignment.center,
-            child: Text(
-              'コース',
-              style: GoogleFonts.lato(
-                  textStyle: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.normal,
-                      color: fromCssColor('#ffffff'))),
-            ),
-          ),
-
+        child: Stack(children: [
           // やまの名前と詳細
-          Container(
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-            child: Column(
-              children: [
-                // やまの名前
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
+          Align(
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              width: 310,
+              child: Column(
+                children: [
+                  const Padding(padding: EdgeInsets.only(top: 80)),
+                  // やまの名前
+                  Text(
+                    'START<APP>',
+                    style: GoogleFonts.robotoMono(
+                        textStyle: TextStyle(
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            color: fromCssColor('#C0D5ED'))),
+                  ),
+                  Container(
+                    height: 3,
+                    color: fromCssColor('#C0D5ED'),
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+
+                  // やまの詳細
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        'Javascriptやま',
+                        'for Javascript',
                         style: GoogleFonts.lato(
                             textStyle: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.w500,
-                                color: fromCssColor('#ffffff'))),
+                                fontSize: 22,
+                                fontWeight: FontWeight.normal,
+                                color: fromCssColor('#C0D5ED'))),
                       ),
-                    ],
-                  ),
-                ),
-                // やまの詳細
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 10.0)),
                       Text(
                         '初級',
                         style: GoogleFonts.lato(
                             textStyle: TextStyle(
-                                fontSize: 18,
+                                fontSize: 19,
                                 fontWeight: FontWeight.normal,
-                                color: fromCssColor('#ffffff'))),
+                                color: fromCssColor('#C0D5ED'))),
                       ),
                       const Padding(padding: EdgeInsets.only(left: 2.0)),
                       Text(
                         'ー',
-                        style: TextStyle(color: fromCssColor('#ffffff')),
+                        style: TextStyle(color: fromCssColor('#C0D5ED')),
                       ),
                       const Padding(padding: EdgeInsets.only(left: 2.0)),
                       Text(
                         '５問',
                         style: GoogleFonts.lato(
                             textStyle: TextStyle(
-                                fontSize: 18,
+                                fontSize: 19,
                                 fontWeight: FontWeight.normal,
-                                color: fromCssColor('#ffffff'))),
+                                color: fromCssColor('#C0D5ED'))),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-
-          // 山と強調, 地面画像
-          Expanded(
-            child: Stack(children: [
-              // 山画像
-              Align(
-                alignment: const Alignment(0, -1.1),
-                child: SizedBox(
-                    width: 465,
-                    height: 465,
-                    child: Image.asset(
-                      'images/javascript_mountain.png',
-                      fit: BoxFit.contain,
-                    )),
-              ),
-              // 木画像
-              Align(
-                alignment: const Alignment(-0.81, 0.3),
-                child: SizedBox(
-                    width: 90,
-                    height: 90,
-                    child: Image.asset(
-                      'images/tree_third.png',
-                      fit: BoxFit.contain,
-                    )),
-              ),
-              // 木画像
-              Align(
-                alignment: const Alignment(-1, 0.3),
-                child: SizedBox(
-                    width: 90,
-                    height: 90,
-                    child: Image.asset(
-                      'images/tree_third.png',
-                      fit: BoxFit.contain,
-                    )),
-              ),
-              // 地面画像
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                    width: 465,
-                    height: 465,
-                    child: Image.asset(
-                      'images/ground_second.png',
-                      fit: BoxFit.contain,
-                    )),
-              ),
-            ]),
+          // 地面画像
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+                width: 450,
+                height: 630,
+                child: Image.asset(
+                  'images/home.png',
+                  fit: BoxFit.contain,
+                )),
           ),
         ]),
       ),
@@ -167,8 +120,8 @@ class CousePage extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 35),
         child: SizedBox(
-          height: 73,
-          width: 329,
+          height: 75,
+          width: 380,
           child: TextButton(
             style: TextButton.styleFrom(
               backgroundColor: fromCssColor('#ffffff'),
