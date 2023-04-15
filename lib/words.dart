@@ -34,6 +34,12 @@ final words = {
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: fromCssColor('#11B8DA')))),
+  'let': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: fromCssColor('#11B8DA')))),
   'function': HighlightedWord(
       textStyle: GoogleFonts.robotoMono(
           textStyle: TextStyle(
