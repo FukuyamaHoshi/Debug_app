@@ -1,8 +1,11 @@
 import 'package:debug_app/couse_page.dart';
+import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:highlight_text/highlight_text.dart';
 import 'package:provider/provider.dart';
+import 'package:vs_scrollbar/vs_scrollbar.dart';
 import 'model.dart';
 
 class ResultPage extends StatelessWidget {
@@ -27,14 +30,14 @@ class ResultPage extends StatelessWidget {
       // AppBar
       appBar: AppBar(
         title: Text(
-          'スタートアップ',
-          style: GoogleFonts.lato(
-              textStyle: TextStyle(
+          'リザルト',
+          style: GoogleFonts.notoSans(
+              textStyle: const TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                  color: fromCssColor('#ffffff'))),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white)),
         ),
-        backgroundColor: fromCssColor('#265F65'),
+        backgroundColor: fromCssColor('#1D252B'),
         elevation: 0,
         automaticallyImplyLeading: false, // もどるボタンを許可しない
         // おわるボタン設置
@@ -53,274 +56,410 @@ class ResultPage extends StatelessWidget {
                 );
               },
               child: Text(
-                'おわる',
-                style: GoogleFonts.lato(
-                    textStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                        color: fromCssColor('#ffffff'))),
+                'もどる',
+                style: GoogleFonts.notoSans(
+                    textStyle: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
               ),
             ),
           )
         ],
       ),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [fromCssColor('#8FA4BD'), fromCssColor('#243445')],
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: const [0.7, 1]),
+        ),
+        child: Scrollbar(
+          child: SingleChildScrollView(
+            child: Column(children: [
+              const Padding(padding: EdgeInsets.only(top: 30)),
 
-      body: Column(children: [
-        // やまの名前と詳細、画像
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [fromCssColor('#265F65'), fromCssColor('#F5CA8F')],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: const [0.1, 1]),
-          ),
-          child: Column(children: [
-            if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
-              const Padding(padding: EdgeInsets.only(top: 70.0)),
-
-            // 山の名前、詳細
-            SizedBox(
-              width: 160,
-              child: Column(
-                children: [
-                  Text(
-                    'Javascript',
-                    style: GoogleFonts.lato(
-                        textStyle: TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
-                            color: fromCssColor('#D9E7E8'))),
-                  ),
+              // プログレスインジケーター
+              Container(
+                color: Colors.black,
+                height: 56,
+                width: 370,
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Container(
-                    height: 3,
-                    color: fromCssColor('#D9E7E8'),
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: fromCssColor('#57585A'),
+                    ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 5.0)),
+                  const Padding(padding: EdgeInsets.only(right: 5)),
+                  Container(
+                    width: 75,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: fromCssColor('#57585A'),
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(right: 5)),
+                  Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: fromCssColor('#57585A'),
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(right: 5)),
+                  Container(
+                    width: 75,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: fromCssColor('#57585A'),
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(right: 5)),
+                  Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: fromCssColor('#57585A'),
+                    ),
+                  )
+                ]),
+              ),
 
-                  // やまの詳細
+              // 結果ボックス
+              Opacity(
+                opacity: 0.7,
+                child: Container(
+                  width: 370,
+                  height: 155,
+                  color: Colors.black,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // プレイヤーネーム
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20, left: 30),
+                          child: Text(
+                            'Player',
+                            style: GoogleFonts.notoSans(
+                                textStyle: const TextStyle(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.only(top: 10)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // せいかい率
+                            SizedBox(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '2/3',
+                                      style: GoogleFonts.notoSans(
+                                          textStyle: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold,
+                                              color: fromCssColor('#1CEEED'))),
+                                    ),
+                                    Text(
+                                      'せいかい率',
+                                      style: GoogleFonts.notoSans(
+                                          textStyle: const TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.white)),
+                                    ),
+                                  ]),
+                            ),
+                            const Padding(padding: EdgeInsets.only(right: 30)),
+
+                            // タイム
+                            SizedBox(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '00:00',
+                                      style: GoogleFonts.notoSans(
+                                          textStyle: TextStyle(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.bold,
+                                              color: fromCssColor('#1CEEED'))),
+                                    ),
+                                    Text(
+                                      'タイム',
+                                      style: GoogleFonts.notoSans(
+                                          textStyle: const TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.white)),
+                                    ),
+                                  ]),
+                            ),
+
+                            // 空欄
+                            const SizedBox(
+                              width: 90,
+                              height: 30,
+                            )
+                          ],
+                        )
+                      ]),
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 30)),
+
+              // 答えのテキストタブ
+              Container(
+                width: 370,
+                height: 30,
+                color: fromCssColor('#3C476D'),
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text(
+                    '答え',
+                    style: GoogleFonts.notoSans(
+                        textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                  ),
+                ),
+              ),
+              // 1問目の答えボックス
+              Container(
+                width: 370,
+                height: 370,
+                color: fromCssColor('#E8EFF5'),
+                child: Column(children: [
+                  const Padding(padding: EdgeInsets.only(top: 10)),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const Padding(padding: EdgeInsets.only(left: 20.0)),
-                      Text(
-                        '初級',
-                        style: GoogleFonts.lato(
-                            textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                color: fromCssColor('#ffffff'))),
+                      const Padding(padding: EdgeInsets.only(left: 15)),
+                      Icon(
+                        Icons.check,
+                        color: fromCssColor('#49DB49'),
+                        size: 40,
                       ),
-                      const Padding(padding: EdgeInsets.only(left: 2.0)),
+                      const Padding(padding: EdgeInsets.only(left: 15)),
                       Text(
-                        'ー',
-                        style: TextStyle(color: fromCssColor('#ffffff')),
-                      ),
-                      const Padding(padding: EdgeInsets.only(left: 2.0)),
-                      Text(
-                        '５問',
-                        style: GoogleFonts.lato(
+                        '空白を埋めて１行目と２行目を\nコメントアウトしてください。',
+                        style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                color: fromCssColor('#ffffff'))),
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#191D33'))),
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            if (screeHeight > 850) // SEの場合は表示しない(レスポンシブ対応)
-              const Padding(padding: EdgeInsets.only(top: 20.0)),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
 
-            // 画像
-            SizedBox(
-                child: SizedBox(
-              width: 450,
-              height: 240,
-              child: Image.asset(
-                'images/result.png',
-                fit: BoxFit.contain,
-              ),
-            )),
-          ]),
-        ),
-
-        // せいせきボックス
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [fromCssColor('#F5CA8F'), fromCssColor('#265F65')],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0, 1]),
-            ),
-            child: Stack(alignment: Alignment.topCenter, children: [
-              Column(
-                children: [
-                  const Padding(padding: EdgeInsets.only(top: 20.0)),
-                  Opacity(
-                    opacity: 0.3,
-                    child: Container(
-                      width: 380,
-                      height: 260,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: fromCssColor('#000000'),
+                  // エディターの上タブ
+                  Container(
+                    width: 350,
+                    height: 30,
+                    color: fromCssColor('#46515C'),
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(
+                        '<> javascript',
+                        style: GoogleFonts.robotoMono(
+                            textStyle: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#ffffff'))),
                       ),
                     ),
                   ),
-                ],
-              ),
-              Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.only(top: 35),
-                child: Column(
-                  children: [
-                    Text(
-                      'せいせき',
-                      style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.normal,
-                              color: fromCssColor('#ffffff'))),
+
+                  // エディター
+                  Container(
+                    width: 350,
+                    height: 260,
+                    color: fromCssColor('#313B45'),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+
+                      // コードを表示
+                      child: TextHighlight(
+                        text: model.code,
+                        words: words,
+                        textStyle: GoogleFonts.robotoMono(
+                            textStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#ffffff'))),
+                      ),
                     ),
-
-                    const Padding(padding: EdgeInsets.only(top: 20.0)),
-                    // 結果表示ボックス
-                    Column(children: [
-                      SizedBox(
-                        width: 350,
-                        // せいかい率
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // せいかい率テキスト
-                                Text(
-                                  'せいかい率',
-                                  style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.normal,
-                                          color: fromCssColor('#ffffff'))),
-                                ),
-
-                                // せいかい率表示
-                                Text(
-                                  '$correntRate %',
-                                  style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w500,
-                                          color: fromCssColor('#ffffff'))),
-                                ),
-                              ],
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 5)),
-
-                            // アンダーライン(せいかい率)
-                            Container(
-                              height: 1,
-                              color: fromCssColor("#ffffff"),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const Padding(padding: EdgeInsets.only(top: 10)),
-                      // じかん
-                      SizedBox(
-                        width: 350,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // じかんテキスト
-                                Text(
-                                  'じかん',
-                                  style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.normal,
-                                          color: fromCssColor('#ffffff'))),
-                                ),
-
-                                // じかん表示
-                                Text(
-                                  '$time 秒',
-                                  style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w500,
-                                          color: fromCssColor('#ffffff'))),
-                                ),
-                              ],
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 5)),
-
-                            // アンダーライン(じかん)
-                            Container(
-                              height: 1,
-                              color: fromCssColor("#ffffff"),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const Padding(padding: EdgeInsets.only(top: 10)),
-                      // ランク
-                      SizedBox(
-                        width: 350,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // ランクテキスト
-                                Text(
-                                  'ランク',
-                                  style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.normal,
-                                          color: fromCssColor('#ffffff'))),
-                                ),
-
-                                // ランク表示
-                                Text(
-                                  rank,
-                                  style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w500,
-                                          color: fromCssColor('#ffffff'))),
-                                ),
-                              ],
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 5)),
-                            // アンダーライン(ランク)
-                            Container(
-                              height: 1,
-                              color: fromCssColor("#ffffff"),
-                            )
-                          ],
-                        ),
-                      ),
-                    ])
-                  ],
-                ),
+                  ),
+                ]),
               ),
+              const Padding(padding: EdgeInsets.only(top: 3)),
+
+              // 2問目の答えボックス
+              Container(
+                width: 370,
+                height: 370,
+                color: fromCssColor('#E8EFF5'),
+                child: Column(children: [
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15)),
+                      Icon(
+                        Icons.check,
+                        color: fromCssColor('#49DB49'),
+                        size: 40,
+                      ),
+                      const Padding(padding: EdgeInsets.only(left: 15)),
+                      Text(
+                        '空白を埋めて１行目と２行目を\nコメントアウトしてください。',
+                        style: GoogleFonts.notoSans(
+                            textStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#191D33'))),
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+
+                  // エディターの上タブ
+                  Container(
+                    width: 350,
+                    height: 30,
+                    color: fromCssColor('#46515C'),
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(
+                        '<> javascript',
+                        style: GoogleFonts.robotoMono(
+                            textStyle: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#ffffff'))),
+                      ),
+                    ),
+                  ),
+
+                  // エディター
+                  Container(
+                    width: 350,
+                    height: 260,
+                    color: fromCssColor('#313B45'),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+
+                      // コードを表示
+                      child: TextHighlight(
+                        text: model.code,
+                        words: words,
+                        textStyle: GoogleFonts.robotoMono(
+                            textStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#ffffff'))),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 3)),
+
+              // 3問目の答えボックス
+              Container(
+                width: 370,
+                height: 370,
+                color: fromCssColor('#E8EFF5'),
+                child: Column(children: [
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15)),
+                      Icon(
+                        Icons.check,
+                        color: fromCssColor('#49DB49'),
+                        size: 40,
+                      ),
+                      const Padding(padding: EdgeInsets.only(left: 15)),
+                      Text(
+                        '空白を埋めて１行目と２行目を\nコメントアウトしてください。',
+                        style: GoogleFonts.notoSans(
+                            textStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#191D33'))),
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+
+                  // エディターの上タブ
+                  Container(
+                    width: 350,
+                    height: 30,
+                    color: fromCssColor('#46515C'),
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(
+                        '<> javascript',
+                        style: GoogleFonts.robotoMono(
+                            textStyle: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#ffffff'))),
+                      ),
+                    ),
+                  ),
+
+                  // エディター
+                  Container(
+                    width: 350,
+                    height: 260,
+                    color: fromCssColor('#313B45'),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+
+                      // コードを表示
+                      child: TextHighlight(
+                        text: model.code,
+                        words: words,
+                        textStyle: GoogleFonts.robotoMono(
+                            textStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#ffffff'))),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+
+              // ボタンがあるため空白を開ける
+              const SizedBox(
+                height: 150,
+              )
             ]),
           ),
         ),
-      ]),
-
+      ),
       // ボタン
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
@@ -330,18 +469,18 @@ class ResultPage extends StatelessWidget {
           width: 380,
           child: TextButton(
             style: TextButton.styleFrom(
-              backgroundColor: fromCssColor('#ffffff'),
+              backgroundColor: fromCssColor('#EC6517'),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
             child: Text(
               'もどる',
-              style: GoogleFonts.lato(
-                  textStyle: TextStyle(
+              style: GoogleFonts.notoSans(
+                  textStyle: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: fromCssColor('#373737'))),
+                      color: Colors.white)),
             ),
             onPressed: () {
               // コース画面へ
