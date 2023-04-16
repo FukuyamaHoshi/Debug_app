@@ -66,7 +66,7 @@ class QuestionPage extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    backgroundColor: fromCssColor('#121517'),
+                    backgroundColor: fromCssColor('#E8EFF5'),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -83,29 +83,29 @@ class QuestionPage extends StatelessWidget {
                         },
                       ),
                     ),
-                    iconColor: fromCssColor('#ffffff'),
+                    iconColor: fromCssColor('#191D33'),
                     iconPadding: const EdgeInsets.all(10.0),
                     title: Align(
                       alignment: Alignment.topCenter,
                       child: Text(
-                        'もんだいを終わりますか？',
+                        'れんしゅう場を終わりますか？',
                         style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                                color: fromCssColor('#ffffff'))),
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                                color: fromCssColor('#191D33'))),
                       ),
                     ),
                     content: Container(
                       alignment: Alignment.center,
                       height: 50,
                       child: Text(
-                        'もんだいの途中で終わると\n結果がでません。',
+                        'れんしゅう場の途中で終わると\n結果が反映されません。',
                         style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
-                                color: fromCssColor('#ffffff'))),
+                                color: fromCssColor('#191D33'))),
                       ),
                     ),
                     actions: [
@@ -120,7 +120,7 @@ class QuestionPage extends StatelessWidget {
                               width: 250,
                               child: TextButton(
                                 style: TextButton.styleFrom(
-                                  backgroundColor: fromCssColor('#ffffff'),
+                                  backgroundColor: fromCssColor('#EC6517'),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
@@ -128,10 +128,10 @@ class QuestionPage extends StatelessWidget {
                                 child: Text(
                                   'はい',
                                   style: GoogleFonts.notoSans(
-                                      textStyle: TextStyle(
+                                      textStyle: const TextStyle(
                                           fontSize: 21,
                                           fontWeight: FontWeight.bold,
-                                          color: fromCssColor('#373737'))),
+                                          color: Colors.white)),
                                 ),
                                 onPressed: () {
                                   // コース画面へ
@@ -152,10 +152,9 @@ class QuestionPage extends StatelessWidget {
                             SizedBox(
                               height: 65,
                               width: 250,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  side: const BorderSide(
-                                      color: Colors.white, width: 4),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
@@ -166,7 +165,7 @@ class QuestionPage extends StatelessWidget {
                                       textStyle: TextStyle(
                                           fontSize: 21,
                                           fontWeight: FontWeight.bold,
-                                          color: fromCssColor('#ffffff'))),
+                                          color: fromCssColor('#191D33'))),
                                 ),
                                 onPressed: () {
                                   Navigator.pop(context);
@@ -303,28 +302,18 @@ class QuestionPage extends StatelessWidget {
             width: 400,
             height: 300,
             color: fromCssColor('#313B45'),
-            child: VsScrollbar(
-              isAlwaysShown: true,
-              style: VsScrollbarStyle(
-                radius: const Radius.circular(5),
-                thickness: 10.0,
-                color: fromCssColor('#ffffff'),
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
 
-                  // コードを表示
-                  child: TextHighlight(
-                    text: model.code,
-                    words: words,
-                    textStyle: GoogleFonts.robotoMono(
-                        textStyle: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: fromCssColor('#ffffff'))),
-                  ),
-                ),
+              // コードを表示
+              child: TextHighlight(
+                text: model.code,
+                words: words,
+                textStyle: GoogleFonts.robotoMono(
+                    textStyle: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: fromCssColor('#ffffff'))),
               ),
             ),
           ),
