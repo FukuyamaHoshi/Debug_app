@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class Model with ChangeNotifier {
   final FirebaseFirestore db = FirebaseFirestore.instance; // Firebaseデータベース
   final String qc = 'questions'; // もんだいコレクション名前
-  final int questionCount = 5; // 出題数
+  final int questionCount = 3; // 出題数
   final List<String> ranks = [
     // 全てのランク
     'ペリドット・ニュービー ',
@@ -20,9 +20,9 @@ class Model with ChangeNotifier {
     'ダイヤモンド・キング'
   ];
 
-  int total = 5; // すべての問題数(Firebase内の)
+  int total = 3; // すべての問題数(Firebase内の)
   int collectRate = 0; // 正答率
-  int currentQuestion = 0; // 現在何問目か(0 ~ 4の配列)
+  int currentQuestionNum = 0; // 現在何問目か(0 ~ 4の配列)
   List<int> questionNums = <int>[]; // もんだい番号のリスト( ※10個まで Firebaseの仕様)
   List<Question> questions = <Question>[]; // もんだいのデータのリスト
   int collectNum = 0; // 正解したもんだい数
@@ -33,6 +33,8 @@ class Model with ChangeNotifier {
   String question = '';
   // コード
   String code = '';
+  // 最終的なコード配列
+  List<List<String>> codes = [];
   // 選択肢A
   String optionA = '';
   // 選択肢B
@@ -45,13 +47,13 @@ class Model with ChangeNotifier {
   // ****************************************************
   // 次のもんだいへ
   void nextQuestion() {
-    currentQuestion++;
+    currentQuestionNum++;
   }
 
   // 現在のもんだい数をリセット
   void resetQuestion() {
     questionNums = []; // 取得するもんだい番号
-    currentQuestion = 0; // もんだいカウント
+    currentQuestionNum = 0; // もんだいカウント
     questions = []; // Questionクラスの配列
     collectNum = 0; // 正解したもんだい数
 
@@ -61,25 +63,26 @@ class Model with ChangeNotifier {
   // もんだいを設定する
   void setQuestion() {
     // 配列が空　か　問題数が出題数を超えている(一応)
-    if (questions.isEmpty || currentQuestion > questionCount) {
+    if (questions.isEmpty || currentQuestionNum > questionCount) {
       debugPrint("もんだいが取得できていない");
     } else {
       // 取得できている時、
-      question = questions[currentQuestion].question;
-      code = questions[currentQuestion].code;
-      optionA = questions[currentQuestion].optionA;
-      optionB = questions[currentQuestion].optionB;
-      optionC = questions[currentQuestion].optionC;
+      question = questions[currentQuestionNum].question;
+      code = questions[currentQuestionNum].code;
+      optionA = questions[currentQuestionNum].optionA;
+      optionB = questions[currentQuestionNum].optionB;
+      optionC = questions[currentQuestionNum].optionC;
     }
   }
 
   // 取得する問題を５つ(出題数)決定し、リストに追加
   void getQuestionsNum() {
     while (true) {
+      // 出題数がFirebase内の問題より少なかったら終了
+      if (questionCount < total) break;
+
       // 配列が出題数以上になれば終了
-      if (questionNums.length >= questionCount) {
-        break;
-      }
+      if (questionNums.length >= questionCount) break;
 
       var r = Random().nextInt(total); // ランダムな数字生成(データベースの問題数に応じて)
       final b = questionNums.any((int n) => n == r); // ランダムな文字が配列を一致しているか判定
@@ -103,13 +106,15 @@ class Model with ChangeNotifier {
       (res) {
         for (var doc in res.docs) {
           Question q = Question(
-              doc.data()['answer'],
+              doc.data()['question'],
               doc.data()['code'],
-              doc.data()['number'],
               doc.data()['optionA'],
               doc.data()['optionB'],
               doc.data()['optionC'],
-              doc.data()['question']);
+              doc.data()['optionD'],
+              doc.data()['answerA'],
+              doc.data()['answerB'],
+              doc.data()['number']);
           questions.add(q);
         }
 
@@ -132,6 +137,22 @@ class Model with ChangeNotifier {
       onError: (e) => debugPrint("Error completing: $e"),
     );
   }
+
+  // コードを穴埋め形式に変換
+  void comvertTofillInBlank() {
+    codes = []; // 空にする
+
+    // 改行するコードを分割する(nnn)
+    List<String> nSplits = questions[currentQuestionNum].code.split("nnn");
+
+    // 穴埋めがあるcodeを分割する(***)
+    for (int i = 0; i < nSplits.length; i++) {
+      List<String> astSplit = nSplits[i].split("***");
+      // ２次元配列へ格納
+      codes.add(astSplit);
+    }
+  }
+
   // ****************************************************
 
   // ****************************************************
@@ -143,9 +164,9 @@ class Model with ChangeNotifier {
     if (select > 2) return; // 何もしない(選択肢は0~2の間)
 
     // 正解していたらカウント
-    if (select == questions[currentQuestion].answer) {
-      collectNum++;
-    }
+    //if (select == questions[currentQuestionNum].answer) {
+    //  collectNum++;
+    //}
   }
 
   // 正答率を計算する

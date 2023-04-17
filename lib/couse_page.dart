@@ -100,7 +100,7 @@ class CousePage extends StatelessWidget {
 
               // 実績ラベル
               Padding(
-                padding: const EdgeInsets.only(left: 10.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: SizedBox(
                   width: double.infinity,
                   child: Text(
@@ -390,6 +390,8 @@ class CousePage extends StatelessWidget {
                 model.getQuestionsNum();
                 // Firebaseからデータ取得
                 await model.fetchQuestionsData();
+                // 穴埋め形式へコードを変換する
+                model.comvertTofillInBlank();
                 // もんだいを設定
                 model.setQuestion();
                 // タイマーを開始

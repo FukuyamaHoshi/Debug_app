@@ -27,7 +27,7 @@ class QuestionPage extends StatelessWidget {
       model.nextQuestion();
 
       // 現在の問題数に応じて処理
-      if (model.currentQuestion < model.questionCount) {
+      if (model.currentQuestionNum < model.questionCount) {
         // もんだいを設定
         model.setQuestion();
 

@@ -1,12 +1,14 @@
 class Question {
-  Question(this.answer, this.code, this.number, this.optionA, this.optionB,
-      this.optionC, this.question);
+  Question(this.question, this.code, this.optionA, this.optionB, this.optionC,
+      this.optionD, this.answerA, this.answerB, this.number);
 
-  int answer;
+  String question;
   String code;
-  int number;
   String optionA;
   String optionB;
   String optionC;
-  String question;
+  String optionD;
+  String answerA;
+  String answerB;
+  int number;
 }
