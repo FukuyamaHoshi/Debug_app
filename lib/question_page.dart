@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:debug_app/model.dart';
 import 'package:debug_app/result_page.dart';
-import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'couse_page.dart';
-import 'package:highlight_text/highlight_text.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:vs_scrollbar/vs_scrollbar.dart';
 
 class QuestionPage extends StatelessWidget {
   const QuestionPage({super.key});
@@ -302,19 +299,8 @@ class QuestionPage extends StatelessWidget {
             width: 400,
             height: 300,
             color: fromCssColor('#313B45'),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-
-              // コードを表示
-              child: TextHighlight(
-                text: model.code,
-                words: words,
-                textStyle: GoogleFonts.robotoMono(
-                    textStyle: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: fromCssColor('#ffffff'))),
-              ),
+            child: Column(
+              children: model.codeWidgets,
             ),
           ),
 
@@ -323,55 +309,290 @@ class QuestionPage extends StatelessWidget {
           // 選択肢ボックス
           Container(
             width: 400,
-            height: 80,
             decoration: BoxDecoration(
               border: Border.all(color: fromCssColor('#DBEBEC')),
               borderRadius: BorderRadius.circular(5),
               color: fromCssColor('#1D252B'),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 55,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: fromCssColor('#EAEAEA')),
-                    borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor('#EAEAEA'),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      // 選択肢A
+                      Draggable(
+                        data: model.optionA,
+                        feedback: Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: fromCssColor('#C7C7C7')),
+                              borderRadius: BorderRadius.circular(5),
+                              color: fromCssColor('#34424D'),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: AutoSizeText(
+                                model.optionA,
+                                maxLines: 1,
+                                style: GoogleFonts.robotoMono(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: fromCssColor('#B6C5CA'))),
+                              ),
+                            ),
+                          ),
+                        ),
+                        childWhenDragging: Container(
+                          height: 40,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: fromCssColor('#EAEAEA'),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            // タップ時の処理
+                            model.enterTextInBlank(model.optionA);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: fromCssColor('#C7C7C7')),
+                              borderRadius: BorderRadius.circular(5),
+                              color: fromCssColor('#34424D'),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: AutoSizeText(
+                                model.optionA,
+                                maxLines: 1,
+                                style: GoogleFonts.robotoMono(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: fromCssColor('#B6C5CA'))),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 10)),
+
+                      // 選択肢B
+                      Draggable(
+                        data: model.optionB,
+                        feedback: Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: fromCssColor('#C7C7C7')),
+                              borderRadius: BorderRadius.circular(5),
+                              color: fromCssColor('#34424D'),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: AutoSizeText(
+                                model.optionB,
+                                maxLines: 1,
+                                style: GoogleFonts.robotoMono(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: fromCssColor('#B6C5CA'))),
+                              ),
+                            ),
+                          ),
+                        ),
+                        childWhenDragging: Container(
+                          height: 40,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: fromCssColor('#EAEAEA'),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            // タップ時の処理
+                            model.enterTextInBlank(model.optionB);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: fromCssColor('#C7C7C7')),
+                              borderRadius: BorderRadius.circular(5),
+                              color: fromCssColor('#34424D'),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: AutoSizeText(
+                                model.optionB,
+                                maxLines: 1,
+                                style: GoogleFonts.robotoMono(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: fromCssColor('#B6C5CA'))),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 20)),
-                Container(
-                  width: 55,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: fromCssColor('#EAEAEA')),
-                    borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor('#EAEAEA'),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 20)),
-                Container(
-                  width: 55,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: fromCssColor('#EAEAEA')),
-                    borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor('#EAEAEA'),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 20)),
-                Container(
-                  width: 55,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: fromCssColor('#EAEAEA')),
-                    borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor('#EAEAEA'),
-                  ),
-                ),
-              ],
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  Row(
+                    children: [
+                      // 選択肢C
+                      Draggable(
+                        data: model.optionC,
+                        feedback: Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: fromCssColor('#C7C7C7')),
+                              borderRadius: BorderRadius.circular(5),
+                              color: fromCssColor('#34424D'),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: AutoSizeText(
+                                model.optionC,
+                                maxLines: 1,
+                                style: GoogleFonts.robotoMono(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: fromCssColor('#B6C5CA'))),
+                              ),
+                            ),
+                          ),
+                        ),
+                        childWhenDragging: Container(
+                          height: 40,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: fromCssColor('#EAEAEA'),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            // タップ時の処理
+                            model.enterTextInBlank(model.optionC);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: fromCssColor('#C7C7C7')),
+                              borderRadius: BorderRadius.circular(5),
+                              color: fromCssColor('#34424D'),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: AutoSizeText(
+                                model.optionC,
+                                maxLines: 1,
+                                style: GoogleFonts.robotoMono(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: fromCssColor('#B6C5CA'))),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 10)),
+
+                      // 選択肢D
+                      Draggable(
+                        data: model.optionD,
+                        feedback: Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: fromCssColor('#C7C7C7')),
+                              borderRadius: BorderRadius.circular(5),
+                              color: fromCssColor('#34424D'),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: AutoSizeText(
+                                model.optionD,
+                                maxLines: 1,
+                                style: GoogleFonts.robotoMono(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: fromCssColor('#B6C5CA'))),
+                              ),
+                            ),
+                          ),
+                        ),
+                        childWhenDragging: Container(
+                          height: 40,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: fromCssColor('#EAEAEA'),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            // タップ時の処理
+                            model.enterTextInBlank(model.optionD);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: fromCssColor('#C7C7C7')),
+                              borderRadius: BorderRadius.circular(5),
+                              color: fromCssColor('#34424D'),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: AutoSizeText(
+                                model.optionD,
+                                maxLines: 1,
+                                style: GoogleFonts.robotoMono(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: fromCssColor('#B6C5CA'))),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ],

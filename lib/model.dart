@@ -2,7 +2,12 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:debug_app/question.dart';
+import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
+import 'package:from_css_color/from_css_color.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:highlight_text/highlight_text.dart';
+import 'package:provider/provider.dart';
 
 class Model with ChangeNotifier {
   final FirebaseFirestore db = FirebaseFirestore.instance; // Firebaseデータベース
@@ -28,19 +33,29 @@ class Model with ChangeNotifier {
   int collectNum = 0; // 正解したもんだい数
   int time = 0; // タイマー
   bool isStopTime = false; // タイマーのストップフラグ
+  String brankA = ''; // 穴埋めAのテキスト
+  String brankB = ''; // 穴埋めBのテキスト
+  List<String> brankColors = ['#EAEAEA', '#34424D']; // 穴埋めの色
+  List<String> brankOutlineColors = ['#EAEAEA', '#C7C7C7']; // 穴埋めのアウトラインの色
+  List<double?> blankWidths = [65, null]; // 穴埋めの幅
+  int isBrankAInt = 0; // 0が空白、1が内容がある(穴埋めの)
+  int isBrankBInt = 0; // 0が空白、1が内容がある(穴埋めの)
+  bool isBrankAScorp = true; // どちらの穴埋めにテキストが入るか
 
   // 問題文
   String question = '';
   // コード
   String code = '';
-  // 最終的なコード配列
-  List<List<String>> codes = [];
+  // コードのwidget配列
+  List<Widget> codeWidgets = [];
   // 選択肢A
   String optionA = '';
   // 選択肢B
   String optionB = '';
   // 選択肢C
   String optionC = '';
+  // 選択肢D
+  String optionD = '';
 
   // ****************************************************
   // もんだいの設定
@@ -72,6 +87,7 @@ class Model with ChangeNotifier {
       optionA = questions[currentQuestionNum].optionA;
       optionB = questions[currentQuestionNum].optionB;
       optionC = questions[currentQuestionNum].optionC;
+      optionD = questions[currentQuestionNum].optionD;
     }
   }
 
@@ -138,19 +154,157 @@ class Model with ChangeNotifier {
     );
   }
 
-  // コードを穴埋め形式に変換
-  void comvertTofillInBlank() {
-    codes = []; // 空にする
+  // コードをWidgetへ変換
+  void comvertCodeToWidget() {
+    List<List<String>> codes = []; // コード配列
+    int brankCount = 1; // ブランクカウンター
+    codeWidgets = []; // 空にする
+    brankA = ''; // 空にする
+    brankB = ''; // 空にする
+    isBrankAInt = 0; // リセット
+    isBrankBInt = 0; // リセット
+    isBrankAScorp = true; // リセット
 
     // 改行するコードを分割する(nnn)
     List<String> nSplits = questions[currentQuestionNum].code.split("nnn");
 
-    // 穴埋めがあるcodeを分割する(***)
+    // 穴抜きとコードを分割する(|||)
     for (int i = 0; i < nSplits.length; i++) {
-      List<String> astSplit = nSplits[i].split("***");
-      // ２次元配列へ格納
-      codes.add(astSplit);
+      codes.add(nSplits[i].split("|||")); // |||で分割し、穴埋めのところは***が残るだけ
     }
+
+    // codesをwidgetに変換
+    for (int i = 0; i < codes.length; i++) {
+      List<Widget> widgetArray = [];
+      for (int v = 0; v < codes[i].length; v++) {
+        String contentCodes = codes[i][v].trim(); // ２次元配列のテキスト(前後の空白の削除)
+
+        // 1つ目の***の場合(穴埋め１)
+        if (contentCodes == "***" && brankCount == 1) {
+          Widget c = DragTarget(
+            builder: (context, accepted, rejected) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 3, right: 3),
+                child: Container(
+                  alignment: Alignment.center,
+                  width: blankWidths[isBrankAInt],
+                  height: 40,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: fromCssColor(brankOutlineColors[isBrankAInt])),
+                    borderRadius: BorderRadius.circular(5),
+                    color: fromCssColor(brankColors[isBrankAInt]),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Text(
+                      context.watch<Model>().brankA,
+                      maxLines: 1,
+                      style: GoogleFonts.robotoMono(
+                          textStyle: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: fromCssColor('#B6C5CA'))),
+                    ),
+                  ),
+                ),
+              );
+            },
+            onAccept: (String data) {
+              brankA = data; // データをテキストへ
+              isBrankAInt = 1; // 穴埋めの色と幅を変更
+              isBrankAScorp = false; // スコープをBlankBへ
+            },
+          );
+          brankCount++; // 穴埋めをカウント
+
+          widgetArray.add(c);
+        }
+
+        // 2つ目の***の場合(穴埋め１)
+        else if (contentCodes == "***" && brankCount == 2) {
+          Widget c = DragTarget(
+            builder: (context, accepted, rejected) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 3, right: 3),
+                child: Container(
+                  alignment: Alignment.center,
+                  width: blankWidths[isBrankBInt],
+                  height: 40,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: fromCssColor(brankOutlineColors[isBrankBInt])),
+                    borderRadius: BorderRadius.circular(5),
+                    color: fromCssColor(brankColors[isBrankBInt]),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Text(
+                      context.watch<Model>().brankB,
+                      maxLines: 1,
+                      style: GoogleFonts.robotoMono(
+                          textStyle: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: fromCssColor('#B6C5CA'))),
+                    ),
+                  ),
+                ),
+              );
+            },
+            onAccept: (String data) {
+              brankB = data; // データをテキストへ
+              isBrankBInt = 1; // 穴埋めの色と幅を変更
+              isBrankAScorp = true; // スコープをBlankAへ
+            },
+          );
+          brankCount++; // 穴埋めをカウント
+
+          widgetArray.add(c);
+        } else {
+          // 文字がある場合(コード)
+          Widget t = TextHighlight(
+            text: contentCodes,
+            words: words,
+            textStyle: GoogleFonts.robotoMono(
+                textStyle: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: fromCssColor('#ffffff'))),
+          );
+
+          widgetArray.add(t);
+        }
+      }
+
+      // Rowへ変換
+      Widget r = Padding(
+        padding: const EdgeInsets.only(top: 3, left: 10),
+        child: Row(
+          children: widgetArray,
+        ),
+      );
+
+      // 最終的な配列を作成
+      codeWidgets.add(r);
+    }
+  }
+
+  // 選択肢を穴埋めに入力する
+  void enterTextInBlank(String t) {
+    if (isBrankAScorp) {
+      // １つ目の穴埋め
+      brankA = t;
+      isBrankAInt = 1; // 穴埋めの色を変更
+    } else {
+      // ２つ目の穴埋め
+      brankB = t;
+      isBrankBInt = 1; // 穴埋めの色を変更
+    }
+
+    isBrankAScorp = !isBrankAScorp; // フラグ切り替え
+
+    notifyListeners(); // UIを更新する
   }
 
   // ****************************************************

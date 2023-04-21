@@ -390,8 +390,8 @@ class CousePage extends StatelessWidget {
                 model.getQuestionsNum();
                 // Firebaseからデータ取得
                 await model.fetchQuestionsData();
-                // 穴埋め形式へコードを変換する
-                model.comvertTofillInBlank();
+                // コードをWidgetへ変換
+                model.comvertCodeToWidget();
                 // もんだいを設定
                 model.setQuestion();
                 // タイマーを開始
