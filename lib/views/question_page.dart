@@ -1,10 +1,13 @@
-import 'package:debug_app/model.dart';
-import 'package:debug_app/result_page.dart';
+import 'package:debug_app/models/core_model.dart';
+import 'package:debug_app/views/result_page.dart';
+import 'package:debug_app/stores/store.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'couse_page.dart';
+import '../models/indicator_model.dart';
+import '../models/time_model.dart';
+import 'home_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class QuestionPage extends StatelessWidget {
@@ -12,30 +15,28 @@ class QuestionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Provider model
-    final Model model = Provider.of<Model>(context, listen: true);
     // スクリーンの高さ(850以上かどうか)
     //final double screeHeight = MediaQuery.of(context).size.height;
 
     // もんだい数に応じて画面推移
     void nextNavigation() {
       // 正誤判定
-      model.addCollects();
+      context.read<CoreModel>().addCollects();
       // 次のもんだいへ
-      model.nextQuestion();
+      context.read<CoreModel>().nextQuestion();
 
       // 現在の問題数に応じて処理
-      if (model.currentQuestionNum < model.questionCount) {
+      if (context.read<CoreModel>().currentQuestionNum < Store.questionCount) {
         // もんだいを設定
-        model.setQuestion();
+        context.read<CoreModel>().setQuestion();
         // codeをセット
-        model.comvertCodeToWidget();
+        context.read<CoreModel>().comvertCodeToWidget();
 
         // もんだい画面へ
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionPage()));
       } else {
-        model.stopTimer(); // タイマーを止める
+        context.read<TimeModel>().stopTimer(); // タイマーを止める
         // 結果画面へ
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const ResultPage()));
@@ -138,11 +139,13 @@ class QuestionPage extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const CousePage(),
+                                      builder: (context) => const HomePage(),
                                       fullscreenDialog: true, // 下からのアニメーション
                                     ),
                                   );
-                                  model.stopTimer(); // タイマーを止める
+                                  context
+                                      .read<TimeModel>()
+                                      .stopTimer(); // タイマーを止める
                                 },
                               ),
                             ),
@@ -204,19 +207,19 @@ class QuestionPage extends StatelessWidget {
             height: 66,
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               // 1つ目(丸)
-              model.createIndicatorCircle(0),
+              context.read<IndicatorModel>().createIndicatorCircle(0),
               const Padding(padding: EdgeInsets.only(right: 5)),
               // 1つ目(線)
-              model.createIndicatorLine(0),
+              context.read<IndicatorModel>().createIndicatorLine(0),
               const Padding(padding: EdgeInsets.only(right: 5)),
               // 2つ目(丸)
-              model.createIndicatorCircle(1),
+              context.read<IndicatorModel>().createIndicatorCircle(1),
               const Padding(padding: EdgeInsets.only(right: 5)),
               // 2つ目(線)
-              model.createIndicatorLine(1),
+              context.read<IndicatorModel>().createIndicatorLine(1),
               const Padding(padding: EdgeInsets.only(right: 5)),
               // 3つ目(丸)
-              model.createIndicatorCircle(2),
+              context.read<IndicatorModel>().createIndicatorCircle(2),
             ]),
           ),
           const Padding(padding: EdgeInsets.only(top: 20)),
@@ -236,7 +239,7 @@ class QuestionPage extends StatelessWidget {
               // もんだい分を表示
               child: AutoSizeText(
                 // 取得したもんだい文を表示
-                model.question,
+                context.read<CoreModel>().question,
                 maxLines: 2,
                 style: GoogleFonts.notoSans(
                     textStyle: TextStyle(
@@ -273,7 +276,7 @@ class QuestionPage extends StatelessWidget {
             height: 300,
             color: fromCssColor('#313B45'),
             child: Column(
-              children: model.codeWidgets,
+              children: context.read<CoreModel>().codeWidgets,
             ),
           ),
 
@@ -295,7 +298,7 @@ class QuestionPage extends StatelessWidget {
                     children: [
                       // 選択肢A
                       Draggable(
-                        data: model.optionA,
+                        data: context.read<CoreModel>().optionA,
                         feedback: Opacity(
                           opacity: 0.5,
                           child: Container(
@@ -310,7 +313,7 @@ class QuestionPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: AutoSizeText(
-                                model.optionA,
+                                context.read<CoreModel>().optionA,
                                 maxLines: 1,
                                 style: GoogleFonts.robotoMono(
                                     textStyle: TextStyle(
@@ -332,7 +335,8 @@ class QuestionPage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             // タップ時の処理
-                            model.enterTextInBlank(model.optionA);
+                            context.read<CoreModel>().enterTextInBlank(
+                                context.read<CoreModel>().optionA);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -346,7 +350,7 @@ class QuestionPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: AutoSizeText(
-                                model.optionA,
+                                context.read<CoreModel>().optionA,
                                 maxLines: 1,
                                 style: GoogleFonts.robotoMono(
                                     textStyle: TextStyle(
@@ -362,7 +366,7 @@ class QuestionPage extends StatelessWidget {
 
                       // 選択肢B
                       Draggable(
-                        data: model.optionB,
+                        data: context.read<CoreModel>().optionB,
                         feedback: Opacity(
                           opacity: 0.5,
                           child: Container(
@@ -377,7 +381,7 @@ class QuestionPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: AutoSizeText(
-                                model.optionB,
+                                context.read<CoreModel>().optionB,
                                 maxLines: 1,
                                 style: GoogleFonts.robotoMono(
                                     textStyle: TextStyle(
@@ -399,7 +403,8 @@ class QuestionPage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             // タップ時の処理
-                            model.enterTextInBlank(model.optionB);
+                            context.read<CoreModel>().enterTextInBlank(
+                                context.read<CoreModel>().optionB);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -413,7 +418,7 @@ class QuestionPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: AutoSizeText(
-                                model.optionB,
+                                context.read<CoreModel>().optionB,
                                 maxLines: 1,
                                 style: GoogleFonts.robotoMono(
                                     textStyle: TextStyle(
@@ -432,7 +437,7 @@ class QuestionPage extends StatelessWidget {
                     children: [
                       // 選択肢C
                       Draggable(
-                        data: model.optionC,
+                        data: context.read<CoreModel>().optionC,
                         feedback: Opacity(
                           opacity: 0.5,
                           child: Container(
@@ -447,7 +452,7 @@ class QuestionPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: AutoSizeText(
-                                model.optionC,
+                                context.read<CoreModel>().optionC,
                                 maxLines: 1,
                                 style: GoogleFonts.robotoMono(
                                     textStyle: TextStyle(
@@ -469,7 +474,8 @@ class QuestionPage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             // タップ時の処理
-                            model.enterTextInBlank(model.optionC);
+                            context.read<CoreModel>().enterTextInBlank(
+                                context.read<CoreModel>().optionC);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -483,7 +489,7 @@ class QuestionPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: AutoSizeText(
-                                model.optionC,
+                                context.read<CoreModel>().optionC,
                                 maxLines: 1,
                                 style: GoogleFonts.robotoMono(
                                     textStyle: TextStyle(
@@ -499,7 +505,7 @@ class QuestionPage extends StatelessWidget {
 
                       // 選択肢D
                       Draggable(
-                        data: model.optionD,
+                        data: context.read<CoreModel>().optionD,
                         feedback: Opacity(
                           opacity: 0.5,
                           child: Container(
@@ -514,7 +520,7 @@ class QuestionPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: AutoSizeText(
-                                model.optionD,
+                                context.read<CoreModel>().optionD,
                                 maxLines: 1,
                                 style: GoogleFonts.robotoMono(
                                     textStyle: TextStyle(
@@ -536,7 +542,8 @@ class QuestionPage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             // タップ時の処理
-                            model.enterTextInBlank(model.optionD);
+                            context.read<CoreModel>().enterTextInBlank(
+                                context.read<CoreModel>().optionD);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -550,7 +557,7 @@ class QuestionPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: AutoSizeText(
-                                model.optionD,
+                                context.read<CoreModel>().optionD,
                                 maxLines: 1,
                                 style: GoogleFonts.robotoMono(
                                     textStyle: TextStyle(

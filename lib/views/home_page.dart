@@ -1,21 +1,18 @@
-import 'package:debug_app/question_page.dart';
+import 'package:debug_app/views/question_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'model.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
-class CousePage extends StatelessWidget {
-  const CousePage({super.key});
+import '../models/core_model.dart';
+import '../models/time_model.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Provider model
-    final Model model = Provider.of<Model>(context, listen: true);
-
-    print('ホーム画面');
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -386,19 +383,29 @@ class CousePage extends StatelessWidget {
               ),
               onPressed: () async {
                 // もんだい数をリセット
-                model.resetQuestion();
+                context.read<CoreModel>().resetQuestion();
                 // Firebaseからデータ数を取得
-                await model.fetchQuestionsSize();
+                await context.read<CoreModel>().fetchQuestionsSize();
                 // 取得する問題を決める
-                model.getQuestionsNum();
+                if (context.mounted) {
+                  context.read<CoreModel>().getQuestionsNum();
+                }
                 // Firebaseからデータ取得
-                await model.fetchQuestionsData();
+                if (context.mounted) {
+                  await context.read<CoreModel>().fetchQuestionsData();
+                }
                 // コードをWidgetへ変換
-                model.comvertCodeToWidget();
+                if (context.mounted) {
+                  context.read<CoreModel>().comvertCodeToWidget();
+                }
                 // もんだいを設定
-                model.setQuestion();
+                if (context.mounted) {
+                  context.read<CoreModel>().setQuestion();
+                }
                 // タイマーを開始
-                model.startTimer();
+                if (context.mounted) {
+                  context.read<TimeModel>().startTimer();
+                }
 
                 if (context.mounted) {
                   // もんだい画面へ

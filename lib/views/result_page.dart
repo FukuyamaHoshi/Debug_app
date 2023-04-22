@@ -1,30 +1,18 @@
-import 'package:debug_app/couse_page.dart';
+import 'package:debug_app/views/home_page.dart';
 import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:provider/provider.dart';
-import 'package:vs_scrollbar/vs_scrollbar.dart';
-import 'model.dart';
+import '../models/core_model.dart';
 
 class ResultPage extends StatelessWidget {
   const ResultPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Provider model
-    final Model model = Provider.of<Model>(context, listen: true);
-    double screeHeight = MediaQuery.of(context).size.height; // スクリーンの高さ
-
-    model.calculateAccuracy(); // 正答率を計算する
-    // 正解率
-    final int correntRate = model.collectRate;
-    // 時間
-    int time = model.time;
-    // ランク
-    int score = model.getScore(); // スコアを取得
-    String rank = model.getRank(score);
+    //double screeHeight = MediaQuery.of(context).size.height; // スクリーンの高さ
 
     return Scaffold(
       // AppBar
@@ -50,7 +38,7 @@ class ResultPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CousePage(),
+                    builder: (context) => const HomePage(),
                     fullscreenDialog: true, // 下からのアニメーション
                   ),
                 );
@@ -297,7 +285,7 @@ class ResultPage extends StatelessWidget {
 
                       // コードを表示
                       child: TextHighlight(
-                        text: model.code,
+                        text: context.read<CoreModel>().code,
                         words: words,
                         textStyle: GoogleFonts.robotoMono(
                             textStyle: TextStyle(
@@ -368,7 +356,7 @@ class ResultPage extends StatelessWidget {
 
                       // コードを表示
                       child: TextHighlight(
-                        text: model.code,
+                        text: context.read<CoreModel>().code,
                         words: words,
                         textStyle: GoogleFonts.robotoMono(
                             textStyle: TextStyle(
@@ -439,7 +427,7 @@ class ResultPage extends StatelessWidget {
 
                       // コードを表示
                       child: TextHighlight(
-                        text: model.code,
+                        text: context.read<CoreModel>().code,
                         words: words,
                         textStyle: GoogleFonts.robotoMono(
                             textStyle: TextStyle(
@@ -487,7 +475,7 @@ class ResultPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const CousePage(),
+                  builder: (context) => const HomePage(),
                   fullscreenDialog: true, // 下からのアニメーション
                 ),
               );

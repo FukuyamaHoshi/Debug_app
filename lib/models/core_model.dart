@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:debug_app/question.dart';
+import 'package:debug_app/stores/store.dart';
 import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
@@ -9,54 +10,33 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:provider/provider.dart';
 
-class Model with ChangeNotifier {
+class CoreModel with ChangeNotifier {
+  // Firebase
   final FirebaseFirestore db = FirebaseFirestore.instance; // Firebaseデータベース
   final String qc = 'questions'; // もんだいコレクション名前
-  final int questionCount = 3; // 出題数
-  final List<String> ranks = [
-    // 全てのランク
-    'ペリドット・ニュービー ',
-    'アメジスト・アマチュア',
-    'ガーネット・プロ',
-    'トルマリン・エキスパート',
-    'サファイア・エリート',
-    'ルビー・マスター',
-    'エメラルド・プリンス',
-    'ダイヤモンド・キング'
-  ];
-
-  int total = 3; // すべての問題数(Firebase内の)
-  int collectRate = 0; // 正答率
+  // 問題設定
   int currentQuestionNum = 0; // 現在何問目か(0 ~ 4の配列)
   List<int> questionNums = <int>[]; // もんだい番号のリスト( ※10個まで Firebaseの仕様)
-  List<Question> questions = <Question>[]; // もんだいのデータのリスト
-  int collectNum = 0; // 正解したもんだい数
-  int time = 0; // タイマー
-  bool isStopTime = false; // タイマーのストップフラグ
+  // 穴埋め設定
   String blankA = ''; // 穴埋めAのテキスト
   String blankB = ''; // 穴埋めBのテキスト
-  List<String> blankColors = ['#EAEAEA', '#34424D']; // 穴埋めの色
-  List<String> blankOutlineColors = ['#EAEAEA', '#C7C7C7']; // 穴埋めのアウトラインの色
-  List<double?> blankWidths = [65, null]; // 穴埋めの幅
+  final List<String> _blankColors = ['#EAEAEA', '#34424D']; // 穴埋めの色
+  final List<String> _blankOutlineColors = [
+    '#EAEAEA',
+    '#C7C7C7'
+  ]; // 穴埋めのアウトラインの色
+  final List<double?> _blankWidths = [65, null]; // 穴埋めの幅
   int isBlankAInt = 0; // 0が空白、1が内容がある(穴埋めの)
   int isBlankBInt = 0; // 0が空白、1が内容がある(穴埋めの)
   bool isBlankAScorp = true; // どちらの穴埋めにテキストが入るか
-  List<bool> corrects = []; // 問題の正解判定
-
-  // 問題文
-  String question = '';
-  // コード
-  String code = '';
-  // コードのwidget配列
-  List<Widget> codeWidgets = [];
-  // 選択肢A
-  String optionA = '';
-  // 選択肢B
-  String optionB = '';
-  // 選択肢C
-  String optionC = '';
-  // 選択肢D
-  String optionD = '';
+  // 表示するデータ
+  String question = ''; // 問題文
+  String code = ''; // コード
+  List<Widget> codeWidgets = []; // コードのwidget配列
+  String optionA = ''; // 選択肢A
+  String optionB = ''; // 選択肢B
+  String optionC = ''; // 選択肢C
+  String optionD = ''; // 選択肢D
 
   // ****************************************************
   // もんだいの設定
@@ -70,39 +50,41 @@ class Model with ChangeNotifier {
   void resetQuestion() {
     questionNums = []; // 取得するもんだい番号
     currentQuestionNum = 0; // もんだいカウント
-    questions = []; // Questionクラスの配列
-    collectNum = 0; // 正解したもんだい数
-    corrects = []; // 正誤配列
+    Store.questions = []; // Questionクラスの配列
+    Store.corrects = []; // 正誤配列
 
-    time = 0; // タイマー
+    Store.time = 0; // タイマー
   }
 
   // もんだいを設定する
   void setQuestion() {
     // 配列が空　か　問題数が出題数を超えている(一応)
-    if (questions.isEmpty || currentQuestionNum > questionCount) {
+    if (Store.questions.isEmpty || currentQuestionNum > Store.questionCount) {
       debugPrint("もんだいが取得できていない");
     } else {
       // 取得できている時、
-      question = questions[currentQuestionNum].question;
-      code = questions[currentQuestionNum].code;
-      optionA = questions[currentQuestionNum].optionA;
-      optionB = questions[currentQuestionNum].optionB;
-      optionC = questions[currentQuestionNum].optionC;
-      optionD = questions[currentQuestionNum].optionD;
+      question = Store.questions[currentQuestionNum].question;
+      code = Store.questions[currentQuestionNum].code;
+      optionA = Store.questions[currentQuestionNum].optionA;
+      optionB = Store.questions[currentQuestionNum].optionB;
+      optionC = Store.questions[currentQuestionNum].optionC;
+      optionD = Store.questions[currentQuestionNum].optionD;
     }
   }
 
+  // ****************************************************
+  // データの取得
+  // ****************************************************
   // 取得する問題を５つ(出題数)決定し、リストに追加
   void getQuestionsNum() {
     while (true) {
       // 出題数がFirebase内の問題より少なかったら終了
-      if (questionCount < total) break;
+      if (Store.questionCount < Store.total) break;
 
       // 配列が出題数以上になれば終了
-      if (questionNums.length >= questionCount) break;
+      if (questionNums.length >= Store.questionCount) break;
 
-      var r = Random().nextInt(total); // ランダムな数字生成(データベースの問題数に応じて)
+      var r = Random().nextInt(Store.total); // ランダムな数字生成(データベースの問題数に応じて)
       final b = questionNums.any((int n) => n == r); // ランダムな文字が配列を一致しているか判定
 
       // 一致していなければ配列に追加
@@ -133,7 +115,7 @@ class Model with ChangeNotifier {
               doc.data()['answerA'],
               doc.data()['answerB'],
               doc.data()['number']);
-          questions.add(q);
+          Store.questions.add(q);
         }
 
         debugPrint('get Firebase data');
@@ -150,12 +132,15 @@ class Model with ChangeNotifier {
     await docRef.get().then(
       (res) {
         // ドキュメント数を取得
-        total = res.size;
+        Store.total = res.size;
       },
       onError: (e) => debugPrint("Error completing: $e"),
     );
   }
 
+  // ****************************************************
+  // エディターの設定
+  // ****************************************************
   // コードをWidgetへ変換
   void comvertCodeToWidget() {
     List<List<String>> codes = []; // コード配列
@@ -168,7 +153,8 @@ class Model with ChangeNotifier {
     isBlankAScorp = true; // リセット
 
     // 改行するコードを分割する(nnn)
-    List<String> nSplits = questions[currentQuestionNum].code.split("nnn");
+    List<String> nSplits =
+        Store.questions[currentQuestionNum].code.split("nnn");
 
     // 穴抜きとコードを分割する(|||)
     for (int i = 0; i < nSplits.length; i++) {
@@ -189,18 +175,18 @@ class Model with ChangeNotifier {
                 padding: const EdgeInsets.only(left: 3, right: 3),
                 child: Container(
                   alignment: Alignment.center,
-                  width: blankWidths[isBlankAInt],
+                  width: _blankWidths[isBlankAInt],
                   height: 40,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: fromCssColor(blankOutlineColors[isBlankAInt])),
+                        color: fromCssColor(_blankOutlineColors[isBlankAInt])),
                     borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor(blankColors[isBlankAInt]),
+                    color: fromCssColor(_blankColors[isBlankAInt]),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Text(
-                      context.watch<Model>().blankA,
+                      context.select((CoreModel m) => m.blankA),
                       maxLines: 1,
                       style: GoogleFonts.robotoMono(
                           textStyle: TextStyle(
@@ -231,18 +217,18 @@ class Model with ChangeNotifier {
                 padding: const EdgeInsets.only(left: 3, right: 3),
                 child: Container(
                   alignment: Alignment.center,
-                  width: blankWidths[isBlankBInt],
+                  width: _blankWidths[isBlankBInt],
                   height: 40,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: fromCssColor(blankOutlineColors[isBlankBInt])),
+                        color: fromCssColor(_blankOutlineColors[isBlankBInt])),
                     borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor(blankColors[isBlankBInt]),
+                    color: fromCssColor(_blankColors[isBlankBInt]),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Text(
-                      context.watch<Model>().blankB,
+                      context.select((CoreModel m) => m.blankB),
                       maxLines: 1,
                       style: GoogleFonts.robotoMono(
                           textStyle: TextStyle(
@@ -309,207 +295,21 @@ class Model with ChangeNotifier {
     notifyListeners(); // UIを更新する
   }
 
-  // インジケーターの丸を作成する
-  Widget createIndicatorCircle(int circleNum) {
-    // 出題中の問題
-    if (corrects.length == circleNum) {
-      return Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          border: Border.all(color: fromCssColor('#1CEEED')),
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.black,
-        ),
-      );
-    }
-
-    // 未出題の問題
-    if (corrects.length < circleNum) {
-      return Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: fromCssColor('#57585A'),
-        ),
-      );
-    }
-
-    // 正解の場合
-    if (corrects[circleNum]) {
-      return Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: fromCssColor('#49DB49'),
-        ),
-        child: const Icon(Icons.check, color: Colors.white),
-      );
-    }
-
-    // 不正解の場合
-    return Container(
-      width: 30,
-      height: 30,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: fromCssColor('#F04565'),
-      ),
-      child: const Icon(Icons.close, color: Colors.white),
-    );
-  }
-
-  // インジケーターの線の作成する
-  Widget createIndicatorLine(int lineNum) {
-    // 強く表示
-    if (corrects.length > lineNum) {
-      return Container(
-        width: 75,
-        height: 4,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2),
-          color: Colors.white,
-        ),
-      );
-    }
-
-    // 弱く表示
-    return Container(
-      width: 75,
-      height: 4,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2),
-        color: fromCssColor('#57585A'),
-      ),
-    );
-  }
-
   // ****************************************************
-
-  // ****************************************************
-  // 正解判定
+  // 正誤判定
   // ****************************************************
   // 正誤判定し配列に結果を追加する
   void addCollects() {
-    if (questions.isEmpty) return; // 何もしない
+    if (Store.questions.isEmpty) return; // 何もしない
 
     // 正解判定
-    if (questions[currentQuestionNum].answerA == blankA &&
-        questions[currentQuestionNum].answerB == blankB) {
+    if (Store.questions[currentQuestionNum].answerA == blankA &&
+        Store.questions[currentQuestionNum].answerB == blankB) {
       // 正解
-      corrects.add(true);
+      Store.corrects.add(true);
     } else {
       // 不正解
-      corrects.add(false);
+      Store.corrects.add(false);
     }
   }
-
-  // 正答率を計算する
-  void calculateAccuracy() {
-    int r = (collectNum / questionCount * 100).toInt();
-    collectRate = r;
-  }
-
-  // ****************************************************
-
-  // ****************************************************
-  // タイマー
-  // ****************************************************
-  // タイマー開始
-  void startTimer() {
-    isStopTime = false; // タイマー終了フラグを切り替える
-
-    Timer.periodic(
-      // 第一引数：繰り返す間隔の時間を設定
-      const Duration(seconds: 1),
-      (Timer timer) {
-        //タイマー終了処理
-        if (isStopTime) {
-          timer.cancel();
-          return;
-        }
-
-        time++; // 加算
-      },
-    );
-  }
-
-  // タイマー終了
-  void stopTimer() {
-    isStopTime = true;
-  }
-  // ****************************************************
-
-  // ****************************************************
-  // ランク
-  // ****************************************************
-  // スコアを計算し、取得
-  int getScore() {
-    int rateScore = 0; // 正答率のスコア(70点)
-    int timeScore = 0; // タイムのスコア(30点)
-
-    // 正答率のスコアを設定
-    if (collectRate > 0 && collectRate <= 20) {
-      // 0%以上で、20%以下
-      rateScore = 10;
-    } else if (collectRate <= 40) {
-      // 40%以下
-      rateScore = 20;
-    } else if (collectRate <= 60) {
-      // 60%以下
-      rateScore = 30;
-    } else if (collectRate <= 80) {
-      // 80%以下
-      rateScore = 50;
-    } else if (collectRate == 100) {
-      // 100%
-      rateScore = 70;
-    }
-
-    // タイムのスコアを設定(正答率が80%以上で)
-    if (collectRate >= 80) {
-      if (time <= 10) {
-        // 10秒以内
-        timeScore = 30;
-      } else if (time <= 20) {
-        // 20秒以内
-        timeScore = 20;
-      } else if (time <= 40) {
-        // 40秒以内
-        timeScore = 15;
-      } else if (time <= 60) {
-        // 60秒(1分)以内
-        timeScore = 10;
-      }
-    }
-
-    int score = rateScore + timeScore; // スコアを計算
-
-    return score;
-  }
-
-  // ランクを設定し、取得
-  String getRank(int score) {
-    // スコアごとのランク
-    if (score <= 19) {
-      return ranks[0];
-    } else if (score <= 29) {
-      return ranks[1];
-    } else if (score <= 49) {
-      return ranks[2];
-    } else if (score <= 69) {
-      return ranks[3];
-    } else if (score <= 79) {
-      return ranks[4];
-    } else if (score <= 89) {
-      return ranks[5];
-    } else if (score <= 99) {
-      return ranks[6];
-    } else {
-      return ranks[7];
-    }
-  }
-  // ****************************************************
 }
