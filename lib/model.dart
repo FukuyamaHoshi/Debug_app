@@ -33,14 +33,15 @@ class Model with ChangeNotifier {
   int collectNum = 0; // 正解したもんだい数
   int time = 0; // タイマー
   bool isStopTime = false; // タイマーのストップフラグ
-  String brankA = ''; // 穴埋めAのテキスト
-  String brankB = ''; // 穴埋めBのテキスト
-  List<String> brankColors = ['#EAEAEA', '#34424D']; // 穴埋めの色
-  List<String> brankOutlineColors = ['#EAEAEA', '#C7C7C7']; // 穴埋めのアウトラインの色
+  String blankA = ''; // 穴埋めAのテキスト
+  String blankB = ''; // 穴埋めBのテキスト
+  List<String> blankColors = ['#EAEAEA', '#34424D']; // 穴埋めの色
+  List<String> blankOutlineColors = ['#EAEAEA', '#C7C7C7']; // 穴埋めのアウトラインの色
   List<double?> blankWidths = [65, null]; // 穴埋めの幅
-  int isBrankAInt = 0; // 0が空白、1が内容がある(穴埋めの)
-  int isBrankBInt = 0; // 0が空白、1が内容がある(穴埋めの)
-  bool isBrankAScorp = true; // どちらの穴埋めにテキストが入るか
+  int isBlankAInt = 0; // 0が空白、1が内容がある(穴埋めの)
+  int isBlankBInt = 0; // 0が空白、1が内容がある(穴埋めの)
+  bool isBlankAScorp = true; // どちらの穴埋めにテキストが入るか
+  List<bool> corrects = []; // 問題の正解判定
 
   // 問題文
   String question = '';
@@ -71,6 +72,7 @@ class Model with ChangeNotifier {
     currentQuestionNum = 0; // もんだいカウント
     questions = []; // Questionクラスの配列
     collectNum = 0; // 正解したもんだい数
+    corrects = []; // 正誤配列
 
     time = 0; // タイマー
   }
@@ -159,11 +161,11 @@ class Model with ChangeNotifier {
     List<List<String>> codes = []; // コード配列
     int brankCount = 1; // ブランクカウンター
     codeWidgets = []; // 空にする
-    brankA = ''; // 空にする
-    brankB = ''; // 空にする
-    isBrankAInt = 0; // リセット
-    isBrankBInt = 0; // リセット
-    isBrankAScorp = true; // リセット
+    blankA = ''; // 空にする
+    blankB = ''; // 空にする
+    isBlankAInt = 0; // リセット
+    isBlankBInt = 0; // リセット
+    isBlankAScorp = true; // リセット
 
     // 改行するコードを分割する(nnn)
     List<String> nSplits = questions[currentQuestionNum].code.split("nnn");
@@ -187,18 +189,18 @@ class Model with ChangeNotifier {
                 padding: const EdgeInsets.only(left: 3, right: 3),
                 child: Container(
                   alignment: Alignment.center,
-                  width: blankWidths[isBrankAInt],
+                  width: blankWidths[isBlankAInt],
                   height: 40,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: fromCssColor(brankOutlineColors[isBrankAInt])),
+                        color: fromCssColor(blankOutlineColors[isBlankAInt])),
                     borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor(brankColors[isBrankAInt]),
+                    color: fromCssColor(blankColors[isBlankAInt]),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Text(
-                      context.watch<Model>().brankA,
+                      context.watch<Model>().blankA,
                       maxLines: 1,
                       style: GoogleFonts.robotoMono(
                           textStyle: TextStyle(
@@ -211,9 +213,9 @@ class Model with ChangeNotifier {
               );
             },
             onAccept: (String data) {
-              brankA = data; // データをテキストへ
-              isBrankAInt = 1; // 穴埋めの色と幅を変更
-              isBrankAScorp = false; // スコープをBlankBへ
+              blankA = data; // データをテキストへ
+              isBlankAInt = 1; // 穴埋めの色と幅を変更
+              isBlankAScorp = false; // スコープをBlankBへ
             },
           );
           brankCount++; // 穴埋めをカウント
@@ -229,18 +231,18 @@ class Model with ChangeNotifier {
                 padding: const EdgeInsets.only(left: 3, right: 3),
                 child: Container(
                   alignment: Alignment.center,
-                  width: blankWidths[isBrankBInt],
+                  width: blankWidths[isBlankBInt],
                   height: 40,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: fromCssColor(brankOutlineColors[isBrankBInt])),
+                        color: fromCssColor(blankOutlineColors[isBlankBInt])),
                     borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor(brankColors[isBrankBInt]),
+                    color: fromCssColor(blankColors[isBlankBInt]),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Text(
-                      context.watch<Model>().brankB,
+                      context.watch<Model>().blankB,
                       maxLines: 1,
                       style: GoogleFonts.robotoMono(
                           textStyle: TextStyle(
@@ -253,9 +255,9 @@ class Model with ChangeNotifier {
               );
             },
             onAccept: (String data) {
-              brankB = data; // データをテキストへ
-              isBrankBInt = 1; // 穴埋めの色と幅を変更
-              isBrankAScorp = true; // スコープをBlankAへ
+              blankB = data; // データをテキストへ
+              isBlankBInt = 1; // 穴埋めの色と幅を変更
+              isBlankAScorp = true; // スコープをBlankAへ
             },
           );
           brankCount++; // 穴埋めをカウント
@@ -292,35 +294,116 @@ class Model with ChangeNotifier {
 
   // 選択肢を穴埋めに入力する
   void enterTextInBlank(String t) {
-    if (isBrankAScorp) {
+    if (isBlankAScorp) {
       // １つ目の穴埋め
-      brankA = t;
-      isBrankAInt = 1; // 穴埋めの色を変更
+      blankA = t;
+      isBlankAInt = 1; // 穴埋めの色を変更
     } else {
       // ２つ目の穴埋め
-      brankB = t;
-      isBrankBInt = 1; // 穴埋めの色を変更
+      blankB = t;
+      isBlankBInt = 1; // 穴埋めの色を変更
     }
 
-    isBrankAScorp = !isBrankAScorp; // フラグ切り替え
+    isBlankAScorp = !isBlankAScorp; // フラグ切り替え
 
     notifyListeners(); // UIを更新する
+  }
+
+  // インジケーターの丸を作成する
+  Widget createIndicatorCircle(int circleNum) {
+    // 出題中の問題
+    if (corrects.length == circleNum) {
+      return Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          border: Border.all(color: fromCssColor('#1CEEED')),
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.black,
+        ),
+      );
+    }
+
+    // 未出題の問題
+    if (corrects.length < circleNum) {
+      return Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: fromCssColor('#57585A'),
+        ),
+      );
+    }
+
+    // 正解の場合
+    if (corrects[circleNum]) {
+      return Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: fromCssColor('#49DB49'),
+        ),
+        child: const Icon(Icons.check, color: Colors.white),
+      );
+    }
+
+    // 不正解の場合
+    return Container(
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: fromCssColor('#F04565'),
+      ),
+      child: const Icon(Icons.close, color: Colors.white),
+    );
+  }
+
+  // インジケーターの線の作成する
+  Widget createIndicatorLine(int lineNum) {
+    // 強く表示
+    if (corrects.length > lineNum) {
+      return Container(
+        width: 75,
+        height: 4,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(2),
+          color: Colors.white,
+        ),
+      );
+    }
+
+    // 弱く表示
+    return Container(
+      width: 75,
+      height: 4,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        color: fromCssColor('#57585A'),
+      ),
+    );
   }
 
   // ****************************************************
 
   // ****************************************************
-  // 正解率
+  // 正解判定
   // ****************************************************
-  // 正解しているか確認する
-  void checkCollect(int select) {
+  // 正誤判定し配列に結果を追加する
+  void addCollects() {
     if (questions.isEmpty) return; // 何もしない
-    if (select > 2) return; // 何もしない(選択肢は0~2の間)
 
-    // 正解していたらカウント
-    //if (select == questions[currentQuestionNum].answer) {
-    //  collectNum++;
-    //}
+    // 正解判定
+    if (questions[currentQuestionNum].answerA == blankA &&
+        questions[currentQuestionNum].answerB == blankB) {
+      // 正解
+      corrects.add(true);
+    } else {
+      // 不正解
+      corrects.add(false);
+    }
   }
 
   // 正答率を計算する
@@ -328,6 +411,7 @@ class Model with ChangeNotifier {
     int r = (collectNum / questionCount * 100).toInt();
     collectRate = r;
   }
+
   // ****************************************************
 
   // ****************************************************

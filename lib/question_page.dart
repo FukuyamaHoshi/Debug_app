@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:debug_app/model.dart';
 import 'package:debug_app/result_page.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +15,12 @@ class QuestionPage extends StatelessWidget {
     // Provider model
     final Model model = Provider.of<Model>(context, listen: true);
     // スクリーンの高さ(850以上かどうか)
-    final double screeHeight = MediaQuery.of(context).size.height;
+    //final double screeHeight = MediaQuery.of(context).size.height;
 
     // もんだい数に応じて画面推移
     void nextNavigation() {
+      // 正誤判定
+      model.addCollects();
       // 次のもんだいへ
       model.nextQuestion();
 
@@ -27,6 +28,8 @@ class QuestionPage extends StatelessWidget {
       if (model.currentQuestionNum < model.questionCount) {
         // もんだいを設定
         model.setQuestion();
+        // codeをセット
+        model.comvertCodeToWidget();
 
         // もんだい画面へ
         Navigator.push(context,
@@ -200,50 +203,20 @@ class QuestionPage extends StatelessWidget {
             width: double.infinity,
             height: 66,
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: fromCssColor('#57585A'),
-                ),
-              ),
+              // 1つ目(丸)
+              model.createIndicatorCircle(0),
               const Padding(padding: EdgeInsets.only(right: 5)),
-              Container(
-                width: 75,
-                height: 4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  color: fromCssColor('#57585A'),
-                ),
-              ),
+              // 1つ目(線)
+              model.createIndicatorLine(0),
               const Padding(padding: EdgeInsets.only(right: 5)),
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: fromCssColor('#57585A'),
-                ),
-              ),
+              // 2つ目(丸)
+              model.createIndicatorCircle(1),
               const Padding(padding: EdgeInsets.only(right: 5)),
-              Container(
-                width: 75,
-                height: 4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  color: fromCssColor('#57585A'),
-                ),
-              ),
+              // 2つ目(線)
+              model.createIndicatorLine(1),
               const Padding(padding: EdgeInsets.only(right: 5)),
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: fromCssColor('#57585A'),
-                ),
-              )
+              // 3つ目(丸)
+              model.createIndicatorCircle(2),
             ]),
           ),
           const Padding(padding: EdgeInsets.only(top: 20)),
@@ -621,10 +594,7 @@ class QuestionPage extends StatelessWidget {
                       color: fromCssColor('#FFFFFF'))),
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ResultPage()),
-              );
+              nextNavigation();
             },
           ),
         ),

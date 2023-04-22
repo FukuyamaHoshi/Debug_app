@@ -13,7 +13,8 @@ class CousePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Provider model
     final Model model = Provider.of<Model>(context, listen: true);
-    model.resetQuestion(); // もんだい数をリセット
+
+    print('ホーム画面');
 
     return DefaultTabController(
       length: 2,
@@ -384,6 +385,8 @@ class CousePage extends StatelessWidget {
                         color: fromCssColor('#FFFFFF'))),
               ),
               onPressed: () async {
+                // もんだい数をリセット
+                model.resetQuestion();
                 // Firebaseからデータ数を取得
                 await model.fetchQuestionsSize();
                 // 取得する問題を決める
