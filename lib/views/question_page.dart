@@ -15,9 +15,6 @@ class QuestionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // スクリーンの高さ(850以上かどうか)
-    //final double screeHeight = MediaQuery.of(context).size.height;
-
     // もんだい数に応じて画面推移
     void nextNavigation() {
       // 正誤判定

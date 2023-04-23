@@ -1,3 +1,4 @@
+import 'package:debug_app/models/indicator_model.dart';
 import 'package:debug_app/views/home_page.dart';
 import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
@@ -6,14 +7,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:provider/provider.dart';
 import '../models/core_model.dart';
+import '../stores/store.dart';
 
 class ResultPage extends StatelessWidget {
   const ResultPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //double screeHeight = MediaQuery.of(context).size.height; // スクリーンの高さ
-
     return Scaffold(
       // AppBar
       appBar: AppBar(
@@ -76,50 +76,15 @@ class ResultPage extends StatelessWidget {
                 width: 370,
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: fromCssColor('#57585A'),
-                    ),
-                  ),
+                  context.read<IndicatorModel>().createIndicatorCircle(0),
                   const Padding(padding: EdgeInsets.only(right: 5)),
-                  Container(
-                    width: 75,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: fromCssColor('#57585A'),
-                    ),
-                  ),
+                  context.read<IndicatorModel>().createIndicatorLine(0),
                   const Padding(padding: EdgeInsets.only(right: 5)),
-                  Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: fromCssColor('#57585A'),
-                    ),
-                  ),
+                  context.read<IndicatorModel>().createIndicatorCircle(1),
                   const Padding(padding: EdgeInsets.only(right: 5)),
-                  Container(
-                    width: 75,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: fromCssColor('#57585A'),
-                    ),
-                  ),
+                  context.read<IndicatorModel>().createIndicatorLine(1),
                   const Padding(padding: EdgeInsets.only(right: 5)),
-                  Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: fromCssColor('#57585A'),
-                    ),
-                  )
+                  context.read<IndicatorModel>().createIndicatorCircle(2)
                 ]),
               ),
 
@@ -180,7 +145,7 @@ class ResultPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '00:00',
+                                      Store.time,
                                       style: GoogleFonts.notoSans(
                                           textStyle: TextStyle(
                                               fontSize: 35,

@@ -52,8 +52,6 @@ class CoreModel with ChangeNotifier {
     currentQuestionNum = 0; // もんだいカウント
     Store.questions = []; // Questionクラスの配列
     Store.corrects = []; // 正誤配列
-
-    Store.time = 0; // タイマー
   }
 
   // もんだいを設定する
