@@ -120,7 +120,7 @@ class ResultPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '2/3',
+                                      Store.correctRate,
                                       style: GoogleFonts.notoSans(
                                           textStyle: TextStyle(
                                               fontSize: 35,
@@ -203,14 +203,10 @@ class ResultPage extends StatelessWidget {
                   Row(
                     children: [
                       const Padding(padding: EdgeInsets.only(left: 15)),
-                      Icon(
-                        Icons.check,
-                        color: fromCssColor('#49DB49'),
-                        size: 40,
-                      ),
+                      context.read<CoreModel>().setCorrectIcon(0),
                       const Padding(padding: EdgeInsets.only(left: 15)),
                       Text(
-                        '空白を埋めて１行目と２行目を\nコメントアウトしてください。',
+                        "1. ${Store.questions[0].question}",
                         style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
                                 fontSize: 17,
@@ -242,24 +238,12 @@ class ResultPage extends StatelessWidget {
 
                   // エディター
                   Container(
-                    width: 350,
-                    height: 260,
-                    color: fromCssColor('#313B45'),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-
-                      // コードを表示
-                      child: TextHighlight(
-                        text: context.read<CoreModel>().code,
-                        words: words,
-                        textStyle: GoogleFonts.robotoMono(
-                            textStyle: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#ffffff'))),
-                      ),
-                    ),
-                  ),
+                      width: 350,
+                      height: 260,
+                      color: fromCssColor('#313B45'),
+                      child: Column(
+                        children: context.read<CoreModel>().setCodeWidget(0),
+                      )),
                 ]),
               ),
               const Padding(padding: EdgeInsets.only(top: 3)),
@@ -274,14 +258,10 @@ class ResultPage extends StatelessWidget {
                   Row(
                     children: [
                       const Padding(padding: EdgeInsets.only(left: 15)),
-                      Icon(
-                        Icons.check,
-                        color: fromCssColor('#49DB49'),
-                        size: 40,
-                      ),
+                      context.read<CoreModel>().setCorrectIcon(1),
                       const Padding(padding: EdgeInsets.only(left: 15)),
                       Text(
-                        '空白を埋めて１行目と２行目を\nコメントアウトしてください。',
+                        "2. ${Store.questions[1].question}",
                         style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
                                 fontSize: 17,
@@ -316,19 +296,8 @@ class ResultPage extends StatelessWidget {
                     width: 350,
                     height: 260,
                     color: fromCssColor('#313B45'),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-
-                      // コードを表示
-                      child: TextHighlight(
-                        text: context.read<CoreModel>().code,
-                        words: words,
-                        textStyle: GoogleFonts.robotoMono(
-                            textStyle: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#ffffff'))),
-                      ),
+                    child: Column(
+                      children: context.read<CoreModel>().setCodeWidget(1),
                     ),
                   ),
                 ]),
@@ -345,14 +314,10 @@ class ResultPage extends StatelessWidget {
                   Row(
                     children: [
                       const Padding(padding: EdgeInsets.only(left: 15)),
-                      Icon(
-                        Icons.check,
-                        color: fromCssColor('#49DB49'),
-                        size: 40,
-                      ),
+                      context.read<CoreModel>().setCorrectIcon(2),
                       const Padding(padding: EdgeInsets.only(left: 15)),
                       Text(
-                        '空白を埋めて１行目と２行目を\nコメントアウトしてください。',
+                        "3. ${Store.questions[2].question}",
                         style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
                                 fontSize: 17,
@@ -387,19 +352,8 @@ class ResultPage extends StatelessWidget {
                     width: 350,
                     height: 260,
                     color: fromCssColor('#313B45'),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-
-                      // コードを表示
-                      child: TextHighlight(
-                        text: context.read<CoreModel>().code,
-                        words: words,
-                        textStyle: GoogleFonts.robotoMono(
-                            textStyle: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#ffffff'))),
-                      ),
+                    child: Column(
+                      children: context.read<CoreModel>().setCodeWidget(2),
                     ),
                   ),
                 ]),

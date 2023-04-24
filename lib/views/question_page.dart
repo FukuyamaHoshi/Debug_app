@@ -18,7 +18,7 @@ class QuestionPage extends StatelessWidget {
     // もんだい数に応じて画面推移
     void nextNavigation() {
       // 正誤判定
-      context.read<CoreModel>().addCollects();
+      context.read<CoreModel>().addCorrects();
       // 次のもんだいへ
       context.read<CoreModel>().nextQuestion();
 
@@ -27,13 +27,14 @@ class QuestionPage extends StatelessWidget {
         // もんだいを設定
         context.read<CoreModel>().setQuestion();
         // codeをセット
-        context.read<CoreModel>().comvertCodeToWidget();
+        context.read<CoreModel>().setCodeWidget();
 
         // もんだい画面へ
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const QuestionPage()));
       } else {
         context.read<TimeModel>().stopTimer(); // タイマーを止める
+        context.read<CoreModel>().setCorrectRate(); // 正解率をセット
         // 結果画面へ
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const ResultPage()));
@@ -236,7 +237,7 @@ class QuestionPage extends StatelessWidget {
               // もんだい分を表示
               child: AutoSizeText(
                 // 取得したもんだい文を表示
-                context.read<CoreModel>().question,
+                "${context.read<CoreModel>().currentQuestionNum + 1}. ${context.read<CoreModel>().question}",
                 maxLines: 2,
                 style: GoogleFonts.notoSans(
                     textStyle: TextStyle(
@@ -273,7 +274,7 @@ class QuestionPage extends StatelessWidget {
             height: 300,
             color: fromCssColor('#313B45'),
             child: Column(
-              children: context.read<CoreModel>().codeWidgets,
+              children: context.read<CoreModel>().setCodeWidget(),
             ),
           ),
 

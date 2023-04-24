@@ -10,6 +10,7 @@ class Store {
   static List<Question> questions = <Question>[]; // もんだいのデータのリスト
   static String time = ""; // タイマー(hh:mm:ss)
   static List<bool> corrects = []; // 問題の正解判定
+  static String correctRate = ""; // 正解率
 
   // シングルトンへ
   factory Store() {

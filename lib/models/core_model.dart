@@ -32,7 +32,6 @@ class CoreModel with ChangeNotifier {
   // 表示するデータ
   String question = ''; // 問題文
   String code = ''; // コード
-  List<Widget> codeWidgets = []; // コードのwidget配列
   String optionA = ''; // 選択肢A
   String optionB = ''; // 選択肢B
   String optionC = ''; // 選択肢C
@@ -139,11 +138,11 @@ class CoreModel with ChangeNotifier {
   // ****************************************************
   // エディターの設定
   // ****************************************************
-  // コードをWidgetへ変換
-  void comvertCodeToWidget() {
+  // コードをWidgetへ変換(答えを表示したい時はquestionsの番号を入力)
+  List<Widget> setCodeWidget([int? num]) {
     List<List<String>> codes = []; // コード配列
     int brankCount = 1; // ブランクカウンター
-    codeWidgets = []; // 空にする
+    List<Widget> codeWidgets = []; // コードのwidget配列
     blankA = ''; // 空にする
     blankB = ''; // 空にする
     isBlankAInt = 0; // リセット
@@ -151,8 +150,11 @@ class CoreModel with ChangeNotifier {
     isBlankAScorp = true; // リセット
 
     // 改行するコードを分割する(nnn)
-    List<String> nSplits =
-        Store.questions[currentQuestionNum].code.split("nnn");
+    List<String> nSplits = Store
+        // ignore: prefer_if_null_operators
+        .questions[num == null ? currentQuestionNum : num]
+        .code
+        .split("nnn");
 
     // 穴抜きとコードを分割する(|||)
     for (int i = 0; i < nSplits.length; i++) {
@@ -173,18 +175,22 @@ class CoreModel with ChangeNotifier {
                 padding: const EdgeInsets.only(left: 3, right: 3),
                 child: Container(
                   alignment: Alignment.center,
-                  width: _blankWidths[isBlankAInt],
+                  width: _blankWidths[num == null ? isBlankAInt : 1],
                   height: 40,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: fromCssColor(_blankOutlineColors[isBlankAInt])),
+                        color: fromCssColor(_blankOutlineColors[
+                            num == null ? isBlankAInt : 1])),
                     borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor(_blankColors[isBlankAInt]),
+                    color: fromCssColor(
+                        _blankColors[num == null ? isBlankAInt : 1]),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Text(
-                      context.select((CoreModel m) => m.blankA),
+                      num == null
+                          ? context.select((CoreModel m) => m.blankA)
+                          : Store.questions[num].answerA,
                       maxLines: 1,
                       style: GoogleFonts.robotoMono(
                           textStyle: TextStyle(
@@ -215,18 +221,22 @@ class CoreModel with ChangeNotifier {
                 padding: const EdgeInsets.only(left: 3, right: 3),
                 child: Container(
                   alignment: Alignment.center,
-                  width: _blankWidths[isBlankBInt],
+                  width: _blankWidths[num == null ? isBlankBInt : 1],
                   height: 40,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: fromCssColor(_blankOutlineColors[isBlankBInt])),
+                        color: fromCssColor(_blankOutlineColors[
+                            num == null ? isBlankBInt : 1])),
                     borderRadius: BorderRadius.circular(5),
-                    color: fromCssColor(_blankColors[isBlankBInt]),
+                    color: fromCssColor(
+                        _blankColors[num == null ? isBlankBInt : 1]),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Text(
-                      context.select((CoreModel m) => m.blankB),
+                      num == null
+                          ? context.select((CoreModel m) => m.blankB)
+                          : Store.questions[num].answerB,
                       maxLines: 1,
                       style: GoogleFonts.robotoMono(
                           textStyle: TextStyle(
@@ -274,6 +284,8 @@ class CoreModel with ChangeNotifier {
       // 最終的な配列を作成
       codeWidgets.add(r);
     }
+
+    return codeWidgets;
   }
 
   // 選択肢を穴埋めに入力する
@@ -297,7 +309,7 @@ class CoreModel with ChangeNotifier {
   // 正誤判定
   // ****************************************************
   // 正誤判定し配列に結果を追加する
-  void addCollects() {
+  void addCorrects() {
     if (Store.questions.isEmpty) return; // 何もしない
 
     // 正解判定
@@ -309,5 +321,31 @@ class CoreModel with ChangeNotifier {
       // 不正解
       Store.corrects.add(false);
     }
+  }
+
+  // 正解率を設定する
+  void setCorrectRate() {
+    int correctNum = Store.corrects.where((bool c) => c == true).length; // 正解数
+    int questionNum = Store.questionCount; // 出題数
+
+    Store.correctRate = "$correctNum/$questionNum"; // セット
+  }
+
+  // 正誤アイコンを設定する
+  Icon setCorrectIcon(int num) {
+    if (Store.corrects[num] == true) {
+      // 正解
+      return Icon(
+        Icons.check,
+        color: fromCssColor('#49DB49'),
+        size: 40,
+      );
+    }
+    // 不正解
+    return Icon(
+      Icons.close,
+      color: fromCssColor('#F04565'),
+      size: 40,
+    );
   }
 }

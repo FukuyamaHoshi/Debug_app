@@ -396,7 +396,7 @@ class HomePage extends StatelessWidget {
                 }
                 // コードをWidgetへ変換
                 if (context.mounted) {
-                  context.read<CoreModel>().comvertCodeToWidget();
+                  context.read<CoreModel>().setCodeWidget();
                 }
                 // もんだいを設定
                 if (context.mounted) {
