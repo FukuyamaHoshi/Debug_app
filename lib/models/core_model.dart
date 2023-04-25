@@ -38,7 +38,8 @@ class CoreModel with ChangeNotifier {
   String optionC = ''; // 選択肢C
   String optionD = ''; // 選択肢D
   // 永続化するデータ
-  String playNumber = ""; // プレイ数
+  int playCount = 0; // プレイ数
+  int averageCorrectRate = 0; // 平均正誤率
 
   // ****************************************************
   // もんだいの設定
@@ -356,7 +357,7 @@ class CoreModel with ChangeNotifier {
   // データ永続化
   // ****************************************************
   // プレイ数をセットする
-  Future<void> setPlayNumber() async {
+  Future<void> setPlayCount() async {
     final SharedPreferences prefs =
         await SharedPreferences.getInstance(); // インスタンス
     int? n = prefs.getInt("play_number"); // プレイ数を取得
@@ -372,17 +373,54 @@ class CoreModel with ChangeNotifier {
   }
 
   // プレイ数を取得する
-  Future<void> getPlayNumber() async {
+  Future<void> getPlayCount() async {
     final SharedPreferences prefs =
         await SharedPreferences.getInstance(); // インスタンス
     int? n = prefs.getInt("play_number"); // プレイ数を取得
     // 永続化処理
     if (n == null) {
       // 初回時
-      playNumber = "0";
+      playCount = 0;
     } else {
       // 初回以上
-      playNumber = "$n";
+      playCount = n;
+    }
+
+    notifyListeners(); // UI更新
+  }
+
+  // 平均正答率をセットする
+  Future<void> setAverageCorrectRate() async {
+    if (Store.corrects.length < Store.questionCount) return; // 正答配列チェック
+
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int c = Store.corrects.where((bool c) => c == true).length; // 正解数
+    int rate = ((c / Store.questionCount) * 100).floor(); // 正答率
+    int? n = prefs.getInt("average_correct_rate"); // プレイ数を取得
+    // 永続化処理
+    if (n == null) {
+      // 初回時
+      prefs.setInt("average_correct_rate", rate);
+    } else {
+      // 初回以降
+      int averageRate = ((n + rate) / 2).floor(); // 平均へ変換
+      prefs.setInt("average_correct_rate", averageRate);
+    }
+  }
+
+  // 平均正答率取得する
+  Future<void> getAverageCorrectRate() async {
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? a = prefs.getInt("average_correct_rate"); // 平均正答率を取得
+    // データ取得
+    if (a == null) {
+      // 初回時
+      averageCorrectRate = 0;
+    } else {
+      // 初回以上
+      averageCorrectRate = a;
     }
 
     notifyListeners(); // UI更新

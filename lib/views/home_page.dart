@@ -14,7 +14,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 永久データの処理
     context.read<TimeModel>().getPlayTime(); // プレイ時間
-    context.read<CoreModel>().getPlayNumber(); // プレイ回数
+    context.read<CoreModel>().getPlayCount(); // プレイ数
+    context.read<CoreModel>().getAverageCorrectRate(); // 平均正答率
+    context.read<TimeModel>().getFastTime(); // 最速時間
+    context.read<TimeModel>().getAverageTime(); // 平均時間
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -173,7 +176,9 @@ class HomePage extends StatelessWidget {
                         ),
                         const Padding(padding: EdgeInsets.only(top: 10)),
                         Text(
-                          context.select((CoreModel c) => c.playNumber),
+                          context
+                              .select((CoreModel c) => c.playCount)
+                              .toString(),
                           style: GoogleFonts.notoSans(
                               textStyle: TextStyle(
                                   fontSize: 33,
@@ -193,7 +198,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
 
-                  // せいかい率
+                  // 平均せいかい率
                   Container(
                     width: 126,
                     height: 188,
@@ -210,7 +215,7 @@ class HomePage extends StatelessWidget {
                       ),
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       Text(
-                        '00%',
+                        "${context.select((CoreModel c) => c.averageCorrectRate)}%",
                         style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
                                 fontSize: 33,
@@ -219,7 +224,7 @@ class HomePage extends StatelessWidget {
                       ),
                       const Padding(padding: EdgeInsets.only(top: 20)),
                       Text(
-                        'せいかい率',
+                        '平均せいかい率',
                         style: GoogleFonts.notoSans(
                             textStyle: const TextStyle(
                                 fontSize: 12,
@@ -253,7 +258,7 @@ class HomePage extends StatelessWidget {
                       ),
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       Text(
-                        '00:00',
+                        context.select((TimeModel t) => t.fastTime),
                         style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
                                 fontSize: 33,
@@ -291,7 +296,7 @@ class HomePage extends StatelessWidget {
                         ),
                         const Padding(padding: EdgeInsets.only(top: 10)),
                         Text(
-                          '00:00',
+                          context.select((TimeModel t) => t.averageTime),
                           style: GoogleFonts.notoSans(
                               textStyle: TextStyle(
                                   fontSize: 33,

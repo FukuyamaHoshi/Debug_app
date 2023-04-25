@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TimeModel with ChangeNotifier {
   bool _isStopTime = false; // タイマーのストップフラグ
   int _count = 0; // 加算するタイマー
-  String playTime = ""; // プレイ時間(mm:ss)
+  String playTime = "--"; // プレイ時間(mm:ss)
+  String fastTime = "--"; // 最速時間(mm:ss)
+  String averageTime = '--'; // 平均時間(mm:ss)
 
   // タイマー開始
   void startTimer() {
@@ -33,6 +35,8 @@ class TimeModel with ChangeNotifier {
 
     Store.time = _intToTimeFormat(_count); // タイマーに値を入れる
     _setPlayTime(_count); // 合計プレイ時間を永続化
+    _setFastTime(_count); // 最速時間を永続化
+    _setAverageTime(_count); // 平均時間を永続化
     _count = 0; // リセット
   }
 
@@ -74,13 +78,73 @@ class TimeModel with ChangeNotifier {
     final SharedPreferences prefs =
         await SharedPreferences.getInstance(); // インスタンス
     int? t = prefs.getInt("play_time"); // プレイ時間を取得
+    // データ取得
+    if (t != null) {
+      // 初回以降
+      playTime = _intToTimeFormat(t);
+    }
+
+    notifyListeners(); // UI更新
+  }
+
+  // 最速時間をセットする
+  Future<void> _setFastTime(int c) async {
+    int correntCount =
+        Store.corrects.where((bool c) => c == true).length; // 正解数
+    if (correntCount < Store.questionCount) return; // 全問正解以外はカウントしない
+
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? f = prefs.getInt("fast_time"); // 最速時間を取得
     // 永続化処理
-    if (t == null) {
+    if (f == null) {
       // 初回時
-      playTime = _intToTimeFormat(0);
+      prefs.setInt("fast_time", c);
     } else {
       // 初回以上
-      playTime = _intToTimeFormat(t);
+      if (c < f) prefs.setInt("fast_time", c); // 引数の方が小さい場合
+    }
+  }
+
+  // 最速時間を取得する
+  Future<void> getFastTime() async {
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? f = prefs.getInt("fast_time"); // プレイ時間を取得
+    // データ取得
+    if (f != null) {
+      // 初回以降
+      fastTime = _intToTimeFormat(f);
+    }
+
+    notifyListeners(); // UI更新
+  }
+
+  // 平均時間をセットする
+  Future<void> _setAverageTime(int c) async {
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? f = prefs.getInt("average_time"); // 平均時間を取得
+    // 永続化処理
+    if (f == null) {
+      // 初回時
+      prefs.setInt("average_time", c);
+    } else {
+      // 初回以降
+      int average = ((f + c) / 2).floor(); // 平均タイム
+      prefs.setInt("average_time", average);
+    }
+  }
+
+  // 平均時間を取得する
+  Future<void> getAverageTime() async {
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? a = prefs.getInt("average_time"); // 平均時間を取得
+    // データ取得
+    if (a != null) {
+      // 初回以降
+      averageTime = _intToTimeFormat(a);
     }
 
     notifyListeners(); // UI更新
