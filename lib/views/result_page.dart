@@ -1,10 +1,8 @@
 import 'package:debug_app/models/indicator_model.dart';
 import 'package:debug_app/views/home_page.dart';
-import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:highlight_text/highlight_text.dart';
 import 'package:provider/provider.dart';
 import '../models/core_model.dart';
 import '../stores/store.dart';

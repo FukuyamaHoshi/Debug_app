@@ -1,21 +1,23 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import '../stores/store.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TimeModel with ChangeNotifier {
-  bool isStopTime = false; // タイマーのストップフラグ
+  bool _isStopTime = false; // タイマーのストップフラグ
   int _count = 0; // 加算するタイマー
+  String playTime = ""; // プレイ時間(mm:ss)
 
   // タイマー開始
   void startTimer() {
-    isStopTime = false; // タイマー終了フラグを切り替える
+    _isStopTime = false; // タイマー終了フラグを切り替える
 
     Timer.periodic(
       // 第一引数：繰り返す間隔の時間を設定
       const Duration(seconds: 1),
       (Timer timer) {
         //タイマー終了処理
-        if (isStopTime) {
+        if (_isStopTime) {
           timer.cancel();
           return;
         }
@@ -27,9 +29,10 @@ class TimeModel with ChangeNotifier {
 
   // タイマー終了
   void stopTimer() {
-    isStopTime = true;
+    _isStopTime = true;
 
     Store.time = _intToTimeFormat(_count); // タイマーに値を入れる
+    _setPlayTime(_count); // 合計プレイ時間を永続化
     _count = 0; // リセット
   }
 
@@ -45,5 +48,41 @@ class TimeModel with ChangeNotifier {
     String secondsLeft = s.toString().length < 2 ? "0$s" : s.toString();
 
     return "$minuteLeft:$secondsLeft";
+  }
+
+  // ****************************************************
+  // データ永続化
+  // ****************************************************
+  // プレイ時間をセットする
+  Future<void> _setPlayTime(int c) async {
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? playTime = prefs.getInt("play_time"); // プレイ時間を取得
+    // 永続化処理
+    if (playTime == null) {
+      // 初回時
+      prefs.setInt("play_time", c);
+    } else {
+      // 初回以上
+      playTime += c; // 取得した時間と合計する
+      prefs.setInt("play_time", playTime);
+    }
+  }
+
+  // プレイ時間を取得する
+  Future<void> getPlayTime() async {
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? p = prefs.getInt("play_time"); // プレイ時間を取得
+    // 永続化処理
+    if (p == null) {
+      // 初回時
+      playTime = _intToTimeFormat(0);
+    } else {
+      // 初回以上
+      playTime = _intToTimeFormat(p);
+    }
+
+    notifyListeners(); // UI更新
   }
 }

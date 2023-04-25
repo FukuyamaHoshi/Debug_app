@@ -4,7 +4,6 @@ import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
-
 import '../models/core_model.dart';
 import '../models/time_model.dart';
 
@@ -13,6 +12,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 永久データの処理
+    context.read<TimeModel>().getPlayTime(); // プレイ時間
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -133,7 +134,7 @@ class HomePage extends StatelessWidget {
                       ),
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       Text(
-                        '00:00',
+                        context.select((TimeModel t) => t.playTime),
                         style: GoogleFonts.notoSans(
                             textStyle: TextStyle(
                                 fontSize: 33,
