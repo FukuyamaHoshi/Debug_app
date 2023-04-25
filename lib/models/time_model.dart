@@ -57,15 +57,15 @@ class TimeModel with ChangeNotifier {
   Future<void> _setPlayTime(int c) async {
     final SharedPreferences prefs =
         await SharedPreferences.getInstance(); // インスタンス
-    int? playTime = prefs.getInt("play_time"); // プレイ時間を取得
+    int? t = prefs.getInt("play_time"); // プレイ時間を取得
     // 永続化処理
-    if (playTime == null) {
+    if (t == null) {
       // 初回時
       prefs.setInt("play_time", c);
     } else {
       // 初回以上
-      playTime += c; // 取得した時間と合計する
-      prefs.setInt("play_time", playTime);
+      t += c; // 取得した時間と合計する
+      prefs.setInt("play_time", t);
     }
   }
 
@@ -73,14 +73,14 @@ class TimeModel with ChangeNotifier {
   Future<void> getPlayTime() async {
     final SharedPreferences prefs =
         await SharedPreferences.getInstance(); // インスタンス
-    int? p = prefs.getInt("play_time"); // プレイ時間を取得
+    int? t = prefs.getInt("play_time"); // プレイ時間を取得
     // 永続化処理
-    if (p == null) {
+    if (t == null) {
       // 初回時
       playTime = _intToTimeFormat(0);
     } else {
       // 初回以上
-      playTime = _intToTimeFormat(p);
+      playTime = _intToTimeFormat(t);
     }
 
     notifyListeners(); // UI更新

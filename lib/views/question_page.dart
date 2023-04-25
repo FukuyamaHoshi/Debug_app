@@ -35,6 +35,7 @@ class QuestionPage extends StatelessWidget {
       } else {
         context.read<TimeModel>().stopTimer(); // タイマーを止める
         context.read<CoreModel>().setCorrectRate(); // 正解率をセット
+        context.read<CoreModel>().setPlayNumber(); // プレイ回数をセット
         // 結果画面へ
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const ResultPage()));

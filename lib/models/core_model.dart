@@ -9,6 +9,7 @@ import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CoreModel with ChangeNotifier {
   // Firebase
@@ -36,6 +37,8 @@ class CoreModel with ChangeNotifier {
   String optionB = ''; // 選択肢B
   String optionC = ''; // 選択肢C
   String optionD = ''; // 選択肢D
+  // 永続化するデータ
+  String playNumber = ""; // プレイ数
 
   // ****************************************************
   // もんだいの設定
@@ -352,4 +355,36 @@ class CoreModel with ChangeNotifier {
   // ****************************************************
   // データ永続化
   // ****************************************************
+  // プレイ数をセットする
+  Future<void> setPlayNumber() async {
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? n = prefs.getInt("play_number"); // プレイ数を取得
+    // 永続化処理
+    if (n == null) {
+      // 初回時
+      prefs.setInt("play_number", 1);
+    } else {
+      // 初回以上
+      n++; // 回数増やす
+      prefs.setInt("play_number", n);
+    }
+  }
+
+  // プレイ数を取得する
+  Future<void> getPlayNumber() async {
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // インスタンス
+    int? n = prefs.getInt("play_number"); // プレイ数を取得
+    // 永続化処理
+    if (n == null) {
+      // 初回時
+      playNumber = "0";
+    } else {
+      // 初回以上
+      playNumber = "$n";
+    }
+
+    notifyListeners(); // UI更新
+  }
 }

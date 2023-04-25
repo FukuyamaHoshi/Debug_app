@@ -14,6 +14,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 永久データの処理
     context.read<TimeModel>().getPlayTime(); // プレイ時間
+    context.read<CoreModel>().getPlayNumber(); // プレイ回数
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -172,7 +173,7 @@ class HomePage extends StatelessWidget {
                         ),
                         const Padding(padding: EdgeInsets.only(top: 10)),
                         Text(
-                          '00',
+                          context.select((CoreModel c) => c.playNumber),
                           style: GoogleFonts.notoSans(
                               textStyle: TextStyle(
                                   fontSize: 33,
