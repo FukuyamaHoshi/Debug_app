@@ -594,7 +594,7 @@ class QuestionPage extends StatelessWidget {
             ),
             child: Text(
               '次へ',
-              style: GoogleFonts.lato(
+              style: GoogleFonts.notoSans(
                   textStyle: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
