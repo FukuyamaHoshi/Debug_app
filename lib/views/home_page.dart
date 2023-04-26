@@ -398,7 +398,7 @@ class HomePage extends StatelessWidget {
                         width: 90,
                         height: 90,
                         child: Image.asset(
-                          'images/splash_icon.png',
+                          'images/alpa_icon.png',
                           fit: BoxFit.contain,
                         )),
                     Text(

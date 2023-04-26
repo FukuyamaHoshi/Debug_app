@@ -50,7 +50,7 @@ dependencies:
   shared_preferences: ^2.1.0
 
 flutter_native_splash:
-  color: "#7BB4D4"
+  color: "#1D252B"
   image: "images/splash.png"
   fullscreen: true
 
