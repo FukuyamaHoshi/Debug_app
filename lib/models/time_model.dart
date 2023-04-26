@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TimeModel with ChangeNotifier {
   bool _isStopTime = false; // タイマーのストップフラグ
   int _count = 0; // 加算するタイマー
-  String playTime = "--"; // プレイ時間(mm:ss)
+  String playTime = "00:00"; // プレイ時間(mm:ss)
   String fastTime = "--"; // 最速時間(mm:ss)
   String averageTime = '--'; // 平均時間(mm:ss)
 

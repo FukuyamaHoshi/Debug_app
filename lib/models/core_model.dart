@@ -39,7 +39,7 @@ class CoreModel with ChangeNotifier {
   String optionD = ''; // 選択肢D
   // 永続化するデータ
   int playCount = 0; // プレイ数
-  int averageCorrectRate = 0; // 平均正答率
+  String averageCorrectRate = "--"; // 平均正答率
   // ホーム画面
   int isHomeButton = 0; // ホームボタンを利用可能にするか(0 or 1)
   List<String> homeButtonColors = ['#EC6517', "#DCDCDC"]; // ホームボタン色
@@ -381,12 +381,9 @@ class CoreModel with ChangeNotifier {
     final SharedPreferences prefs =
         await SharedPreferences.getInstance(); // インスタンス
     int? n = prefs.getInt("play_number"); // プレイ数を取得
-    // 永続化処理
-    if (n == null) {
-      // 初回時
-      playCount = 0;
-    } else {
-      // 初回以上
+    // データ取得
+    if (n != null) {
+      // 初回以降
       playCount = n;
     }
 
@@ -419,12 +416,9 @@ class CoreModel with ChangeNotifier {
         await SharedPreferences.getInstance(); // インスタンス
     int? a = prefs.getInt("average_correct_rate"); // 平均正答率を取得
     // データ取得
-    if (a == null) {
-      // 初回時
-      averageCorrectRate = 0;
-    } else {
-      // 初回以上
-      averageCorrectRate = a;
+    if (a != null) {
+      // 初回以降
+      averageCorrectRate = "$a%";
     }
 
     notifyListeners(); // UI更新

@@ -230,7 +230,8 @@ class HomePage extends StatelessWidget {
                             ),
                             const Padding(padding: EdgeInsets.only(top: 10)),
                             Text(
-                              "${context.select((CoreModel c) => c.averageCorrectRate)}%",
+                              context.select(
+                                  (CoreModel c) => c.averageCorrectRate),
                               style: GoogleFonts.notoSans(
                                   textStyle: TextStyle(
                                       fontSize: 33,
