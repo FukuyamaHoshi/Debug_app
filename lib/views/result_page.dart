@@ -194,7 +194,6 @@ class ResultPage extends StatelessWidget {
               // 1問目の答えボックス
               Container(
                 width: 370,
-                height: 370,
                 color: fromCssColor('#E8EFF5'),
                 child: Column(children: [
                   const Padding(padding: EdgeInsets.only(top: 10)),
@@ -203,13 +202,16 @@ class ResultPage extends StatelessWidget {
                       const Padding(padding: EdgeInsets.only(left: 15)),
                       context.read<CoreModel>().setCorrectIcon(0),
                       const Padding(padding: EdgeInsets.only(left: 15)),
-                      Text(
-                        "1. ${Store.questions[0].question}",
-                        style: GoogleFonts.notoSans(
-                            textStyle: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#191D33'))),
+                      SizedBox(
+                        width: 290,
+                        child: Text(
+                          "1. ${Store.questions[0].question}",
+                          style: GoogleFonts.notoSans(
+                              textStyle: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: fromCssColor('#191D33'))),
+                        ),
                       ),
                     ],
                   ),
@@ -242,6 +244,7 @@ class ResultPage extends StatelessWidget {
                       child: Column(
                         children: context.read<CoreModel>().setCodeWidget(0),
                       )),
+                  const Padding(padding: EdgeInsets.only(bottom: 10))
                 ]),
               ),
               const Padding(padding: EdgeInsets.only(top: 3)),
@@ -249,7 +252,6 @@ class ResultPage extends StatelessWidget {
               // 2問目の答えボックス
               Container(
                 width: 370,
-                height: 370,
                 color: fromCssColor('#E8EFF5'),
                 child: Column(children: [
                   const Padding(padding: EdgeInsets.only(top: 10)),
@@ -258,13 +260,16 @@ class ResultPage extends StatelessWidget {
                       const Padding(padding: EdgeInsets.only(left: 15)),
                       context.read<CoreModel>().setCorrectIcon(1),
                       const Padding(padding: EdgeInsets.only(left: 15)),
-                      Text(
-                        "2. ${Store.questions[1].question}",
-                        style: GoogleFonts.notoSans(
-                            textStyle: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#191D33'))),
+                      SizedBox(
+                        width: 290,
+                        child: Text(
+                          "2. ${Store.questions[1].question}",
+                          style: GoogleFonts.notoSans(
+                              textStyle: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: fromCssColor('#191D33'))),
+                        ),
                       ),
                     ],
                   ),
@@ -298,6 +303,7 @@ class ResultPage extends StatelessWidget {
                       children: context.read<CoreModel>().setCodeWidget(1),
                     ),
                   ),
+                  const Padding(padding: EdgeInsets.only(bottom: 10))
                 ]),
               ),
               const Padding(padding: EdgeInsets.only(top: 3)),
@@ -305,7 +311,6 @@ class ResultPage extends StatelessWidget {
               // 3問目の答えボックス
               Container(
                 width: 370,
-                height: 370,
                 color: fromCssColor('#E8EFF5'),
                 child: Column(children: [
                   const Padding(padding: EdgeInsets.only(top: 10)),
@@ -314,13 +319,16 @@ class ResultPage extends StatelessWidget {
                       const Padding(padding: EdgeInsets.only(left: 15)),
                       context.read<CoreModel>().setCorrectIcon(2),
                       const Padding(padding: EdgeInsets.only(left: 15)),
-                      Text(
-                        "3. ${Store.questions[2].question}",
-                        style: GoogleFonts.notoSans(
-                            textStyle: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: fromCssColor('#191D33'))),
+                      SizedBox(
+                        width: 290,
+                        child: Text(
+                          "3. ${Store.questions[2].question}",
+                          style: GoogleFonts.notoSans(
+                              textStyle: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: fromCssColor('#191D33'))),
+                        ),
                       ),
                     ],
                   ),
@@ -354,6 +362,7 @@ class ResultPage extends StatelessWidget {
                       children: context.read<CoreModel>().setCodeWidget(2),
                     ),
                   ),
+                  const Padding(padding: EdgeInsets.only(bottom: 10))
                 ]),
               ),
 

@@ -83,8 +83,8 @@ class CoreModel with ChangeNotifier {
   // 取得する問題を５つ(出題数)決定し、リストに追加
   void getQuestionsNum() {
     while (true) {
-      // 出題数がFirebase内の問題より少なかったら終了
-      if (Store.questionCount < Store.total) break;
+      // 出題数がFirebase内の問題より多かったら終了
+      if (Store.questionCount > Store.total) break;
 
       // 配列が出題数以上になれば終了
       if (questionNums.length >= Store.questionCount) break;
@@ -141,6 +141,7 @@ class CoreModel with ChangeNotifier {
       },
       onError: (e) => debugPrint("Error completing: $e"),
     );
+    debugPrint("question total count ${Store.total}");
   }
 
   // ****************************************************
