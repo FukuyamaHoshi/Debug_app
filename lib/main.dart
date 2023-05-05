@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'models/core_model.dart';
 import 'models/indicator_model.dart';
+import 'models/picture_book_model.dart';
 import 'models/time_model.dart';
 
 void main() async {
@@ -38,7 +39,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<CoreModel>(create: (context) => CoreModel()),
         ChangeNotifierProvider<TimeModel>(create: (context) => TimeModel()),
         ChangeNotifierProvider<IndicatorModel>(
-            create: (context) => IndicatorModel())
+            create: (context) => IndicatorModel()),
+        ChangeNotifierProvider<PictureBookModel>(
+            create: (context) => PictureBookModel())
       ],
       child: MaterialApp(
         // プレビュー機能

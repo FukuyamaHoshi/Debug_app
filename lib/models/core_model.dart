@@ -40,10 +40,6 @@ class CoreModel with ChangeNotifier {
   // 永続化するデータ
   int playCount = 0; // プレイ数
   String averageCorrectRate = "--"; // 平均正答率
-  // ホーム画面
-  int isHomeButton = 0; // ホームボタンを利用可能にするか(0 or 1)
-  List<String> homeButtonColors = ['#EC6517', "#DCDCDC"]; // ホームボタン色
-  List<String> homeButtonTextColors = ['#FFFFFF', "#888888"]; // ホームボタンテキスト色
 
   // ****************************************************
   // もんだいの設定
@@ -420,17 +416,6 @@ class CoreModel with ChangeNotifier {
     if (a != null) {
       // 初回以降
       averageCorrectRate = "$a%";
-    }
-
-    notifyListeners(); // UI更新
-  }
-
-  // ホームボタンを利用か不可にする
-  void toggleHomeButton(bool on) {
-    if (on) {
-      isHomeButton = 0;
-    } else {
-      isHomeButton = 1;
     }
 
     notifyListeners(); // UI更新

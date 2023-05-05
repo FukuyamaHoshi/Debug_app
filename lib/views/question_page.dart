@@ -185,12 +185,12 @@ class QuestionPage extends StatelessWidget {
                 );
               },
               child: Text(
-                'もどる',
+                'おわる',
                 style: GoogleFonts.notoSans(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
-                        color: fromCssColor('#ffffff'))),
+                        color: Colors.white)),
               ),
             ),
           )
