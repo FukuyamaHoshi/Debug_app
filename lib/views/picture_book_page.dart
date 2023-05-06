@@ -14,7 +14,7 @@ class PictureBookPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.read<PictureBookModel>().titles[index],
+          context.read<PictureBookModel>().pictureBooks[index].title,
           style: GoogleFonts.notoSans(
               textStyle: const TextStyle(
             fontSize: 20,
@@ -63,6 +63,9 @@ class PictureBookPage extends StatelessWidget {
                   width: 380,
                   height: 200,
                   color: fromCssColor('#313B45'),
+                  child: Column(
+                      children:
+                          context.select((PictureBookModel m) => m.editor)),
                 ),
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
 
@@ -89,6 +92,10 @@ class PictureBookPage extends StatelessWidget {
                   width: 380,
                   height: 180,
                   color: fromCssColor('#020405'),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                          context.select((PictureBookModel m) => m.console)),
                 ),
               ]),
             ),
@@ -99,7 +106,7 @@ class PictureBookPage extends StatelessWidget {
             alignment: Alignment.center,
             width: 380,
             child: Text(
-              'hogehoge',
+              context.select((PictureBookModel m) => m.explan),
               style: GoogleFonts.notoSans(
                   textStyle: TextStyle(
                       fontSize: 18,
@@ -126,7 +133,12 @@ class PictureBookPage extends StatelessWidget {
                   ),
                   fixedSize: const Size(130, 60),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  // リスト番号更新
+                  context.read<PictureBookModel>().decrementListNum();
+                  // UIをセット
+                  context.read<PictureBookModel>().setDisplayTexts(index);
+                },
                 child: Icon(
                   Icons.arrow_left,
                   size: 45,
@@ -142,7 +154,12 @@ class PictureBookPage extends StatelessWidget {
                   ),
                   fixedSize: const Size(260, 60),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  // リスト番号更新
+                  context.read<PictureBookModel>().incrementListNum();
+                  // UIをセット
+                  context.read<PictureBookModel>().setDisplayTexts(index);
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

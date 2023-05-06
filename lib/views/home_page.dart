@@ -455,7 +455,8 @@ class HomePage extends StatelessWidget {
               // タイトルリスト
               Expanded(
                 child: ListView.builder(
-                  itemCount: context.read<PictureBookModel>().titles.length,
+                  itemCount:
+                      context.read<PictureBookModel>().pictureBooks.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       decoration: BoxDecoration(
@@ -465,7 +466,10 @@ class HomePage extends StatelessWidget {
                       ),
                       child: ListTile(
                           title: Text(
-                            context.read<PictureBookModel>().titles[index],
+                            context
+                                .read<PictureBookModel>()
+                                .pictureBooks[index]
+                                .title,
                             style: GoogleFonts.notoSans(
                                 textStyle: TextStyle(
                                     fontSize: 18,
@@ -481,6 +485,12 @@ class HomePage extends StatelessWidget {
                             size: 40,
                           ),
                           onTap: () {
+                            // リスト番号をリセット
+                            context.read<PictureBookModel>().listNum = 0;
+                            // コード図鑑のテキストをセット
+                            context
+                                .read<PictureBookModel>()
+                                .setDisplayTexts(index);
                             // コード図鑑の内容
                             Navigator.push(
                               context,
