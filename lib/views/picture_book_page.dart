@@ -64,6 +64,7 @@ class PictureBookPage extends StatelessWidget {
                   height: 200,
                   color: fromCssColor('#313B45'),
                   child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children:
                           context.select((PictureBookModel m) => m.editor)),
                 ),

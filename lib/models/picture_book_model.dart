@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:debug_app/output_console.dart';
 import 'package:debug_app/picture_book.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:highlight_text/highlight_text.dart';
+import '../words.dart';
 
 // コード図鑑
 class PictureBookModel with ChangeNotifier {
@@ -26,6 +28,8 @@ class PictureBookModel with ChangeNotifier {
 
   // 表示する図鑑をセット
   void setDisplayTexts(int index) {
+    // エディター
+    editor = _getEditorWidght(pictureBooks[index].editor);
     // コンソール
     console = _getConsoleWidght(pictureBooks[index].console);
     // 説明文
@@ -43,6 +47,54 @@ class PictureBookModel with ChangeNotifier {
         pictureBooks[index].console.length, pictureBooks[index].explan.length);
 
     notifyListeners(); // UI更新
+  }
+
+  // エディターのテキストを作成し返却
+  List<Widget> _getEditorWidght(List<List<String>> es) {
+    List<Widget> texts = []; // 作成したテキスト配列
+    int num = 0; // 配列の番号
+
+    // どの配列をテキスト化するか
+    if (es.length - 1 < listNum) {
+      // リスト番号の方が大きい(レンジエラー)の場合、
+      num = es.length - 1;
+    } else {
+      // リスト番号が小さい
+      num = listNum;
+    }
+    // テキストリストを作成
+    for (int i = 0; i < es[num].length; i++) {
+      Widget t = es[num][i].contains("//")
+          // コメントアウト
+          ? Padding(
+              padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+              child: Text(
+                es[num][i],
+                style: GoogleFonts.robotoMono(
+                    textStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: fromCssColor('#A0A0A0'))),
+              ),
+            )
+          // コード
+          : Padding(
+              padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+              child: TextHighlight(
+                text: es[num][i],
+                words: words,
+                textStyle: GoogleFonts.robotoMono(
+                    textStyle: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+              ),
+            );
+
+      texts.add(t); // 配列に追加
+    }
+
+    return texts;
   }
 
   // コンソールのテキストを作成し返却
