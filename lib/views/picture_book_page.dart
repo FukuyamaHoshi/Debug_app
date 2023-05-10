@@ -104,10 +104,11 @@ class PictureBookPage extends StatelessWidget {
           const Padding(padding: EdgeInsets.only(bottom: 20)),
           // 説明
           Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             width: 380,
             child: Text(
               context.select((PictureBookModel m) => m.explan),
+              textAlign: TextAlign.left,
               style: GoogleFonts.notoSans(
                   textStyle: TextStyle(
                       fontSize: 18,

@@ -365,7 +365,7 @@ class HomePage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 5, left: 10),
                           child: Text(
-                            'ランクマッチは実装中です。しばらくお待ちください。',
+                            'コード図鑑を実装しました。',
                             style: GoogleFonts.notoSans(
                                 textStyle: TextStyle(
                                     fontSize: 14,

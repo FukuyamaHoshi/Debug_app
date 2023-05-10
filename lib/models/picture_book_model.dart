@@ -1,5 +1,6 @@
 import 'dart:math';
-import 'package:debug_app/output_console.dart';
+import 'package:debug_app/picture_book_content/comment_out.dart';
+import 'package:debug_app/picture_book_content/output_console.dart';
 import 'package:debug_app/picture_book.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
@@ -9,7 +10,7 @@ import '../words.dart';
 
 // コード図鑑
 class PictureBookModel with ChangeNotifier {
-  final List<PictureBook> pictureBooks = [outputConsole]; // 図鑑クラス配列
+  final List<PictureBook> pictureBooks = [outputConsole, commentOut]; // 図鑑クラス配列
   List<Widget> editor = []; // 表示するコード
   List<Widget> console = []; // 表示するコンソール
   String explan = ""; // 表示する説明分
@@ -42,8 +43,8 @@ class PictureBookModel with ChangeNotifier {
       explan = pictureBooks[index].explan[listNum];
     }
 
-    // リストの最大値と現在のリスト番号を揃える
-    _ajustListNum(pictureBooks[index].editor.length,
+    // リストの最大値を制限する
+    _limitListNum(pictureBooks[index].editor.length,
         pictureBooks[index].console.length, pictureBooks[index].explan.length);
 
     notifyListeners(); // UI更新
@@ -131,15 +132,18 @@ class PictureBookModel with ChangeNotifier {
     return texts;
   }
 
-  // リストの最大値と現在のリスト番号を揃える
-  void _ajustListNum(int a, int b, int c) {
+  // リストの最大値を制限する
+  void _limitListNum(int a, int b, int c) {
     int m = [a, b, c].reduce(max); // 最大値
-    if (m == listNum) {
-      // 最大値とリスト番号が違う(想定では下)の場合、
-      return;
-    } else {
-      // 同じの場合、
-      listNum = m - 1;
+    // リスト番号が最大値より大きい場合、
+    if (m <= listNum) {
+      listNum = m; // リスト番号を最大値に制限
+      _changeOverExplan(); // 説明文を変更する
     }
+  }
+
+  // コード図鑑終了時の説明文を更新する
+  void _changeOverExplan() {
+    explan = '説明は終わりです。';
   }
 }
