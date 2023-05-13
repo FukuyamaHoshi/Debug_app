@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:debug_app/question.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:debug_app/stores/store.dart';
 import 'package:debug_app/words.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CoreModel with ChangeNotifier {
   // Firebase
-  final FirebaseFirestore db = FirebaseFirestore.instance; // Firebaseデータベース
-  final String qc = 'questions'; // もんだいコレクション名前
+  //final FirebaseFirestore db = FirebaseFirestore.instance; // Firebaseデータベース
   // 問題設定
   int currentQuestionNum = 0; // 現在何問目か(0 ~ 4の配列)
-  List<int> questionNums = <int>[]; // もんだい番号のリスト( ※10個まで Firebaseの仕様)
   // 穴埋め設定
   String blankA = ''; // 穴埋めAのテキスト
   String blankB = ''; // 穴埋めBのテキスト
@@ -51,7 +48,7 @@ class CoreModel with ChangeNotifier {
 
   // 現在のもんだい数をリセット
   void resetQuestion() {
-    questionNums = []; // 取得するもんだい番号
+    Store.questionNums = []; // 取得するもんだい番号
     currentQuestionNum = 0; // もんだいカウント
     Store.questions = []; // Questionクラスの配列
     Store.corrects = []; // 正誤配列
@@ -76,68 +73,27 @@ class CoreModel with ChangeNotifier {
   // ****************************************************
   // データの取得
   // ****************************************************
-  // 取得する問題を５つ(出題数)決定し、リストに追加
+  // 取得する問題を3つ(出題数)決定し、リストに追加
   void getQuestionsNum() {
     while (true) {
       // 出題数がFirebase内の問題より多かったら終了
       if (Store.questionCount > Store.total) break;
 
       // 配列が出題数以上になれば終了
-      if (questionNums.length >= Store.questionCount) break;
+      if (Store.questionNums.length >= Store.questionCount) break;
 
       var r = Random().nextInt(Store.total); // ランダムな数字生成(データベースの問題数に応じて)
-      final b = questionNums.any((int n) => n == r); // ランダムな文字が配列を一致しているか判定
+      final b =
+          Store.questionNums.any((int n) => n == r); // ランダムな文字が配列を一致しているか判定
 
       // 一致していなければ配列に追加
       if (!b) {
-        questionNums.add(r);
+        Store.questionNums.add(r);
       }
     }
 
     // デバッグ
-    debugPrint(questionNums.toString());
-  }
-
-  // もんだいを取得し、Questionクラスを配列に格納
-  Future<void> fetchQuestionsData() async {
-    final docRef = db.collection(qc);
-    // 取得した番号配列を指定( ここのawaitを書かないと処理を待ってくれない )
-    await docRef.where("number", whereIn: questionNums).get().then(
-      // データ操作
-      (res) {
-        for (var doc in res.docs) {
-          Question q = Question(
-              doc.data()['question'],
-              doc.data()['code'],
-              doc.data()['optionA'],
-              doc.data()['optionB'],
-              doc.data()['optionC'],
-              doc.data()['optionD'],
-              doc.data()['answerA'],
-              doc.data()['answerB'],
-              doc.data()['number']);
-          Store.questions.add(q);
-        }
-
-        debugPrint('get Firebase data');
-      },
-      onError: (e) {
-        debugPrint("Error completing: $e");
-      },
-    );
-  }
-
-  // Firestore内の問題数を取得
-  Future<void> fetchQuestionsSize() async {
-    final docRef = db.collection(qc);
-    await docRef.get().then(
-      (res) {
-        // ドキュメント数を取得
-        Store.total = res.size;
-      },
-      onError: (e) => debugPrint("Error completing: $e"),
-    );
-    debugPrint("question total count ${Store.total}");
+    debugPrint(Store.questionNums.toString());
   }
 
   // ****************************************************

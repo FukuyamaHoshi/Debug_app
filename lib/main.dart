@@ -1,10 +1,13 @@
+import 'package:debug_app/models/local_database_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:debug_app/views/home_page.dart';
+import 'package:path/path.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sqflite/sqflite.dart';
 import 'firebase_options.dart';
 import 'models/core_model.dart';
 import 'models/indicator_model.dart';
@@ -16,6 +19,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // SQlite初期化
+  await openDatabase(
+    join(await getDatabasesPath(), 'questions.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        'CREATE TABLE questions(id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, code TEXT, optionA TEXT, optionB TEXT, optionC TEXT, optionD TEXT, answerA TEXT, answerB TEXT)',
+      );
+    },
+    version: 1,
   );
 
   runApp(
@@ -41,7 +55,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<IndicatorModel>(
             create: (context) => IndicatorModel()),
         ChangeNotifierProvider<PictureBookModel>(
-            create: (context) => PictureBookModel())
+            create: (context) => PictureBookModel()),
+        ChangeNotifierProvider<LocalDatabaseModel>(
+            create: (context) => LocalDatabaseModel())
       ],
       child: MaterialApp(
         // プレビュー機能

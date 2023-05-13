@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../models/core_model.dart';
+import '../models/local_database_model.dart';
 import '../models/time_model.dart';
 
 class HomePage extends StatelessWidget {
@@ -393,17 +394,28 @@ class HomePage extends StatelessWidget {
                             color: Colors.white)),
                   ),
                   onPressed: () async {
+                    // 問題データベースの作成・更新する
+                    await context
+                        .read<LocalDatabaseModel>()
+                        .setVersionAndBatch();
+
                     // もんだい数をリセット
-                    context.read<CoreModel>().resetQuestion();
-                    // Firebaseからデータ数を取得
-                    await context.read<CoreModel>().fetchQuestionsSize();
+                    if (context.mounted) {
+                      context.read<CoreModel>().resetQuestion();
+                    }
+                    // データ数を取得
+                    if (context.mounted) {
+                      await context
+                          .read<LocalDatabaseModel>()
+                          .getQuestionsSize();
+                    }
                     // 取得する問題を決める
                     if (context.mounted) {
                       context.read<CoreModel>().getQuestionsNum();
                     }
-                    // Firebaseからデータ取得
+                    // 出題リストに問題を追加
                     if (context.mounted) {
-                      await context.read<CoreModel>().fetchQuestionsData();
+                      await context.read<LocalDatabaseModel>().setQuestions();
                     }
                     // コードをWidgetへ変換
                     if (context.mounted) {
@@ -417,9 +429,8 @@ class HomePage extends StatelessWidget {
                     if (context.mounted) {
                       context.read<TimeModel>().startTimer();
                     }
-
+                    // もんだい画面へ
                     if (context.mounted) {
-                      // もんだい画面へ
                       await Navigator.push(
                         context,
                         MaterialPageRoute(

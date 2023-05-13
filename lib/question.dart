@@ -1,7 +1,4 @@
 class Question {
-  Question(this.question, this.code, this.optionA, this.optionB, this.optionC,
-      this.optionD, this.answerA, this.answerB, this.number);
-
   String question;
   String code;
   String optionA;
@@ -10,5 +7,28 @@ class Question {
   String optionD;
   String answerA;
   String answerB;
-  int number;
+
+  Question(
+      {required this.question,
+      required this.code,
+      required this.optionA,
+      required this.optionB,
+      required this.optionC,
+      required this.optionD,
+      required this.answerA,
+      required this.answerB});
+
+  // Map型へ変換する
+  Map<String, dynamic> toMap() {
+    return {
+      'question': question,
+      'code': code,
+      'optionA': optionA,
+      'optionB': optionB,
+      'optionC': optionC,
+      'optionD': optionD,
+      'answerA': answerA,
+      'answerB': answerB,
+    };
+  }
 }
