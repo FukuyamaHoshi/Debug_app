@@ -366,7 +366,7 @@ class HomePage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 5, left: 10),
                           child: Text(
-                            'コード図鑑を実装しました。',
+                            'オフラインで楽しめるようになりました。',
                             style: GoogleFonts.notoSans(
                                 textStyle: TextStyle(
                                     fontSize: 14,
