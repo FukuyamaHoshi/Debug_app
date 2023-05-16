@@ -1,16 +1,34 @@
 import 'dart:math';
 import 'package:debug_app/picture_book_content/comment_out.dart';
+import 'package:debug_app/picture_book_content/constant.dart';
+import 'package:debug_app/picture_book_content/integers.dart';
 import 'package:debug_app/picture_book_content/output_console.dart';
 import 'package:debug_app/picture_book.dart';
+import 'package:debug_app/picture_book_content/strings.dart';
+import 'package:debug_app/picture_book_content/variable.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:highlight_text/highlight_text.dart';
+import '../picture_book_content/difference_string_integer.dart';
+import '../picture_book_content/reason_constant.dart';
+import '../picture_book_content/reason_variable.dart';
 import '../words.dart';
 
 // コード図鑑
 class PictureBookModel with ChangeNotifier {
-  final List<PictureBook> pictureBooks = [outputConsole, commentOut]; // 図鑑クラス配列
+  // コード図鑑の中身
+  final List<PictureBook> pictureBooks = [
+    outputConsole,
+    commentOut,
+    strings,
+    integers,
+    differenceStringInteger,
+    variable,
+    reasonVariable,
+    constant,
+    reasonConstant
+  ];
   List<Widget> editor = []; // 表示するコード
   List<Widget> console = []; // 表示するコンソール
   String explan = ""; // 表示する説明分
@@ -68,19 +86,21 @@ class PictureBookModel with ChangeNotifier {
       Widget t = es[num][i].contains("//")
           // コメントアウト
           ? Padding(
-              padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+              padding: const EdgeInsets.only(
+                  left: 10, top: 2.5, right: 10, bottom: 2.5),
               child: Text(
                 es[num][i],
                 style: GoogleFonts.robotoMono(
                     textStyle: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: fromCssColor('#A0A0A0'))),
               ),
             )
           // コード
           : Padding(
-              padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+              padding: const EdgeInsets.only(
+                  left: 10, top: 2.5, right: 10, bottom: 2.5),
               child: TextHighlight(
                 text: es[num][i],
                 words: words,

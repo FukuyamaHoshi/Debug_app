@@ -64,4 +64,8 @@ final words = {
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: fromCssColor('#DA70D6')))),
+  'error!!': HighlightedWord(
+      textStyle: GoogleFonts.robotoMono(
+          textStyle: const TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red))),
 };

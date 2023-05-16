@@ -61,7 +61,12 @@ class PictureBookPage extends StatelessWidget {
                 // エディター
                 Container(
                   width: 380,
-                  height: 200,
+                  height:
+                      // コードが５行以上だったら可変する
+                      context.select((PictureBookModel m) => m.editor).length >
+                              6
+                          ? null
+                          : 200,
                   color: fromCssColor('#313B45'),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +125,9 @@ class PictureBookPage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: EdgeInsets.only(
+            // レスポンシブ対応
+            bottom: MediaQuery.of(context).size.height > 850 ? 50 : 30),
         child: SizedBox(
           width: 400,
           child: Row(

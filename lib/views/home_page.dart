@@ -339,43 +339,45 @@ class HomePage extends StatelessWidget {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
 
-                // お知らせ
-                Container(
-                  width: 387,
-                  height: 71,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5, left: 10),
-                          child: Text(
-                            'お知らせ',
-                            style: GoogleFonts.notoSans(
-                                textStyle: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.normal,
-                                    color: fromCssColor('#A3A3A3'))),
+                // レスポンジブ対応
+                if (MediaQuery.of(context).size.height > 850)
+                  // お知らせ
+                  Container(
+                    width: 387,
+                    height: 71,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5, left: 10),
+                            child: Text(
+                              'お知らせ',
+                              style: GoogleFonts.notoSans(
+                                  textStyle: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.normal,
+                                      color: fromCssColor('#A3A3A3'))),
+                            ),
                           ),
-                        ),
 
-                        // お知らせ内容
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5, left: 10),
-                          child: Text(
-                            'オフラインで楽しめるようになりました。',
-                            style: GoogleFonts.notoSans(
-                                textStyle: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: fromCssColor('#191D33'))),
+                          // お知らせ内容
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5, left: 10),
+                            child: Text(
+                              'オフラインで楽しめるようになりました。',
+                              style: GoogleFonts.notoSans(
+                                  textStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: fromCssColor('#191D33'))),
+                            ),
                           ),
-                        ),
-                      ]),
-                ),
+                        ]),
+                  ),
                 const Padding(padding: EdgeInsets.only(bottom: 50)),
                 // 問題開始ボタン
                 TextButton(

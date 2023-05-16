@@ -273,14 +273,17 @@ class QuestionPage extends StatelessWidget {
           // エディター
           Container(
             width: 400,
-            height: 300,
+            // レスポンジブ対応
+            height: MediaQuery.of(context).size.height > 850 ? 300 : 270,
             color: fromCssColor('#313B45'),
             child: Column(
               children: context.read<CoreModel>().setCodeWidget(),
             ),
           ),
 
-          const Padding(padding: EdgeInsets.only(top: 20)),
+          // レスポンシブ対応
+          if (MediaQuery.of(context).size.height > 850)
+            const Padding(padding: EdgeInsets.only(top: 20)),
 
           // 選択肢ボックス
           Container(
@@ -581,7 +584,9 @@ class QuestionPage extends StatelessWidget {
       // ボタン
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 35),
+        padding: EdgeInsets.only(
+            // レスポンシブ対応
+            bottom: MediaQuery.of(context).size.height > 850 ? 35 : 15),
         child: SizedBox(
           height: 75,
           width: 380,

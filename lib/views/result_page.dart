@@ -377,7 +377,9 @@ class ResultPage extends StatelessWidget {
       // ボタン
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 35),
+        // レスポンシブ対応
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height > 850 ? 35 : 15),
         child: SizedBox(
           height: 80,
           width: 380,

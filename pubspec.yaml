@@ -50,6 +50,8 @@ dependencies:
   sqflite: ^2.2.8+2
   path: ^1.8.2
   package_info_plus: ^4.0.0
+  purchases_flutter: ^4.12.0
+  lottie: ^2.3.2
 
 flutter_native_splash:
   color: "#1D252B"
