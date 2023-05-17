@@ -12,6 +12,7 @@ class Store {
   static List<bool> corrects = []; // 問題の正解判定
   static String correctRate = ""; // 正解率
   static List<int> questionNums = <int>[]; // もんだい番号のリスト
+  static bool isTest = true; // テストフラグ
 
   // シングルトンへ
   factory Store() {

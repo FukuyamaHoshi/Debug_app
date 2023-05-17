@@ -37,6 +37,8 @@ class CoreModel with ChangeNotifier {
   // 永続化するデータ
   int playCount = 0; // プレイ数
   String averageCorrectRate = "--"; // 平均正答率
+  // テスト
+  final List<int> _testNums = [28, 29, 27]; // テストする問題番号 18 22 25 27 28 29
 
   // ****************************************************
   // もんだいの設定
@@ -75,20 +77,37 @@ class CoreModel with ChangeNotifier {
   // ****************************************************
   // 取得する問題を3つ(出題数)決定し、リストに追加
   void getQuestionsNum() {
-    while (true) {
-      // 出題数がFirebase内の問題より多かったら終了
-      if (Store.questionCount > Store.total) break;
+    // テストかどうか
+    if (!Store.isTest) {
+      // 本番
+      while (true) {
+        // 出題数がFirebase内の問題より多かったら終了
+        if (Store.questionCount > Store.total) break;
 
-      // 配列が出題数以上になれば終了
-      if (Store.questionNums.length >= Store.questionCount) break;
+        // 配列が出題数以上になれば終了
+        if (Store.questionNums.length >= Store.questionCount) break;
 
-      var r = Random().nextInt(Store.total); // ランダムな数字生成(データベースの問題数に応じて)
-      final b =
-          Store.questionNums.any((int n) => n == r); // ランダムな文字が配列を一致しているか判定
+        var r = Random().nextInt(Store.total); // ランダムな数字生成(データベースの問題数に応じて)
+        final b =
+            Store.questionNums.any((int n) => n == r); // ランダムな文字が配列を一致しているか判定
 
-      // 一致していなければ配列に追加
-      if (!b) {
-        Store.questionNums.add(r);
+        // 一致していなければ配列に追加
+        if (!b) {
+          Store.questionNums.add(r);
+        }
+      }
+    } else {
+      // テスト
+      debugPrint("in test");
+      if (_testNums.isEmpty) {
+        // 空か確認
+        debugPrint("_testNums is empty");
+        return;
+      } else {
+        // テストする番号を追加
+        for (int t in _testNums) {
+          Store.questionNums.add(t);
+        }
       }
     }
 
