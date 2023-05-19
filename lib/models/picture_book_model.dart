@@ -13,22 +13,28 @@ import 'package:highlight_text/highlight_text.dart';
 import '../picture_book_content/difference_string_integer.dart';
 import '../picture_book_content/reason_constant.dart';
 import '../picture_book_content/reason_variable.dart';
+import '../views/picture_book_page.dart';
 import '../words.dart';
 
 // コード図鑑
 class PictureBookModel with ChangeNotifier {
   // コード図鑑の中身
-  final List<PictureBook> pictureBooks = [
+  final pictureBooks = [
+    '基本',
     outputConsole,
     commentOut,
+    '文字列と数字',
     strings,
     integers,
     differenceStringInteger,
+    '変数と定数',
     variable,
     reasonVariable,
     constant,
     reasonConstant
   ];
+  // ラベルの色
+  final Map<int, String> _colors = {0: '#33B0FF', 3: '#93C38E', 7: '#EFAA3D'};
   List<Widget> editor = []; // 表示するコード
   List<Widget> console = []; // 表示するコンソール
   String explan = ""; // 表示する説明分
@@ -47,23 +53,35 @@ class PictureBookModel with ChangeNotifier {
 
   // 表示する図鑑をセット
   void setDisplayTexts(int index) {
+    // 型チェック
+    if (pictureBooks[index] is String) {
+      debugPrint('not PictureBook model');
+      return;
+    }
+
+    // ignore: no_leading_underscores_for_local_identifiers
+    List<PictureBook> _pictureBooks =
+        pictureBooks.cast<PictureBook>(); // キャストする
+
     // エディター
-    editor = _getEditorWidght(pictureBooks[index].editor);
+    editor = _getEditorWidght(_pictureBooks[index].editor);
     // コンソール
-    console = _getConsoleWidght(pictureBooks[index].console);
+    console = _getConsoleWidght(_pictureBooks[index].console);
     // 説明文
-    if (pictureBooks[index].explan.length - 1 < listNum) {
+    if (_pictureBooks[index].explan.length - 1 < listNum) {
       // リスト番号の方が大きい(レンジエラー)の場合、
       explan =
-          pictureBooks[index].explan[pictureBooks[index].explan.length - 1];
+          _pictureBooks[index].explan[_pictureBooks[index].explan.length - 1];
     } else {
       // リスト番号が小さい
-      explan = pictureBooks[index].explan[listNum];
+      explan = _pictureBooks[index].explan[listNum];
     }
 
     // リストの最大値を制限する
-    _limitListNum(pictureBooks[index].editor.length,
-        pictureBooks[index].console.length, pictureBooks[index].explan.length);
+    _limitListNum(
+        _pictureBooks[index].editor.length,
+        _pictureBooks[index].console.length,
+        _pictureBooks[index].explan.length);
 
     notifyListeners(); // UI更新
   }
@@ -165,5 +183,74 @@ class PictureBookModel with ChangeNotifier {
   // コード図鑑終了時の説明文を更新する
   void _changeOverExplan() {
     explan = '説明は終わりです。';
+  }
+
+  // コード図鑑のListTileを作成する
+  Widget setListTile({required int index, required BuildContext context}) {
+    Widget tile; // タイル
+
+    // 型チェック
+    if (pictureBooks[index] is String) {
+      // ラベル
+      tile = Container(
+          color: fromCssColor(_colors[index].toString()),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 10.0,
+              top: 5,
+              bottom: 5,
+            ),
+            child: Text(
+              pictureBooks[index].toString(),
+              style: GoogleFonts.notoSans(
+                  textStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
+            ),
+          ));
+    } else {
+      // リスト
+      tile = Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: fromCssColor('#CCCCCC')),
+          ),
+        ),
+        child: ListTile(
+            title: Text(
+              pictureBooks.cast<PictureBook>()[index].title.toString(),
+              style: GoogleFonts.notoSans(
+                  textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: fromCssColor('#191D33'))),
+            ),
+            leading: const Icon(
+              Icons.description,
+              size: 30,
+            ),
+            trailing: const Icon(
+              Icons.arrow_right,
+              size: 40,
+            ),
+            onTap: () {
+              // リスト番号をリセット
+              listNum = 0;
+              // コード図鑑のテキストをセット
+              setDisplayTexts(index);
+              // コード図鑑の内容
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PictureBookPage(
+                          index: index,
+                        )),
+              );
+            }),
+      );
+    }
+
+    return tile;
   }
 }

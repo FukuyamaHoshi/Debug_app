@@ -38,7 +38,7 @@ class CoreModel with ChangeNotifier {
   int playCount = 0; // プレイ数
   String averageCorrectRate = "--"; // 平均正答率
   // テスト
-  final List<int> _testNums = [28, 29, 27]; // テストする問題番号 18 22 25 27 28 29
+  final List<int> _testNums = [19, 20, 27]; // テストする問題番号
 
   // ****************************************************
   // もんだいの設定
@@ -238,16 +238,28 @@ class CoreModel with ChangeNotifier {
 
           widgetArray.add(c);
         } else {
-          // 文字がある場合(コード)
-          Widget t = TextHighlight(
-            text: contentCodes,
-            words: words,
-            textStyle: GoogleFonts.robotoMono(
-                textStyle: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: fromCssColor('#ffffff'))),
-          );
+          // テキストの場合、
+          Widget t = contentCodes.contains('//')
+              ?
+              // コメントアウト
+              Text(
+                  contentCodes,
+                  style: GoogleFonts.robotoMono(
+                      textStyle: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: fromCssColor('#A0A0A0'))),
+                )
+              // コード
+              : TextHighlight(
+                  text: contentCodes,
+                  words: words,
+                  textStyle: GoogleFonts.robotoMono(
+                      textStyle: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: fromCssColor('#ffffff'))),
+                );
 
           widgetArray.add(t);
         }

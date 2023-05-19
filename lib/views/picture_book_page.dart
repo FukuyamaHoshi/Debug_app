@@ -4,6 +4,8 @@ import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../picture_book.dart';
+
 class PictureBookPage extends StatelessWidget {
   final int index; // リストのindex番号
 
@@ -14,7 +16,11 @@ class PictureBookPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.read<PictureBookModel>().pictureBooks[index].title,
+          context
+              .read<PictureBookModel>()
+              .pictureBooks
+              .cast<PictureBook>()[index]
+              .title,
           style: GoogleFonts.notoSans(
               textStyle: const TextStyle(
             fontSize: 20,

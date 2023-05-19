@@ -1,5 +1,4 @@
 import 'package:debug_app/models/picture_book_model.dart';
-import 'package:debug_app/views/picture_book_page.dart';
 import 'package:debug_app/views/question_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
@@ -445,80 +444,19 @@ class HomePage extends StatelessWidget {
             ),
           ),
           // コード図鑑画面
-          Container(
-            color: fromCssColor('#E8EFF5'),
-            child: Column(children: [
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              // 基本ラベル
-              Container(
-                color: fromCssColor('#33B0FF'),
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '基本',
-                    style: GoogleFonts.notoSans(
-                        textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
-                  ),
-                ),
+          Column(children: [
+            // タイトルリスト
+            Expanded(
+              child: ListView.builder(
+                itemCount: context.read<PictureBookModel>().pictureBooks.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return context
+                      .read<PictureBookModel>()
+                      .setListTile(index: index, context: context);
+                },
               ),
-              // タイトルリスト
-              Expanded(
-                child: ListView.builder(
-                  itemCount:
-                      context.read<PictureBookModel>().pictureBooks.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: fromCssColor('#CCCCCC')),
-                        ),
-                      ),
-                      child: ListTile(
-                          title: Text(
-                            context
-                                .read<PictureBookModel>()
-                                .pictureBooks[index]
-                                .title,
-                            style: GoogleFonts.notoSans(
-                                textStyle: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: fromCssColor('#191D33'))),
-                          ),
-                          leading: const Icon(
-                            Icons.description,
-                            size: 30,
-                          ),
-                          trailing: const Icon(
-                            Icons.arrow_right,
-                            size: 40,
-                          ),
-                          onTap: () {
-                            // リスト番号をリセット
-                            context.read<PictureBookModel>().listNum = 0;
-                            // コード図鑑のテキストをセット
-                            context
-                                .read<PictureBookModel>()
-                                .setDisplayTexts(index);
-                            // コード図鑑の内容
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PictureBookPage(
-                                        index: index,
-                                      )),
-                            );
-                          }),
-                    );
-                  },
-                ),
-              )
-            ]),
-          )
+            )
+          ])
         ]),
       ),
     );

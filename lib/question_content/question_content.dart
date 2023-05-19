@@ -204,7 +204,7 @@ const List<Map<String, String>> questionContents = [
   {
     "question": "各コメントに対して正しいコードは？",
     "code":
-        '// 変数を作成nnn|||***||| color = "black";nnn// 『今日のコーデは黒』と出力nnnconsole.log("今日のコーデは |||***||| color");',
+        '// 変数を作成nnn|||***||| color = "black";nnn// 『今日のコーデは黒』と出力nnnconsole.log("今日のコーデは |||***|||nnncolor");',
     "optionA": 'var',
     "optionB": 'const',
     "optionC": '+',
@@ -215,7 +215,7 @@ const List<Map<String, String>> questionContents = [
   {
     "question": "『 180 』と出力してください。",
     "code":
-        'const firstNum = 80;nnnconst secondNum = |||***|||;nnnconsole.log(fristNum |||***||| secondNum);',
+        'const firstNum = 80;nnnconst secondNum = |||***|||;nnnconsole.log(fristNum |||***||| nnnsecondNum);',
     "optionA": '+',
     "optionB": '100',
     "optionC": '120',
