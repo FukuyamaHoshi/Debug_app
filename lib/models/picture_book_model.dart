@@ -6,6 +6,8 @@ import 'package:debug_app/picture_book_content/output_console.dart';
 import 'package:debug_app/picture_book.dart';
 import 'package:debug_app/picture_book_content/strings.dart';
 import 'package:debug_app/picture_book_content/variable.dart';
+import 'package:debug_app/purchase.dart';
+import 'package:debug_app/purchase/purchase_title.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +16,7 @@ import '../picture_book_content/difference_string_integer.dart';
 import '../picture_book_content/reason_constant.dart';
 import '../picture_book_content/reason_variable.dart';
 import '../views/picture_book_page.dart';
+import '../views/purchase_page.dart';
 import '../words.dart';
 
 // コード図鑑
@@ -31,10 +34,17 @@ class PictureBookModel with ChangeNotifier {
     variable,
     reasonVariable,
     constant,
-    reasonConstant
+    reasonConstant,
+    'その他',
+    purchaseTitle
   ];
   // ラベルの色
-  final Map<int, String> _colors = {0: '#33B0FF', 3: '#93C38E', 7: '#EFAA3D'};
+  final Map<int, String> _colors = {
+    0: '#33B0FF',
+    3: '#93C38E',
+    7: '#EFAA3D',
+    12: '#9F8B63'
+  };
   List<Widget> editor = []; // 表示するコード
   List<Widget> console = []; // 表示するコンソール
   String explan = ""; // 表示する説明分
@@ -209,8 +219,10 @@ class PictureBookModel with ChangeNotifier {
                       color: Colors.white)),
             ),
           ));
-    } else {
-      // リスト
+    } else if (pictureBooks[index] is PictureBook) {
+      PictureBook p = pictureBooks[index] as PictureBook; // 図鑑クラスにキャスト
+
+      // 問題リスト
       tile = Container(
         decoration: BoxDecoration(
           border: Border(
@@ -219,7 +231,7 @@ class PictureBookModel with ChangeNotifier {
         ),
         child: ListTile(
             title: Text(
-              pictureBooks.cast<PictureBook>()[index].title.toString(),
+              p.title.toString(),
               style: GoogleFonts.notoSans(
                   textStyle: TextStyle(
                       fontSize: 18,
@@ -244,6 +256,43 @@ class PictureBookModel with ChangeNotifier {
                 context,
                 MaterialPageRoute(
                     builder: (context) => PictureBookPage(
+                          index: index,
+                        )),
+              );
+            }),
+      );
+    } else {
+      Purchase p = pictureBooks[index] as Purchase; // 課金クラスにキャスト
+
+      // 課金リスト
+      tile = Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: fromCssColor('#CCCCCC')),
+          ),
+        ),
+        child: ListTile(
+            title: Text(
+              p.title.toString(),
+              style: GoogleFonts.notoSans(
+                  textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: fromCssColor('#191D33'))),
+            ),
+            leading: const Icon(
+              Icons.key,
+              size: 30,
+            ),
+            trailing: const Icon(
+              Icons.arrow_right,
+              size: 40,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PurchasePage(
                           index: index,
                         )),
               );
