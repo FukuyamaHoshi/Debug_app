@@ -1,19 +1,56 @@
 import 'package:debug_app/models/picture_book_model.dart';
+import 'package:debug_app/models/purchase_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import '../purchase.dart';
 
-class PurchasePage extends StatelessWidget {
+class PurchasePage extends StatefulWidget {
+  const PurchasePage({required this.index, super.key});
   final int index; // リストのindex番号
 
-  const PurchasePage({required this.index, super.key});
+  @override
+  PurchaseState createState() => PurchaseState();
+}
+
+class PurchaseState extends State<PurchasePage> {
+  // 初回で実行
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState(); // RebenueCat初期化
+  }
+
+  // 初期化する
+  Future<void> initPlatformState() async {
+    // デバッグモードでログを出力
+    await Purchases.setLogLevel(LogLevel.debug);
+
+    PurchasesConfiguration? configuration;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      configuration = PurchasesConfiguration('<public_google_sdk_key>');
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      configuration =
+          PurchasesConfiguration('appl_wsBLnOIBHwObHZuDisKTfdRisld');
+    }
+
+    if (configuration == null) {
+      debugPrint('purchase init error');
+      return;
+    }
+
+    await Purchases.configure(configuration); // 初期化
+  }
+
   @override
   Widget build(BuildContext context) {
-    Purchase purchase = context.read<PictureBookModel>().pictureBooks[index]
-        as Purchase; // 型キャスト
+    Purchase purchase = context
+        .read<PictureBookModel>()
+        .pictureBooks[widget.index] as Purchase; // 型キャスト
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -51,7 +88,9 @@ class PurchasePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Get Started",
+                          context.select((PurchaseModel m) => m.isPurchase)
+                              ? "Let's Go"
+                              : "Get Started",
                           style: GoogleFonts.notoSans(
                               textStyle: TextStyle(
                                   fontSize: 25,
@@ -68,7 +107,9 @@ class PurchasePage extends StatelessWidget {
                 const Padding(padding: EdgeInsets.only(bottom: 10)),
                 // サブテキスト
                 Text(
-                  "さあ、あなたの可能性を信じて",
+                  context.select((PurchaseModel m) => m.isPurchase)
+                      ? "あなたの可能性の第一歩へ"
+                      : "さあ、あなたの可能性を信じて",
                   style: GoogleFonts.notoSans(
                       textStyle: const TextStyle(
                           fontSize: 20,
@@ -78,14 +119,19 @@ class PurchasePage extends StatelessWidget {
                 Padding(
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).size.height / 20)),
-                Lottie.asset('images/space_shuttle.json',
-                    width: 350, repeat: false),
+                context.select((PurchaseModel m) => m.isPurchase)
+                    ? Lottie.asset('images/happy_spaceman.json',
+                        width: 350, repeat: false)
+                    : Lottie.asset('images/space_shuttle.json',
+                        width: 350, repeat: false),
                 Padding(
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).size.height / 18)),
                 // 説明テキスト
                 Text(
-                  "全コード図鑑を購入して頂くと\n全てのコードが閲覧できるようになります。",
+                  context.select((PurchaseModel m) => m.isPurchase)
+                      ? "ご購入ありがとうございます。\nこれからもスタートアップをお楽しみください。"
+                      : "全コード図鑑を購入して頂くと\n全てのコードが閲覧できるようになります。",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.notoSans(
                       textStyle: const TextStyle(
@@ -110,12 +156,35 @@ class PurchasePage extends StatelessWidget {
                   ),
                   fixedSize: const Size(310, 65),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  try {
+                    // 購入フラグチェック
+                    if (!context.read<PurchaseModel>().isPurchase) {
+                      // すでに購入しているかチェック
+                      context
+                          .read<PurchaseModel>()
+                          .checkIsPurchase()
+                          .then((bool b) {
+                        if (!b) {
+                          // 購入していない場合
+                          context
+                              .read<PurchaseModel>()
+                              .handlePurchase(); // 購入処理
+                        }
+                      });
+                    }
+                  } on Exception catch (e) {
+                    // エラー処理()
+                    debugPrint(e.toString());
+                  }
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "購入する",
+                      context.select((PurchaseModel m) => m.isPurchase)
+                          ? "購入できません"
+                          : "購入する",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.notoSans(
                           textStyle: TextStyle(
@@ -125,15 +194,16 @@ class PurchasePage extends StatelessWidget {
                     ),
                     const Padding(padding: EdgeInsets.only(right: 5)),
                     // 価格のボタンテキスト
-                    Text(
-                      "¥500(税込)",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
-                              color: fromCssColor('#9F8B63'))),
-                    ),
+                    if (!context.select((PurchaseModel m) => m.isPurchase))
+                      Text(
+                        "¥500(税抜)",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.notoSans(
+                            textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal,
+                                color: fromCssColor('#9F8B63'))),
+                      ),
                   ],
                 ),
               ),
@@ -148,7 +218,9 @@ class PurchasePage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Text(
-                    "復元する(以前ご利用された方)",
+                    context.select((PurchaseModel m) => m.isPurchase)
+                        ? "復元できません"
+                        : "復元する(以前ご利用された方)",
                     style: GoogleFonts.notoSans(
                         textStyle: TextStyle(
                             fontSize: 18,

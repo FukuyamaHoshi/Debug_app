@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:debug_app/models/purchase_model.dart';
 import 'package:debug_app/picture_book_content/comment_out.dart';
 import 'package:debug_app/picture_book_content/constant.dart';
 import 'package:debug_app/picture_book_content/integers.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:provider/provider.dart';
 import '../picture_book_content/difference_string_integer.dart';
 import '../picture_book_content/reason_constant.dart';
 import '../picture_book_content/reason_variable.dart';
@@ -45,6 +47,12 @@ class PictureBookModel with ChangeNotifier {
     7: '#EFAA3D',
     12: '#9F8B63'
   };
+  // 課金リスト
+  final List<PictureBook> _purchaseLists = [
+    differenceStringInteger,
+    reasonVariable,
+    reasonConstant,
+  ];
   List<Widget> editor = []; // 表示するコード
   List<Widget> console = []; // 表示するコンソール
   String explan = ""; // 表示する説明分
@@ -221,46 +229,77 @@ class PictureBookModel with ChangeNotifier {
           ));
     } else if (pictureBooks[index] is PictureBook) {
       PictureBook p = pictureBooks[index] as PictureBook; // 図鑑クラスにキャスト
-
-      // 問題リスト
-      tile = Container(
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: fromCssColor('#CCCCCC')),
+      if (_purchaseLists.contains(p) &&
+          !context.read<PurchaseModel>().isPurchase) {
+        // 問題リスト(有料)
+        tile = Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: fromCssColor('#CCCCCC')),
+            ),
           ),
-        ),
-        child: ListTile(
-            title: Text(
-              p.title.toString(),
-              style: GoogleFonts.notoSans(
-                  textStyle: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: fromCssColor('#191D33'))),
+          child: ListTile(
+              title: Text(
+                p.title.toString(),
+                style: GoogleFonts.notoSans(
+                    textStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: fromCssColor('#191D33'))),
+              ),
+              leading: const Icon(
+                Icons.description,
+                size: 30,
+              ),
+              trailing: const Icon(
+                Icons.lock,
+                size: 30,
+              ),
+              onTap: () {
+                // スナックバーを表示する
+              }),
+        );
+      } else {
+        // 問題リスト(無料)
+        tile = Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: fromCssColor('#CCCCCC')),
             ),
-            leading: const Icon(
-              Icons.description,
-              size: 30,
-            ),
-            trailing: const Icon(
-              Icons.arrow_right,
-              size: 40,
-            ),
-            onTap: () {
-              // リスト番号をリセット
-              listNum = 0;
-              // コード図鑑のテキストをセット
-              setDisplayTexts(index);
-              // コード図鑑の内容
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PictureBookPage(
-                          index: index,
-                        )),
-              );
-            }),
-      );
+          ),
+          child: ListTile(
+              title: Text(
+                p.title.toString(),
+                style: GoogleFonts.notoSans(
+                    textStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: fromCssColor('#191D33'))),
+              ),
+              leading: const Icon(
+                Icons.description,
+                size: 30,
+              ),
+              trailing: const Icon(
+                Icons.arrow_right,
+                size: 40,
+              ),
+              onTap: () {
+                // リスト番号をリセット
+                listNum = 0;
+                // コード図鑑のテキストをセット
+                setDisplayTexts(index);
+                // コード図鑑の内容
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PictureBookPage(
+                            index: index,
+                          )),
+                );
+              }),
+        );
+      }
     } else {
       Purchase p = pictureBooks[index] as Purchase; // 課金クラスにキャスト
 
