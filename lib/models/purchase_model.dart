@@ -4,7 +4,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PurchaseModel with ChangeNotifier {
-  bool isPurchase = false; // 購入しているか
   // 購入処理
   Future<void> handlePurchase() async {
     try {
@@ -25,8 +24,9 @@ class PurchaseModel with ChangeNotifier {
       // 資格情報がある場合,
       if (noLimitEntitle.isActive) {
         // アンロック処理
-        isPurchase = true; // フラグ切り替え
         _setLimit(); // 永続化処理
+
+        // 購入おめでとう画面にナビゲーション
       }
     } on PlatformException catch (e) {
       var errorCode = PurchasesErrorHelper.getErrorCode(e);
@@ -50,30 +50,40 @@ class PurchaseModel with ChangeNotifier {
       }
       // not active
       return Future<bool>.value(false); // 購入していない
-    } on PlatformException catch (e) {
+    } catch (e) {
       // Error fetching purchaser info
       debugPrint('[error check purchase]');
       debugPrint(e.toString());
-      throw Exception(); // エラー
+      throw Exception(e); // エラー
     }
   }
 
   // ****************************************************
   // データ永続化
   // ****************************************************
-  // データ制限フラグをセット
+  // 購入フラグをセット
   Future<void> _setLimit() async {
     final SharedPreferences prefs =
         await SharedPreferences.getInstance(); // インスタンス
-    bool? n = prefs.getBool("is_purchase"); // 制限フラグを取得
-
     // 永続化処理
-    if (n == null) {
-      // 初回時処理
-      prefs.setBool("is_purchase", true);
-    } else {
-      // 初回以上
-      prefs.setBool("is_purchase", isPurchase);
+    prefs.setBool("is_purchase", true);
+  }
+
+  // 購入フラグを取得する
+  Future<bool> getIsPurchase() async {
+    try {
+      final SharedPreferences prefs =
+          await SharedPreferences.getInstance(); // インスタンス
+      bool? p = prefs.getBool("is_purchase"); // 平均正答率を取得
+      // nullチェック
+      if (p == null) {
+        // 初回
+        return false;
+      }
+
+      return p;
+    } catch (e) {
+      throw Exception('error not get purchase flg : $e');
     }
   }
 }

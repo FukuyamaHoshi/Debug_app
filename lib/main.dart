@@ -16,30 +16,34 @@ import 'models/purchase_model.dart';
 import 'models/time_model.dart';
 
 void main() async {
-  // Firebase初期化
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    // Firebase初期化
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-  // SQlite初期化
-  await openDatabase(
-    join(await getDatabasesPath(), 'questions.db'),
-    onCreate: (db, version) {
-      return db.execute(
-        'CREATE TABLE questions(id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, code TEXT, optionA TEXT, optionB TEXT, optionC TEXT, optionD TEXT, answerA TEXT, answerB TEXT)',
-      );
-    },
-    version: 1,
-  );
+    // SQlite初期化
+    await openDatabase(
+      join(await getDatabasesPath(), 'questions.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE questions(id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, code TEXT, optionA TEXT, optionB TEXT, optionC TEXT, optionD TEXT, answerA TEXT, answerB TEXT)',
+        );
+      },
+      version: 1,
+    );
 
-  runApp(
-    // プレビュー機能ラップ
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const MyApp(), // Wrap your app
-    ),
-  );
+    runApp(
+      // プレビュー機能ラップ
+      DevicePreview(
+        enabled: !kReleaseMode,
+        builder: (context) => const MyApp(), // Wrap your app
+      ),
+    );
+  } catch (e) {
+    debugPrint(e.toString());
+  }
 }
 
 class MyApp extends StatelessWidget {

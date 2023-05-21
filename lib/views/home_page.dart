@@ -1,4 +1,5 @@
 import 'package:debug_app/models/picture_book_model.dart';
+import 'package:debug_app/models/purchase_model.dart';
 import 'package:debug_app/views/question_page.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
@@ -9,8 +10,28 @@ import '../models/core_model.dart';
 import '../models/local_database_model.dart';
 import '../models/time_model.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+  @override
+  HomeState createState() => HomeState();
+}
+
+class HomeState extends State<HomePage> {
+  bool _isPurchase = false; // 課金フラグ
+  // 初回で実行
+  @override
+  void initState() {
+    super.initState();
+
+    try {
+      PurchaseModel pm = PurchaseModel(); // 購入モデル
+      Future(() async {
+        await pm.getIsPurchase().then((bool p) => _isPurchase = p); // 購入フラグを取得
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -450,9 +471,8 @@ class HomePage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: context.read<PictureBookModel>().pictureBooks.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return context
-                      .read<PictureBookModel>()
-                      .setListTile(index: index, context: context);
+                  return context.read<PictureBookModel>().setListTile(
+                      index: index, context: context, isPurchase: _isPurchase);
                 },
               ),
             )

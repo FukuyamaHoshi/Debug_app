@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:debug_app/models/purchase_model.dart';
 import 'package:debug_app/picture_book_content/comment_out.dart';
 import 'package:debug_app/picture_book_content/constant.dart';
 import 'package:debug_app/picture_book_content/integers.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:highlight_text/highlight_text.dart';
-import 'package:provider/provider.dart';
 import '../picture_book_content/difference_string_integer.dart';
 import '../picture_book_content/reason_constant.dart';
 import '../picture_book_content/reason_variable.dart';
@@ -204,7 +202,10 @@ class PictureBookModel with ChangeNotifier {
   }
 
   // コード図鑑のListTileを作成する
-  Widget setListTile({required int index, required BuildContext context}) {
+  Widget setListTile(
+      {required int index,
+      required BuildContext context,
+      required bool isPurchase}) {
     Widget tile; // タイル
 
     // 型チェック
@@ -229,8 +230,7 @@ class PictureBookModel with ChangeNotifier {
           ));
     } else if (pictureBooks[index] is PictureBook) {
       PictureBook p = pictureBooks[index] as PictureBook; // 図鑑クラスにキャスト
-      if (_purchaseLists.contains(p) &&
-          !context.read<PurchaseModel>().isPurchase) {
+      if (_purchaseLists.contains(p) && !isPurchase) {
         // 問題リスト(有料)
         tile = Container(
           decoration: BoxDecoration(
@@ -257,6 +257,29 @@ class PictureBookModel with ChangeNotifier {
               ),
               onTap: () {
                 // スナックバーを表示する
+                SnackBar snackBar = SnackBar(
+                  content: Row(
+                    children: [
+                      Icon(
+                        Icons.notification_important,
+                        size: 23,
+                        color: fromCssColor('#C7C7C7'),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 5)),
+                      Text(
+                        '全コード図鑑が購入されていません',
+                        style: GoogleFonts.notoSans(
+                            textStyle: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)),
+                      ),
+                    ],
+                  ),
+                  backgroundColor: fromCssColor('#1D252B'),
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }),
         );
       } else {

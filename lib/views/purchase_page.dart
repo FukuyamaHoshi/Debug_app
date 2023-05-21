@@ -18,11 +18,20 @@ class PurchasePage extends StatefulWidget {
 }
 
 class PurchaseState extends State<PurchasePage> {
+  bool _isPurchase = false; // 課金フラグ
   // 初回で実行
   @override
   void initState() {
     super.initState();
-    initPlatformState(); // RebenueCat初期化
+    try {
+      initPlatformState(); // RebenueCat初期化
+      PurchaseModel pm = PurchaseModel(); // 購入モデル
+      Future(() async {
+        pm.getIsPurchase().then((bool p) => _isPurchase = p); // 購入フラグを取得
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   // 初期化する
@@ -88,9 +97,7 @@ class PurchaseState extends State<PurchasePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          context.select((PurchaseModel m) => m.isPurchase)
-                              ? "Let's Go"
-                              : "Get Started",
+                          _isPurchase ? "Let's Go" : "Get Started",
                           style: GoogleFonts.notoSans(
                               textStyle: TextStyle(
                                   fontSize: 25,
@@ -107,9 +114,7 @@ class PurchaseState extends State<PurchasePage> {
                 const Padding(padding: EdgeInsets.only(bottom: 10)),
                 // サブテキスト
                 Text(
-                  context.select((PurchaseModel m) => m.isPurchase)
-                      ? "あなたの可能性の第一歩へ"
-                      : "さあ、あなたの可能性を信じて",
+                  _isPurchase ? "あなたの可能性の第一歩へ" : "さあ、あなたの可能性を信じて",
                   style: GoogleFonts.notoSans(
                       textStyle: const TextStyle(
                           fontSize: 20,
@@ -119,7 +124,7 @@ class PurchaseState extends State<PurchasePage> {
                 Padding(
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).size.height / 20)),
-                context.select((PurchaseModel m) => m.isPurchase)
+                _isPurchase
                     ? Lottie.asset('images/happy_spaceman.json',
                         width: 350, repeat: false)
                     : Lottie.asset('images/space_shuttle.json',
@@ -129,7 +134,7 @@ class PurchaseState extends State<PurchasePage> {
                         bottom: MediaQuery.of(context).size.height / 18)),
                 // 説明テキスト
                 Text(
-                  context.select((PurchaseModel m) => m.isPurchase)
+                  _isPurchase
                       ? "ご購入ありがとうございます。\nこれからもスタートアップをお楽しみください。"
                       : "全コード図鑑を購入して頂くと\n全てのコードが閲覧できるようになります。",
                   textAlign: TextAlign.center,
@@ -159,7 +164,7 @@ class PurchaseState extends State<PurchasePage> {
                 onPressed: () {
                   try {
                     // 購入フラグチェック
-                    if (!context.read<PurchaseModel>().isPurchase) {
+                    if (!_isPurchase) {
                       // すでに購入しているかチェック
                       context
                           .read<PurchaseModel>()
@@ -182,9 +187,7 @@ class PurchaseState extends State<PurchasePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      context.select((PurchaseModel m) => m.isPurchase)
-                          ? "購入できません"
-                          : "購入する",
+                      _isPurchase ? "購入できません" : "購入する",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.notoSans(
                           textStyle: TextStyle(
@@ -194,7 +197,7 @@ class PurchaseState extends State<PurchasePage> {
                     ),
                     const Padding(padding: EdgeInsets.only(right: 5)),
                     // 価格のボタンテキスト
-                    if (!context.select((PurchaseModel m) => m.isPurchase))
+                    if (!_isPurchase)
                       Text(
                         "¥500(税抜)",
                         textAlign: TextAlign.center,
@@ -218,9 +221,7 @@ class PurchaseState extends State<PurchasePage> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Text(
-                    context.select((PurchaseModel m) => m.isPurchase)
-                        ? "復元できません"
-                        : "復元する(以前ご利用された方)",
+                    _isPurchase ? "復元できません" : "復元する(以前ご利用された方)",
                     style: GoogleFonts.notoSans(
                         textStyle: TextStyle(
                             fontSize: 18,
