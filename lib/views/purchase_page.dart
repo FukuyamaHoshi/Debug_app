@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import '../purchase.dart';
+import 'complete_page.dart';
 
 class PurchasePage extends StatefulWidget {
   const PurchasePage({required this.index, super.key});
@@ -161,26 +162,55 @@ class PurchaseState extends State<PurchasePage> {
                   ),
                   fixedSize: const Size(310, 65),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   try {
                     // 購入フラグチェック
                     if (!_isPurchase) {
-                      // すでに購入しているかチェック
-                      context
+                      // 購入していない場合
+                      await context
                           .read<PurchaseModel>()
-                          .checkIsPurchase()
-                          .then((bool b) {
-                        if (!b) {
-                          // 購入していない場合
-                          context
-                              .read<PurchaseModel>()
-                              .handlePurchase(); // 購入処理
-                        }
-                      });
+                          .handlePurchase(); // 購入処理
+
+                      // 購入完了画面へ
+                      if (context.mounted) {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CompletePage(
+                              isRestore: false,
+                            ),
+                            fullscreenDialog: true, // 下からのアニメーション
+                          ),
+                        );
+                      }
                     }
-                  } on Exception catch (e) {
+                  } catch (e) {
                     // エラー処理()
                     debugPrint(e.toString());
+                    // スナックバーを表示する
+                    SnackBar snackBar = SnackBar(
+                      content: Row(
+                        children: [
+                          Icon(
+                            Icons.notification_important,
+                            size: 23,
+                            color: fromCssColor('#C7C7C7'),
+                          ),
+                          const Padding(padding: EdgeInsets.only(right: 5)),
+                          Text(
+                            '購入が完了できませんでした。',
+                            style: GoogleFonts.notoSans(
+                                textStyle: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: fromCssColor('#1D252B'),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                 },
                 child: Row(
@@ -229,7 +259,57 @@ class PurchaseState extends State<PurchasePage> {
                             color: fromCssColor('#191D33'))),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    // 購入フラグチェック
+                    if (!_isPurchase) {
+                      // 購入していない場合
+                      await context
+                          .read<PurchaseModel>()
+                          .handleRestore(); // リストア処理
+
+                      // 購入完了画面へ
+                      if (context.mounted) {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CompletePage(
+                              isRestore: true,
+                            ),
+                            fullscreenDialog: true, // 下からのアニメーション
+                          ),
+                        );
+                      }
+                    }
+                  } catch (e) {
+                    // エラー処理()
+                    debugPrint(e.toString());
+                    // スナックバーを表示する
+                    SnackBar snackBar = SnackBar(
+                      content: Row(
+                        children: [
+                          Icon(
+                            Icons.notification_important,
+                            size: 23,
+                            color: fromCssColor('#C7C7C7'),
+                          ),
+                          const Padding(padding: EdgeInsets.only(right: 5)),
+                          Text(
+                            '復元を完了できませんでした。',
+                            style: GoogleFonts.notoSans(
+                                textStyle: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: fromCssColor('#1D252B'),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
               )),
             ),
           )

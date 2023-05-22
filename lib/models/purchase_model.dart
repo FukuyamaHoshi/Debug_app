@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,36 +25,30 @@ class PurchaseModel with ChangeNotifier {
       if (noLimitEntitle.isActive) {
         // アンロック処理
         _setLimit(); // 永続化処理
-
-        // 購入おめでとう画面にナビゲーション
       }
-    } on PlatformException catch (e) {
-      var errorCode = PurchasesErrorHelper.getErrorCode(e);
-      if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-        // 購入エラー処理
-      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
-  // すでに購入しているか確認
-  Future<bool> checkIsPurchase() async {
+  // リストア処理
+  Future<void> handleRestore() async {
     try {
-      CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-      EntitlementInfo? entitle =
-          customerInfo.entitlements.all['picture_book_no_limit']; // 購入情報を取得
-      // null チェック
-      if (entitle == null) return Future<bool>.value(false); // 購入していない
-      if (entitle.isActive) {
-        // 購入している
-        return Future<bool>.value(true); // 購入している
+      CustomerInfo restoredInfo = await Purchases.restorePurchases();
+      EntitlementInfo? noLimitEntitle =
+          restoredInfo.entitlements.all['picture_book_no_limit']; // 資格情報があるか？
+      // EntitlementInfoのnullチェック
+      if (noLimitEntitle == null) {
+        throw Exception('null entitlementInfo of limit less in RevenueCat');
       }
-      // not active
-      return Future<bool>.value(false); // 購入していない
+      // 資格情報がある場合,
+      if (noLimitEntitle.isActive) {
+        // アンロック処理
+        _setLimit(); // 永続化処理
+      }
     } catch (e) {
-      // Error fetching purchaser info
-      debugPrint('[error check purchase]');
-      debugPrint(e.toString());
-      throw Exception(e); // エラー
+      // Error restoring purchases
+      throw Exception(e);
     }
   }
 
