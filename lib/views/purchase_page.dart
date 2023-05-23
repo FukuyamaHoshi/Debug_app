@@ -28,7 +28,13 @@ class PurchaseState extends State<PurchasePage> {
       initPlatformState(); // RebenueCat初期化
       PurchaseModel pm = PurchaseModel(); // 購入モデル
       Future(() async {
-        pm.getIsPurchase().then((bool p) => _isPurchase = p); // 購入フラグを取得
+        // 購入フラグを取得
+        await pm.getIsPurchase().then((bool p) {
+          // UIを更新
+          setState(() {
+            _isPurchase = p;
+          });
+        });
       });
     } catch (e) {
       debugPrint(e.toString());

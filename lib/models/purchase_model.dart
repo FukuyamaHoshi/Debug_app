@@ -25,6 +25,8 @@ class PurchaseModel with ChangeNotifier {
       if (noLimitEntitle.isActive) {
         // アンロック処理
         _setLimit(); // 永続化処理
+      } else {
+        throw Exception('not entitle');
       }
     } catch (e) {
       throw Exception(e);
@@ -45,6 +47,8 @@ class PurchaseModel with ChangeNotifier {
       if (noLimitEntitle.isActive) {
         // アンロック処理
         _setLimit(); // 永続化処理
+      } else {
+        throw Exception('not entitle');
       }
     } catch (e) {
       // Error restoring purchases

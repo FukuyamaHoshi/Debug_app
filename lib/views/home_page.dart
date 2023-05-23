@@ -26,7 +26,12 @@ class HomeState extends State<HomePage> {
     try {
       PurchaseModel pm = PurchaseModel(); // 購入モデル
       Future(() async {
-        await pm.getIsPurchase().then((bool p) => _isPurchase = p); // 購入フラグを取得
+        await pm.getIsPurchase().then((bool p) {
+          // UIを更新
+          setState(() {
+            _isPurchase = p; // 購入フラグを取得
+          });
+        });
       });
     } catch (e) {
       debugPrint(e.toString());
@@ -388,7 +393,7 @@ class HomeState extends State<HomePage> {
                           Padding(
                             padding: const EdgeInsets.only(top: 5, left: 10),
                             child: Text(
-                              'オフラインで楽しめるようになりました。',
+                              '問題数、コード図鑑の内容が増えました。',
                               style: GoogleFonts.notoSans(
                                   textStyle: TextStyle(
                                       fontSize: 14,
